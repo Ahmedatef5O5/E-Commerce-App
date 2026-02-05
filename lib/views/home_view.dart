@@ -8,7 +8,10 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [Center(child: Text("Home View"))],
+        children: [
+          Center(child: Text("Home View")),
+          // Image.asset(AppImages.order),
+        ],
       ),
     );
   }
