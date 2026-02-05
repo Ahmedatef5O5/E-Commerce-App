@@ -1,7 +1,9 @@
+import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/views/favorite_view.dart';
 import 'package:ecommerce_app/views/home_view.dart';
 import 'package:ecommerce_app/views/order_view.dart';
 import 'package:ecommerce_app/views/profile_view.dart';
+import 'package:ecommerce_app/widgets/custom_nav_item.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
@@ -26,10 +28,26 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
 
   List<ItemConfig> _navBarsItems() {
     return [
-      ItemConfig(icon: Icon(Icons.home), title: 'home'),
-      ItemConfig(icon: Icon(Icons.shopping_cart), title: 'home'),
-      ItemConfig(icon: Icon(Icons.favorite), title: 'home'),
-      ItemConfig(icon: Icon(Icons.person), title: 'home'),
+      CustomNavItem.build(
+        context: context,
+        iconPath: AppImages.home,
+        title: "Home",
+      ),
+      CustomNavItem.build(
+        context: context,
+        iconPath: AppImages.order,
+        title: "My Order",
+      ),
+      CustomNavItem.build(
+        context: context,
+        iconPath: AppImages.favorite,
+        title: "Favorite",
+      ),
+      CustomNavItem.build(
+        context: context,
+        iconPath: AppImages.profile,
+        title: "My Profile",
+      ),
     ];
   }
 
@@ -70,7 +88,6 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
           border: Border(
             top: BorderSide(color: Colors.grey.shade300, width: 0.8),
           ),
-
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(22),
             topRight: Radius.circular(22),
@@ -79,10 +96,10 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
       )),
       screenTransitionAnimation: ScreenTransitionAnimation(),
       // backgroundColor: Colors.white,
-      //  handleAndroidBackButtonPress: true,
-      //  resizeToAvoidBottomInset: true,
+      // handleAndroidBackButtonPress: true,
+      // resizeToAvoidBottomInset: true,
       //  stateManagement: true,
-      //  hideNavigationBar: true,
+      // hideNavigationBar: true,
     );
   }
 }
