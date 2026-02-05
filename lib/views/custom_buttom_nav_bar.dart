@@ -1,0 +1,88 @@
+import 'package:ecommerce_app/views/favorite_view.dart';
+import 'package:ecommerce_app/views/home_view.dart';
+import 'package:ecommerce_app/views/order_view.dart';
+import 'package:ecommerce_app/views/profile_view.dart';
+import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+
+class CustomButtomNavbar extends StatefulWidget {
+  const CustomButtomNavbar({super.key});
+
+  @override
+  State<CustomButtomNavbar> createState() => _CustomButtomNavbarState();
+}
+
+class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
+  late final PersistentTabController _controller;
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(); //initialIndex: 0 by default
+  }
+
+  List<Widget> _screens(BuildContext context) {
+    return [HomeView(), OrderView(), FavoriteView(), ProfileView()];
+  }
+
+  List<ItemConfig> _navBarsItems() {
+    return [
+      ItemConfig(icon: Icon(Icons.home), title: 'home'),
+      ItemConfig(icon: Icon(Icons.shopping_cart), title: 'home'),
+      ItemConfig(icon: Icon(Icons.favorite), title: 'home'),
+      ItemConfig(icon: Icon(Icons.person), title: 'home'),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PersistentTabView(
+      controller: _controller,
+
+      tabs: [
+        PersistentTabConfig(
+          screen: _screens(context)[0],
+          item: _navBarsItems()[0],
+        ),
+        PersistentTabConfig(
+          screen: _screens(context)[1],
+          item: _navBarsItems()[1],
+        ),
+        PersistentTabConfig(
+          screen: _screens(context)[2],
+          item: _navBarsItems()[2],
+        ),
+        PersistentTabConfig(
+          screen: _screens(context)[3],
+          item: _navBarsItems()[3],
+        ),
+      ],
+      navBarBuilder: ((navBarConfig) => Style6BottomNavBar(
+        navBarConfig: navBarConfig,
+        navBarDecoration: NavBarDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.shade300,
+              blurRadius: 4,
+              offset: Offset(0, -3),
+            ),
+          ],
+          border: Border(
+            top: BorderSide(color: Colors.grey.shade300, width: 0.8),
+          ),
+
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(22),
+            topRight: Radius.circular(22),
+          ),
+        ),
+      )),
+      screenTransitionAnimation: ScreenTransitionAnimation(),
+      // backgroundColor: Colors.white,
+      //  handleAndroidBackButtonPress: true,
+      //  resizeToAvoidBottomInset: true,
+      //  stateManagement: true,
+      //  hideNavigationBar: true,
+    );
+  }
+}

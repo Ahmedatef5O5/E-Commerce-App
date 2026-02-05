@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/views/home_view.dart';
+import 'package:ecommerce_app/views/custom_buttom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -10,6 +10,9 @@ class EcommerceApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(debugShowCheckedModeBanner: false, home: HomeView());
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: CustomButtomNavbar(),
+    );
   }
 }
