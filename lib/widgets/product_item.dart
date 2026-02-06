@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import '../models/product_item_model.dart';
 
 class ProductItem extends StatelessWidget {
@@ -7,27 +8,76 @@ class ProductItem extends StatelessWidget {
   final ProductItemModel productItem;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      width: 150,
-      decoration: BoxDecoration(
-        color: CupertinoColors.systemGrey5,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            top: 10,
-            right: 12,
-            child: CircleAvatar(
-              radius: 18,
-              backgroundColor: Colors.grey[500],
-              child: Icon(CupertinoIcons.heart, color: Colors.white, size: 24),
-            ),
+    return Column(
+      children: [
+        Container(
+          height: 170,
+          width: 150,
+          decoration: BoxDecoration(
+            color: CupertinoColors.systemGrey5,
+            borderRadius: BorderRadius.circular(12),
           ),
-          Image.network(productItem.imgUrl, height: 100, width: 100),
-        ],
-      ),
+          child: Stack(
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Image.network(
+                    productItem.imgUrl,
+                    height: 160,
+                    width: 120,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 3,
+                right: 6,
+                child: Opacity(
+                  opacity: 0.6,
+                  child: CircleAvatar(
+                    radius: 18,
+                    backgroundColor: Colors.grey[600],
+                    child: Icon(
+                      CupertinoIcons.heart,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Gap(2),
+        Text(
+          productItem.name,
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 15,
+          ),
+        ),
+        // Gap(4),
+        Text(
+          productItem.category,
+          // maxLines: 1,
+          style: Theme.of(context).textTheme.bodySmall!.copyWith(
+            color: Colors.black26,
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        // Gap(4),
+        Text(
+          "\$${productItem.price}",
+          style: Theme.of(context).textTheme.labelSmall!.copyWith(
+            color: Colors.black,
+            fontWeight: FontWeight.w800,
+            fontSize: 14,
+          ),
+        ),
+      ],
     );
   }
 }
