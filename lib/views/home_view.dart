@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../widgets/header_home_section.dart';
+import '../widgets/home_carousel_slider.dart';
 import '../widgets/product_grid_view.dart';
 
 class HomeView extends StatelessWidget {
@@ -21,6 +22,8 @@ class HomeView extends StatelessWidget {
                 ),
                 child: HeaderHomeSection(),
               ),
+              Gap(12),
+              HomeCarouselSlider(),
               Gap(12),
               ProductGridView(),
             ],
