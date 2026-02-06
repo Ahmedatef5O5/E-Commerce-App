@@ -1,5 +1,3 @@
-import 'package:ecommerce_app/widgets/category_tab_view.dart';
-import 'package:ecommerce_app/widgets/home_tab_view.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import '../widgets/header_home_section.dart';

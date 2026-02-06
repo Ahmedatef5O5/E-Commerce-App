@@ -6,8 +6,17 @@ class CategoryTabView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [Center(child: Text('Category Tab View'))],
+      children: [
+        Expanded(
+          child: ListView.builder(
+            itemCount: 6,
+            itemBuilder: (context, index) => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(width: 200, height: 200, color: Colors.amber),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

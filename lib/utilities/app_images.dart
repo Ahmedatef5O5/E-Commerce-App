@@ -12,6 +12,12 @@ class AppImages {
   static final String slider2 = 'assets/images/banners/Slider 2.png';
   static final String slider3 = 'assets/images/banners/Slider 3.png';
 
+  // SVG category images
+  static final String accessories = 'assets/images/category/accessories.svg';
+  static final String clothes = 'assets/images/categories/clothing.svg';
+  static final String collection = 'assets/images/categories/collection.svg';
+  static final String shoes = 'assets/images/categories/shoes.svg';
+
   // bottom nav Bar icons
   static const home = 'assets/images/icons/home.png';
   static const order = 'assets/images/icons/myOrder.png';
