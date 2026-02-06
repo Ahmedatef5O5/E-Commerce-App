@@ -1,8 +1,7 @@
-import 'package:ecommerce_app/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import '../models/product_item_model.dart';
 import '../widgets/header_home_section.dart';
+import '../widgets/product_grid_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -23,19 +22,7 @@ class HomeView extends StatelessWidget {
                 child: HeaderHomeSection(),
               ),
               Gap(12),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 1,
-                  crossAxisSpacing: 1,
-                  childAspectRatio: 0.8,
-                ),
-                itemCount: dummyProducts.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    ProductItem(productItem: dummyProducts[index]),
-              ),
+              ProductGridView(),
             ],
           ),
         ),
