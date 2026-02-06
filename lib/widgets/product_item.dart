@@ -30,7 +30,8 @@ class ProductItem extends StatelessWidget {
                     width: 150,
                     fit: BoxFit.contain,
                     placeholder: (context, url) => const Center(
-                      child: CircularProgressIndicator.adaptive(),
+                      // child: CircularProgressIndicator.adaptive(),
+                      child: CupertinoActivityIndicator(color: Colors.black12),
                     ),
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error, color: Colors.red),
