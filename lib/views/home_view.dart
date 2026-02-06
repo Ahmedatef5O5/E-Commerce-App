@@ -24,7 +24,7 @@ class HomeView extends StatelessWidget {
               ),
               Gap(12),
               HomeCarouselSlider(),
-              Gap(12),
+              Gap(16),
               ProductGridView(),
             ],
           ),

@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/models/carousel_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:gap/gap.dart';
@@ -22,8 +23,14 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
             // margin: EdgeInsetsDirectional.only(end: 4, start: 4),
             width: 365,
             decoration: BoxDecoration(
-              color: Colors.amber,
-              borderRadius: BorderRadius.circular(24),
+              // color: Colors.amber,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(18),
+              child: Image.asset(
+                homeCarouselSlideItem[index].imgPath,
+                fit: BoxFit.cover,
+              ),
             ),
           )),
           options: FlutterCarouselOptions(
