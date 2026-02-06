@@ -12,6 +12,16 @@ class EcommerceApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        // primaryColor: const Color(0xFFFE724C),
+        // secondaryHeaderColor: const Color(0xFFFE724C).withOpacity(0.5),
+        scaffoldBackgroundColor: Colors.white,
+        textTheme: const TextTheme(
+          labelLarge: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          titleSmall: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+          bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+        ),
+      ),
       home: CustomButtomNavbar(),
     );
   }
