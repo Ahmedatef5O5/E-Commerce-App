@@ -9,6 +9,7 @@ environment:
   sdk: ^3.9.2
 
 dependencies:
+  cached_network_image: ^3.4.1
   carousel_slider: ^5.1.2
   cupertino_icons: ^1.0.8
   flutter:

@@ -15,12 +15,11 @@ class HomeView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                child: HeaderHomeSection(),
+              HeaderHomeSection(),
+              Gap(12),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [Text('Home'), Text('Category')],
               ),
               Gap(12),
               HomeCarouselSlider(),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/models/carousel_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
@@ -31,6 +32,13 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
                 homeCarouselSlideItem[index].imgPath,
                 fit: BoxFit.cover,
               ),
+
+              // CachedNetworkImage(
+              //   imageUrl: homeCarouselSlideItem[index].imgPath,
+              //   fit: BoxFit.cover,
+              //   placeholder: (context, url) =>
+              //       const Center(child: CircularProgressIndicator.adaptive()),
+              // ),
             ),
           )),
           options: FlutterCarouselOptions(
@@ -51,7 +59,7 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
         Gap(8),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(3, (index) {
+          children: List.generate(homeCarouselSlideItem.length, (index) {
             final isActive = index == _currentIndex;
             return AnimatedContainer(
               duration: Duration(milliseconds: 300),

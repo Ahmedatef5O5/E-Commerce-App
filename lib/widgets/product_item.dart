@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
@@ -23,11 +24,16 @@ class ProductItem extends StatelessWidget {
               child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
-                  child: Image.network(
-                    productItem.imgUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: productItem.imgUrl,
                     height: 180,
                     width: 150,
                     fit: BoxFit.contain,
+                    placeholder: (context, url) => const Center(
+                      child: CircularProgressIndicator.adaptive(),
+                    ),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error, color: Colors.red),
                   ),
                 ),
               ),
