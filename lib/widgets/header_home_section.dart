@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-
 import '../utilities/app_images.dart';
 
 class HeaderHomeSection extends StatelessWidget {

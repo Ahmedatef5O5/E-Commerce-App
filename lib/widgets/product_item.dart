@@ -10,45 +10,48 @@ class ProductItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          height: 170,
-          width: 150,
-          decoration: BoxDecoration(
-            color: CupertinoColors.systemGrey5,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Stack(
-            children: [
-              Center(
+        Stack(
+          children: [
+            Container(
+              padding: EdgeInsets.zero,
+              height: 180,
+              width: 190,
+              decoration: BoxDecoration(
+                color: CupertinoColors.systemGrey5,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Image.network(
                     productItem.imgUrl,
-                    height: 160,
-                    width: 120,
+                    height: 180,
+                    width: 150,
                     fit: BoxFit.contain,
                   ),
                 ),
               ),
-              Positioned(
-                top: 3,
-                right: 6,
-                child: Opacity(
-                  opacity: 0.6,
-                  child: CircleAvatar(
-                    radius: 18,
-                    backgroundColor: Colors.grey[600],
-                    child: Icon(
-                      CupertinoIcons.heart,
-                      color: Colors.white,
-                      size: 24,
-                    ),
+            ),
+
+            Positioned(
+              top: 4,
+              right: 6,
+              child: Opacity(
+                opacity: 0.6,
+                child: CircleAvatar(
+                  radius: 18,
+                  backgroundColor: Colors.grey[600],
+                  child: Icon(
+                    CupertinoIcons.heart,
+                    color: Colors.white,
+                    size: 24,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+
         Gap(2),
         Text(
           productItem.name,
@@ -58,23 +61,23 @@ class ProductItem extends StatelessWidget {
             fontSize: 15,
           ),
         ),
-        // Gap(4),
+        Gap(2),
         Text(
           productItem.category,
           // maxLines: 1,
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
             color: Colors.black26,
-            fontSize: 12,
+            fontSize: 13,
             fontWeight: FontWeight.bold,
           ),
         ),
-        // Gap(4),
+        Gap(2),
         Text(
           "\$${productItem.price}",
           style: Theme.of(context).textTheme.labelSmall!.copyWith(
             color: Colors.black,
             fontWeight: FontWeight.w800,
-            fontSize: 14,
+            fontSize: 15,
           ),
         ),
       ],
