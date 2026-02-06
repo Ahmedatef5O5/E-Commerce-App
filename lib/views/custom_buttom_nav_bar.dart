@@ -97,7 +97,8 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
       screenTransitionAnimation: ScreenTransitionAnimation(),
       // backgroundColor: Colors.white,
       // handleAndroidBackButtonPress: true,
-      // resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset:
+          true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
       //  stateManagement: true,
       // hideNavigationBar: true,
     );
