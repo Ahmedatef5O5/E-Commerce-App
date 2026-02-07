@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Home_cubit/home_cubit.dart';
+import 'package:ecommerce_app/models/product_details_args_model.dart';
 import 'package:ecommerce_app/widgets/product_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -68,10 +69,14 @@ class ProductGridView extends StatelessWidget {
                               true, // Useful for pushing contents above all subsequent instances of [Navigator].
                         ).pushNamed(
                           AppRoutes.productDetailsRoute,
-                          arguments: {
-                            'id': state.productItems[index].id,
-                            'product': state.productItems[index],
-                          },
+                          arguments: ProductDetailsArgsModel(
+                            id: state.productItems[index].id,
+                            //  productItemModel: state.productItems[index],
+                          ),
+                          // arguments: {
+                          //   'id': state.productItems[index].id,
+                          //   'product': state.productItems[index],
+                          // }, // passing arguments as Map
                         ),
                     child: ProductItem(productItem: state.productItems[index]),
                   ),

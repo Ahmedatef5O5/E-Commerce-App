@@ -1,8 +1,10 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
+import 'package:ecommerce_app/cubit/Product_details_cubit/product_details_cubit.dart';
 import 'package:ecommerce_app/models/product_details_args_model.dart';
 import 'package:ecommerce_app/views/custom_buttom_nav_bar.dart';
 import 'package:ecommerce_app/views/product_details_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
@@ -21,7 +23,14 @@ class AppRouter {
         // final id = ProductDetailsArgsModel(id: args.id);
         return MaterialPageRoute(
           settings: settings, // helping for any passed parameters
-          builder: (_) => ProductDetailsView(productId: args.id),
+          builder: (_) => BlocProvider(
+            create: (context) {
+              final cubit = ProductDetailsCubit();
+              cubit.getProductDetails(args.id);
+              return cubit;
+            },
+            child: ProductDetailsView(productId: args.id),
+          ),
         );
 
       default:
