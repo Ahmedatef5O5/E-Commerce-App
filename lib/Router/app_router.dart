@@ -13,9 +13,12 @@ class AppRouter {
         );
 
       case AppRoutes.productDetailsRoute:
+        final args = settings.arguments as Map;
+        // final ProductItemModel product = args['product'];
+        final String id = args['id'];
         return MaterialPageRoute(
           settings: settings, // helping for any passed parameters
-          builder: (_) => ProductDetailsView(),
+          builder: (_) => ProductDetailsView(productId: id),
         );
 
       default:
