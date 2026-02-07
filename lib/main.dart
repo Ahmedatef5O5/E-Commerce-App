@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/Router/app_router.dart';
 import 'package:ecommerce_app/views/custom_buttom_nav_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -23,6 +24,7 @@ class EcommerceApp extends StatelessWidget {
         ),
       ),
       home: CustomButtomNavbar(),
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }

@@ -1,4 +1,6 @@
+import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Home_cubit/home_cubit.dart';
+import 'package:ecommerce_app/views/product_details_view.dart';
 import 'package:ecommerce_app/widgets/product_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,8 +61,13 @@ class ProductGridView extends StatelessWidget {
                     childAspectRatio: 0.8,
                   ),
                   itemCount: state.productItems.length,
-                  itemBuilder: (BuildContext context, int index) =>
-                      ProductItem(productItem: state.productItems[index]),
+                  itemBuilder: (BuildContext context, int index) => InkWell(
+                    onTap: () => Navigator.of(
+                      context,
+                      rootNavigator: true,
+                    ).pushNamed(AppRoutes.productDetailsRoute),
+                    child: ProductItem(productItem: state.productItems[index]),
+                  ),
                 ),
               ),
             ],
