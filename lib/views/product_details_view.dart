@@ -25,7 +25,21 @@ class ProductDetailsView extends StatelessWidget {
           );
         } else if (state is ProductDetailsSuccessLoaded) {
           return Scaffold(
-            appBar: AppBar(),
+            appBar: AppBar(
+              leading: InkWell(
+                onTap: () => Navigator.pop(context),
+                child: Icon(CupertinoIcons.back, size: 28),
+              ),
+              actionsPadding: EdgeInsets.symmetric(horizontal: 16),
+              backgroundColor: Colors.white,
+              elevation: 0,
+              scrolledUnderElevation: 0,
+              shadowColor: Colors.transparent,
+              title: Text('Product Details', style: TextStyle(fontSize: 20)),
+              centerTitle: true,
+
+              actions: [Icon(CupertinoIcons.suit_heart)],
+            ),
 
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
