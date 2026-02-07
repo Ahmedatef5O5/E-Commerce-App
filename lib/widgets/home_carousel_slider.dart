@@ -5,15 +5,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_widget/flutter_carousel_widget.dart';
 import 'package:gap/gap.dart';
 
-class HomeCarouselSlider extends StatefulWidget {
+class HomeCarouselSlider extends StatelessWidget {
   const HomeCarouselSlider({super.key});
 
-  @override
-  State<HomeCarouselSlider> createState() => _HomeCarouselSliderState();
-}
-
-class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
-  int _currentIndex = 0;
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
@@ -62,9 +56,13 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
                   // slideIndicator: CircularWaveSlideIndicator(),
                   showIndicator: false,
                   enlargeCenterPage: true,
-                  onPageChanged: (index, reason) => setState(() {
-                    _currentIndex = index;
-                  }),
+                  onPageChanged: (intPage, reason) {
+                    context.read<HomeCubit>().changeCarouselIndex(intPage);
+                  },
+                  // onPageChanged: (index, reason) => BlocProvider.of<HomeCubit>(
+                  //   context,
+                  // ).changeCarouselIndex(index), /// another solution
+
                   // enlargeCenterPage: true,
                 ),
               ),
@@ -74,7 +72,7 @@ class _HomeCarouselSliderState extends State<HomeCarouselSlider> {
                 children: List.generate(state.homeCarouselSlideItem.length, (
                   index,
                 ) {
-                  final isActive = index == _currentIndex;
+                  final isActive = index == state.currentCarouselIndex;
                   return AnimatedContainer(
                     duration: Duration(milliseconds: 300),
                     margin: EdgeInsets.symmetric(horizontal: 4),
