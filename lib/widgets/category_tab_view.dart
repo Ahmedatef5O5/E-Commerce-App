@@ -9,12 +9,12 @@ class CategoryTabView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Gap(20),
+        Gap(15),
         Expanded(
           child: ListView.builder(
             itemCount: dummyCategories.length,
             itemBuilder: (context, index) => Padding(
-              padding: const EdgeInsets.only(bottom: 12, left: 14, right: 14),
+              padding: const EdgeInsets.only(bottom: 14, left: 14, right: 14),
               child: InkWell(
                 onTap: () {},
                 child: Container(
@@ -41,6 +41,7 @@ class CategoryTabView extends StatelessWidget {
             ),
           ),
         ),
+        // Gap(20),
       ],
     );
   }
