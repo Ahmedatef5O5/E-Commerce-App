@@ -13,10 +13,16 @@ class AppImages {
   static final String slider3 = 'assets/images/banners/Slider 3.png';
 
   // SVG category images
-  static final String accessories = 'assets/images/category/accessories.svg';
-  static final String clothes = 'assets/images/categories/clothing.svg';
-  static final String collection = 'assets/images/categories/collection.svg';
-  static final String shoes = 'assets/images/categories/shoes.svg';
+  // static final String accessories = 'assets/images/categories/Frame 33123.svg';
+  // static final String clothes = 'assets/images/categories/Frame 33149.svg';
+  // static final String collection = 'assets/images/categories/Frame 33148.svg';
+  // static final String shoes = 'assets/images/categories/Frame 33124.svg';
+
+  // Png category images
+  static final String accessories = 'assets/images/categories/accessories.png';
+  static final String clothes = 'assets/images/categories/clothing.png';
+  static final String collection = 'assets/images/categories/collection.png';
+  static final String shoes = 'assets/images/categories/shoes.png';
 
   // bottom nav Bar icons
   static const home = 'assets/images/icons/home.png';
