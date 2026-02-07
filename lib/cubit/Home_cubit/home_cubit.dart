@@ -7,6 +7,14 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
 
+  void changeCarouselIndex(int index) {
+    if (state is HomeSuccessLoaded) {
+      // final currentState = state as HomeSuccessLoaded;
+      // emit(currentState.copyWith(currentCarouselIndex: index));
+      emit((state as HomeSuccessLoaded).copyWith(currentCarouselIndex: index));
+    }
+  }
+
   void getHomeData() {
     emit(HomeLoading());
     Future.delayed(
