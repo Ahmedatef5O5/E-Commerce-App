@@ -40,4 +40,8 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     }
     emit(QuantityCounterLoaded(value: dummyProducts[selectedIndex].quantity));
   }
+
+  void selectSize(ProductSize size) {
+    emit(SelectedSizeState(size: size));
+  }
 }
