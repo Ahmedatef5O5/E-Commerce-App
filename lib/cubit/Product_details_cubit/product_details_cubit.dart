@@ -15,4 +15,27 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       emit(ProductDetailsSuccessLoaded(product: selectedProduct));
     });
   }
+
+  void incrementQuantity(String productId) {
+    final selectedIndex = dummyProducts.indexWhere(
+      (item) => item.id == productId,
+    );
+    // dummyProducts[selectedIndex].quantity + 1;
+    //// invalid as quantity is final use copyWith instead:
+    ///  The original object was not modified, but a new copy was made with an updated value.
+    dummyProducts[selectedIndex] = dummyProducts[selectedIndex].copyWith(
+      quantity: dummyProducts[selectedIndex].quantity + 1,
+    );
+    emit(QuantityCounterLoaded(value: dummyProducts[selectedIndex].quantity));
+  }
+
+  void decrementQuantity(String productId) {
+    final selectedIndex = dummyProducts.indexWhere(
+      (item) => item.id == productId,
+    );
+    dummyProducts[selectedIndex] = dummyProducts[selectedIndex].copyWith(
+      quantity: dummyProducts[selectedIndex].quantity - 1,
+    );
+    emit(QuantityCounterLoaded(value: dummyProducts[selectedIndex].quantity));
+  }
 }

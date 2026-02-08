@@ -12,6 +12,12 @@ final class ProductDetailsSuccessLoaded extends ProductDetailsState {
   ProductDetailsSuccessLoaded({required this.product});
 }
 
+final class QuantityCounterLoaded extends ProductDetailsState {
+  final int value;
+
+  QuantityCounterLoaded({required this.value});
+}
+
 final class ProductDetailsFailureLoaded extends ProductDetailsState {
   final String message;
 
