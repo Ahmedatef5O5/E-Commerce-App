@@ -19,8 +19,8 @@ class CustomBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
       initialChildSize: 0.4,
-      minChildSize: 0.2,
-      maxChildSize: 0.7,
+      minChildSize: 0.25,
+      maxChildSize: 0.68,
       expand: false,
       shouldCloseOnMinExtent: false,
       builder: (BuildContext context, ScrollController scrollController) =>
@@ -35,9 +35,9 @@ class CustomBottomSheet extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Gap(4),
+                Gap(14),
                 Divider(
-                  thickness: 6,
+                  thickness: 7,
                   color: AppColors.bgProductDetailsColor,
                   indent: 170,
                   endIndent: 170,
@@ -47,7 +47,7 @@ class CustomBottomSheet extends StatelessWidget {
                     right: Radius.circular(50),
                   ),
                 ),
-                Gap(4),
+                Gap(8),
                 Expanded(
                   child: ListView(
                     controller: scrollController,
