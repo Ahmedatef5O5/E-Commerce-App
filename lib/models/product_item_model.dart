@@ -8,6 +8,7 @@ class ProductItemModel {
   final bool isFavorite;
   final String category;
   final double averageRate;
+  final int quantity;
 
   ProductItemModel({
     required this.id,
@@ -19,6 +20,7 @@ class ProductItemModel {
     this.isFavorite = false,
     required this.category,
     this.averageRate = 4.5,
+    this.quantity = 1,
   });
 
   ProductItemModel copyWith({
@@ -30,6 +32,7 @@ class ProductItemModel {
     bool? isFavorite,
     String? category,
     double? averageRate,
+    int? quantity,
   }) {
     return ProductItemModel(
       id: id ?? this.id,
@@ -40,6 +43,7 @@ class ProductItemModel {
       isFavorite: isFavorite ?? this.isFavorite,
       category: category ?? this.category,
       averageRate: averageRate ?? this.averageRate,
+      quantity: quantity ?? this.quantity,
     );
   }
 }
