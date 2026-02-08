@@ -13,7 +13,8 @@ class ProductDetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
       bloc: BlocProvider.of<ProductDetailsCubit>(context),
-      buildWhen: (previous, current) => current is! QuantityCounterLoaded,
+      buildWhen: (previous, current) =>
+          current is! QuantityCounterLoaded && current is! SelectedSizeState,
       builder: (context, state) {
         if (state is ProductDetailsLoading) {
           return Scaffold(
@@ -70,6 +71,9 @@ class ProductDetailsView extends StatelessWidget {
                       averegeRate: state.product.averageRate.toString(),
                       quantity: state.product.quantity,
                       productId: state.product.id,
+                      productDescription: state.product.description,
+                      price: state.product.price,
+                      // productPrice: state.product.price.toString(),
                     ),
                   ),
                 ),
