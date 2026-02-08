@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/Router/app_router.dart';
 import 'package:ecommerce_app/views/custom_buttom_nav_bar.dart';
+import 'package:ecommerce_app/views/product_details_view.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -23,6 +24,7 @@ class EcommerceApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
+      // home: ProductDetailsView(productId: '3'),
       home: CustomButtomNavbar(),
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
