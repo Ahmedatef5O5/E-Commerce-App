@@ -1,12 +1,19 @@
-import 'package:ecommerce_app/widgets/product_counter.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ecommerce_app/widgets/custome_product_counter.dart';
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../cubit/Product_details_cubit/product_details_cubit.dart';
 
 class ProductDetailsHeader extends StatelessWidget {
-  const ProductDetailsHeader({super.key, required this.productName});
+  const ProductDetailsHeader({
+    super.key,
+    required this.productName,
+    required this.quantity,
+    required this.productId,
+  });
 
   final String productName;
+  final int quantity;
+  final String productId;
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +30,28 @@ class ProductDetailsHeader extends StatelessWidget {
                 fontWeight: FontWeight.w800,
               ),
             ),
-            ProductCounter(),
+            BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
+              bloc: BlocProvider.of<ProductDetailsCubit>(context),
+              buildWhen: (previos, current) =>
+                  current is QuantityCounterLoaded ||
+                  current is ProductDetailsSuccessLoaded,
+              builder: (context, state) {
+                if (state is QuantityCounterLoaded) {
+                  return CustomProductCounter(
+                    quantity: state.value,
+                    productId: productId,
+                  );
+                } else if (state is ProductDetailsSuccessLoaded) {
+                  return CustomProductCounter(
+                    quantity: state.product.quantity,
+                    productId: productId,
+                  );
+                } else {
+                  // return const CustomProductCounter(quantity: 0);
+                  return const SizedBox.shrink();
+                }
+              },
+            ),
           ],
         ),
       ],
