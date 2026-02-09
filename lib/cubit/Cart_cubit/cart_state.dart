@@ -10,7 +10,7 @@ final class CartLoading extends CartState {}
 
 final class CartLoaded extends CartState {
   final List<AddToCartModel> cartItems;
-  const CartLoaded(this.cartItems);
+  const CartLoaded({required this.cartItems});
 }
 
 final class QuantityCounterLoaded extends CartState {
