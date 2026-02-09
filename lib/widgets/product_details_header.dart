@@ -7,12 +7,10 @@ class ProductDetailsHeader extends StatelessWidget {
   const ProductDetailsHeader({
     super.key,
     required this.productName,
-    required this.quantity,
     required this.productId,
   });
 
   final String productName;
-  final int quantity;
   final String productId;
 
   @override
@@ -43,7 +41,7 @@ class ProductDetailsHeader extends StatelessWidget {
                   );
                 } else if (state is ProductDetailsSuccessLoaded) {
                   return CustomProductCounter(
-                    quantity: state.product.quantity,
+                    quantity: 1, // initail value for Quantity
                     productId: productId,
                   );
                 } else {

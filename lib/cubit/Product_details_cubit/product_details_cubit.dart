@@ -8,7 +8,7 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductDetailsCubit() : super(ProductDetailsInitial());
 
   late ProductSize size;
-  late int quantity;
+  int quantity = 1;
 
   void getProductDetails(String id) {
     emit(ProductDetailsLoading());
@@ -21,30 +21,15 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   }
 
   void incrementQuantity(String productId) {
-    final selectedIndex = dummyProducts.indexWhere(
-      (item) => item.id == productId,
-    );
-    // dummyProducts[selectedIndex].quantity + 1;
-    //// invalid as quantity is final use copyWith instead:
-    ///  The original object was not modified, but a new copy was made with an updated value.
-    dummyProducts[selectedIndex] = dummyProducts[selectedIndex].copyWith(
-      quantity: dummyProducts[selectedIndex].quantity + 1,
-    );
-    quantity = dummyProducts[selectedIndex].quantity;
-    emit(QuantityCounterLoaded(value: dummyProducts[selectedIndex].quantity));
+    quantity++;
+    emit(QuantityCounterLoaded(value: quantity));
   }
 
   void decrementQuantity(String productId) {
-    final selectedIndex = dummyProducts.indexWhere(
-      (item) => item.id == productId,
-    );
-    if (dummyProducts[selectedIndex].quantity > 1) {
-      dummyProducts[selectedIndex] = dummyProducts[selectedIndex].copyWith(
-        quantity: dummyProducts[selectedIndex].quantity - 1,
-      );
+    if (quantity > 1) {
+      quantity--;
     }
-    quantity = dummyProducts[selectedIndex].quantity;
-    emit(QuantityCounterLoaded(value: dummyProducts[selectedIndex].quantity));
+    emit(QuantityCounterLoaded(value: quantity));
   }
 
   void selectSize(ProductSize size) {

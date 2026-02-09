@@ -68,7 +68,6 @@ class CustomBottomSheet extends StatelessWidget {
                           children: [
                             ProductDetailsHeader(
                               productName: productName,
-                              quantity: quantity,
                               productId: productId,
                             ),
                             Gap(8),
