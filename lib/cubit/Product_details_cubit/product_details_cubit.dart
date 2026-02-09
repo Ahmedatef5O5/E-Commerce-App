@@ -44,7 +44,8 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     }
     emit(ProductAddingToCart());
     final AddToCartModel cartItem = AddToCartModel(
-      productId: productId,
+      id: DateTime.now().toIso8601String(),
+      product: dummyProducts.firstWhere((product) => product.id == productId),
       size: selectedSize!,
       quantity: quantity,
     );
