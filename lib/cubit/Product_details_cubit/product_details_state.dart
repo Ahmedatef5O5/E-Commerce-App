@@ -23,6 +23,14 @@ final class SelectedSizeState extends ProductDetailsState {
   SelectedSizeState({required this.size});
 }
 
+final class ProductAddingToCart extends ProductDetailsState {}
+
+final class ProductAddedToCart extends ProductDetailsState {
+  final String productId;
+
+  ProductAddedToCart({required this.productId});
+}
+
 final class ProductDetailsFailureLoaded extends ProductDetailsState {
   final String message;
 
