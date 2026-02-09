@@ -1,6 +1,9 @@
 import 'package:ecommerce_app/utilities/app_colors.dart';
+import 'package:ecommerce_app/widgets/add_to_cart_section.dart';
+import 'package:ecommerce_app/widgets/description_product_section.dart';
 import 'package:ecommerce_app/widgets/product_details_header.dart';
 import 'package:ecommerce_app/widgets/product_meta_rate.dart';
+import 'package:ecommerce_app/widgets/select_size_section.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -11,10 +14,13 @@ class CustomBottomSheet extends StatelessWidget {
     required this.averegeRate,
     required this.quantity,
     required this.productId,
+    required this.productDescription,
+    required this.price,
   });
   final String productName, averegeRate;
   final int quantity;
-  final String productId;
+  final String productId, productDescription;
+  final double price;
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -67,29 +73,22 @@ class CustomBottomSheet extends StatelessWidget {
                             ),
                             Gap(8),
                             ProductRateMeta(averegeRate: averegeRate),
-
-                            //
-                            Gap(70),
-                            Text('data'),
-                            Gap(70),
-                            Text('data'),
-                            Gap(70),
-                            Text('data'),
-                            Gap(70),
-                            Text('data'),
-                            Gap(70),
-                            Text('data'),
-                            Gap(70),
-                            Text('data'),
-                            Gap(70),
-                            Text('data'),
-                            Gap(70),
+                            Gap(14),
+                            SelectSizeSection(),
+                            Gap(18),
+                            DescriptionProductSection(
+                              productDescription: productDescription,
+                            ),
+                            Gap(10),
                           ],
                         ),
                       ),
                     ],
                   ),
                 ),
+                Gap(2),
+                AddToCartSection(price: price, productId: productId),
+                Gap(22),
               ],
             ),
           ),
