@@ -14,6 +14,7 @@ class AddToCartSection extends StatelessWidget {
   final String productId;
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<ProductDetailsCubit>(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18),
       child: Row(
@@ -41,7 +42,7 @@ class AddToCartSection extends StatelessWidget {
             ),
           ),
           BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-            bloc: BlocProvider.of<ProductDetailsCubit>(context),
+            bloc: cubit,
             buildWhen: (previous, current) =>
                 current is ProductAddingToCart || current is ProductAddedToCart,
             builder: (context, state) {
@@ -91,9 +92,15 @@ class AddToCartSection extends StatelessWidget {
                       // backgroundColor: AppColors.primaryColor,
                       foregroundColor: AppColors.whiteColor,
                     ),
-                    onPressed: () => BlocProvider.of<ProductDetailsCubit>(
-                      context,
-                    ).addToCart(productId),
+                    onPressed: () {
+                      if (cubit.selectedSize != null) {
+                        cubit.addToCart(productId);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Please select size')),
+                        );
+                      }
+                    },
                     label: Text(
                       'Add to Cart',
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(

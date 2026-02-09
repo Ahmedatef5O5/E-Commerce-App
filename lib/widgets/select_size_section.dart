@@ -3,13 +3,13 @@ import 'package:ecommerce_app/models/product_item_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-
 import '../utilities/app_colors.dart';
 
 class SelectSizeSection extends StatelessWidget {
   const SelectSizeSection({super.key});
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<ProductDetailsCubit>(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -22,7 +22,7 @@ class SelectSizeSection extends StatelessWidget {
         ),
         Gap(3),
         BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-          bloc: BlocProvider.of<ProductDetailsCubit>(context),
+          bloc: cubit,
           buildWhen: (previous, current) => current is SelectedSizeState,
           builder: (context, state) {
             return Row(
@@ -31,9 +31,7 @@ class SelectSizeSection extends StatelessWidget {
                     (size) => Padding(
                       padding: const EdgeInsets.only(top: 8, right: 8),
                       child: InkWell(
-                        onTap: () => BlocProvider.of<ProductDetailsCubit>(
-                          context,
-                        ).selectSize(size),
+                        onTap: () => cubit.selectSizeFunc(size),
                         child: Container(
                           width: 34,
                           height: 34,

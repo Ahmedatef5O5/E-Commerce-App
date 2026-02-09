@@ -7,7 +7,7 @@ part 'product_details_state.dart';
 class ProductDetailsCubit extends Cubit<ProductDetailsState> {
   ProductDetailsCubit() : super(ProductDetailsInitial());
 
-  late ProductSize size;
+  ProductSize? selectedSize;
   int quantity = 1;
 
   void getProductDetails(String id) {
@@ -32,16 +32,20 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     emit(QuantityCounterLoaded(value: quantity));
   }
 
-  void selectSize(ProductSize size) {
-    this.size = size;
+  void selectSizeFunc(ProductSize size) {
+    selectedSize = size;
     emit(SelectedSizeState(size: size));
   }
 
   void addToCart(String productId) {
+    if (selectedSize == null) {
+      emit(ProductDetailsFailureLoaded(message: 'Please select size'));
+      return;
+    }
     emit(ProductAddingToCart());
     final AddToCartModel cartItem = AddToCartModel(
       productId: productId,
-      size: size,
+      size: selectedSize!,
       quantity: quantity,
     );
     dummyCart.add(cartItem);

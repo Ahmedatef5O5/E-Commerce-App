@@ -11,8 +11,9 @@ class ProductDetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<ProductDetailsCubit>(context);
     return BlocBuilder<ProductDetailsCubit, ProductDetailsState>(
-      bloc: BlocProvider.of<ProductDetailsCubit>(context),
+      bloc: cubit,
       // buildWhen: (previous, current) =>current is! QuantityCounterLoaded && current is! SelectedSizeState && current is! ProductAddedToCart,
       buildWhen: (previous, current) =>
           current is ProductDetailsLoading ||
