@@ -77,16 +77,46 @@ class CartItem extends StatelessWidget {
                       height: 35,
                       width: 110,
                       child: CustomProductCounter(
-                        quantity: 1,
+                        quantity: cartProduct.quantity,
                         productId: cartProduct.id,
                       ),
                     ),
 
-                    Text(
-                      '\$${cartProduct.product.price}',
-                      style: Theme.of(context).textTheme.headlineMedium!
-                          .copyWith(fontWeight: FontWeight.w700, fontSize: 26),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          WidgetSpan(
+                            alignment: PlaceholderAlignment.bottom,
+                            child: Transform.translate(
+                              offset: const Offset(-2, -12),
+                              child: Text(
+                                '\$',
+                                style: Theme.of(context).textTheme.labelLarge!
+                                    .copyWith(
+                                      color: Theme.of(context).primaryColor,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 18,
+                                    ),
+                              ),
+                            ),
+                          ),
+                          TextSpan(
+                            text: '${cartProduct.product.price}',
+                            style: Theme.of(context).textTheme.headlineMedium!
+                                .copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 26,
+                                ),
+                          ),
+                        ],
+                      ),
                     ),
+
+                    // Text(
+                    //   '\$${cartProduct.product.price}',
+                    //   style: Theme.of(context).textTheme.headlineMedium!
+                    //       .copyWith(fontWeight: FontWeight.w700, fontSize: 26),
+                    // ),
                   ],
                 ),
               ],
