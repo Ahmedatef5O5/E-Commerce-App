@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/views/favorite_view.dart';
 import 'package:ecommerce_app/views/home_view.dart';
@@ -5,6 +6,7 @@ import 'package:ecommerce_app/views/order_view.dart';
 import 'package:ecommerce_app/views/profile_view.dart';
 import 'package:ecommerce_app/widgets/custom_nav_item.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class CustomButtomNavbar extends StatefulWidget {
@@ -23,7 +25,19 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
   }
 
   List<Widget> _screens(BuildContext context) {
-    return [HomeView(), OrderView(), FavoriteView(), ProfileView()];
+    return [
+      HomeView(),
+      BlocProvider(
+        create: (BuildContext context) {
+          final cubit = CartCubit();
+          cubit.getCartItem();
+          return cubit;
+        },
+        child: const OrderView(),
+      ),
+      FavoriteView(),
+      ProfileView(),
+    ];
   }
 
   List<ItemConfig> _navBarsItems() {
@@ -99,7 +113,8 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
       // handleAndroidBackButtonPress: true,
       resizeToAvoidBottomInset:
           true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-      //  stateManagement: true,
+      stateManagement:
+          false, // to re-build widgets by using cubit , default is true
       // hideNavigationBar: true,
     );
   }
