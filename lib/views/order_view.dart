@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
 import 'package:ecommerce_app/widgets/cart_item.dart';
+import 'package:ecommerce_app/widgets/empty_cart_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -36,7 +37,7 @@ class OrderView extends StatelessWidget {
           } else if (state is CartLoaded) {
             final cartItems = state.cartItems;
             return (cartItems.isEmpty)
-                ? Center(child: Text('No items in your cart!'))
+                ? EmptyCartState()
                 : SingleChildScrollView(
                     scrollDirection: Axis.vertical,
                     child: Column(
