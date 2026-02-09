@@ -15,6 +15,7 @@ class EcommerceApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        primaryColor: const Color(0xff514eb7),
         // primaryColor: const Color(0xFFFE724C),
         // secondaryHeaderColor: const Color(0xFFFE724C).withOpacity(0.5),
         scaffoldBackgroundColor: Colors.white,
