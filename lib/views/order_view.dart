@@ -4,6 +4,7 @@ import 'package:ecommerce_app/widgets/empty_cart_state.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 
 import '../widgets/check_out_section.dart';
 
@@ -27,39 +28,51 @@ class OrderView extends StatelessWidget {
           final cartItems = state.cartItems;
           return (cartItems.isEmpty)
               ? EmptyCartState()
-              : SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ListView.separated(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        // to avoid doble scrolling
-                        itemCount: state.cartItems.length,
-                        separatorBuilder: (context, index) => Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: Divider(
-                            color: Colors.grey.shade200,
-                            indent: 15,
-                            endIndent: 15,
+              : Stack(
+                  children: [
+                    Positioned.fill(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 260),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                // to avoid doble scrolling
+                                itemCount: state.cartItems.length,
+                                separatorBuilder: (context, index) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                  ),
+                                  child: Divider(
+                                    color: Colors.grey.shade200,
+                                    indent: 15,
+                                    endIndent: 15,
+                                  ),
+                                ),
+                                itemBuilder: (context, index) {
+                                  return CartItem(
+                                    cartItem: state.cartItems[index],
+                                  );
+                                },
+                              ),
+                              Gap(35),
+                            ],
                           ),
                         ),
-                        itemBuilder: (context, index) {
-                          return CartItem(cartItem: state.cartItems[index]);
-                        },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                        child: Divider(
-                          color: Colors.grey.shade200,
-                          indent: 15,
-                          endIndent: 15,
-                        ),
-                      ),
-                      CheckOutSection(),
-                    ],
-                  ),
+                    ),
+
+                    Positioned(
+                      left: 0,
+                      right: 0,
+                      bottom: 0,
+                      child: CheckOutSection(),
+                    ),
+                  ],
                 );
         } else if (state is CartFailure) {
           return Center(child: Text(state.message));

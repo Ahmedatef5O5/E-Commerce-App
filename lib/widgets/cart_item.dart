@@ -27,8 +27,8 @@ class CartItem extends StatelessWidget {
               padding: const EdgeInsets.all(2.0),
               child: CachedNetworkImage(
                 imageUrl: cartItem.product.imgUrl,
-                width: 90,
-                height: 100,
+                width: 65,
+                height: 82,
                 placeholder: (context, url) => Center(
                   child: Center(
                     child: CupertinoActivityIndicator(color: Colors.black12),
@@ -51,7 +51,7 @@ class CartItem extends StatelessWidget {
                     fontSize: 18,
                   ),
                 ),
-                Gap(8),
+                Gap(4),
                 Text.rich(
                   TextSpan(
                     text: 'Size:\t\t',
@@ -72,12 +72,12 @@ class CartItem extends StatelessWidget {
                     ],
                   ),
                 ),
-                Gap(10),
+                Gap(4),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      height: 34,
+                      height: 32,
                       // width: 128,
                       child: BlocBuilder<CartCubit, CartState>(
                         bloc: cubit,
@@ -139,12 +139,6 @@ class CartItem extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    // Text(
-                    //   '\$${cartProduct.product.price}',
-                    //   style: Theme.of(context).textTheme.headlineMedium!
-                    //       .copyWith(fontWeight: FontWeight.w700, fontSize: 26),
-                    // ),
                   ],
                 ),
               ],
