@@ -10,8 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
-import '../widgets/header_home_section.dart';
-
 class CustomButtomNavbar extends StatefulWidget {
   const CustomButtomNavbar({super.key});
 
@@ -29,20 +27,10 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
   }
 
   List<Widget> _screens(BuildContext context) {
-    return [
-      HomeView(),
-      BlocProvider(
-        create: (BuildContext context) {
-          final cubit = CartCubit();
-          cubit.getCartItem();
-          return cubit;
-        },
-        child: const OrderView(),
-      ),
-      FavoriteView(),
-      ProfileView(),
-    ];
+    return const [HomeView(), OrderView(), FavoriteView(), ProfileView()];
   }
+
+  late final allScreens = _screens(context);
 
   List<ItemConfig> _navBarsItems() {
     return [
@@ -82,22 +70,10 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
           // debugPrint("current index tab :$currentIndex");
         },
         tabs: [
-          PersistentTabConfig(
-            screen: _screens(context)[0],
-            item: _navBarsItems()[0],
-          ),
-          PersistentTabConfig(
-            screen: _screens(context)[1],
-            item: _navBarsItems()[1],
-          ),
-          PersistentTabConfig(
-            screen: _screens(context)[2],
-            item: _navBarsItems()[2],
-          ),
-          PersistentTabConfig(
-            screen: _screens(context)[3],
-            item: _navBarsItems()[3],
-          ),
+          PersistentTabConfig(screen: allScreens[0], item: _navBarsItems()[0]),
+          PersistentTabConfig(screen: allScreens[1], item: _navBarsItems()[1]),
+          PersistentTabConfig(screen: allScreens[2], item: _navBarsItems()[2]),
+          PersistentTabConfig(screen: allScreens[3], item: _navBarsItems()[3]),
         ],
         navBarBuilder: ((navBarConfig) => Style6BottomNavBar(
           navBarConfig: navBarConfig,
@@ -124,8 +100,9 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
         // handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset:
             true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-        stateManagement:
-            false, // to re-build widgets by using cubit , default is true
+        stateManagement: true,
+
+        // stateManagement: false ,  // to re-build widgets by using cubit , default is true
         // hideNavigationBar: true,
       ),
     );
