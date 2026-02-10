@@ -16,135 +16,295 @@ class CartItem extends StatelessWidget {
     final cubit = BlocProvider.of<CartCubit>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 8, right: 12, left: 14),
-      child: Row(
-        children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              color: AppColors.greyWithShade,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(2.0),
-              child: CachedNetworkImage(
-                imageUrl: cartItem.product.imgUrl,
-                width: 65,
-                height: 82,
-                placeholder: (context, url) => Center(
-                  child: Center(
-                    child: CupertinoActivityIndicator(color: Colors.black12),
-                  ),
-                ),
-                errorWidget: (context, url, error) =>
-                    Center(child: const Icon(Icons.error, color: Colors.red)),
-              ),
-            ),
-          ),
-          Gap(7),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      child: BlocBuilder<CartCubit, CartState>(
+        bloc: cubit,
+        buildWhen: (previous, current) =>
+            current is QuantityCounterLoaded &&
+            current.productId == cartItem.product.id,
+        builder: (context, state) {
+          if (state is QuantityCounterLoaded) {
+            return Row(
               children: [
-                Text(
-                  cartItem.product.name,
-                  style: Theme.of(context).textTheme.headlineSmall!.copyWith(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 18,
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: AppColors.greyWithShade,
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: CachedNetworkImage(
+                      imageUrl: cartItem.product.imgUrl,
+                      width: 65,
+                      height: 82,
+                      placeholder: (context, url) => Center(
+                        child: Center(
+                          child: CupertinoActivityIndicator(
+                            color: Colors.black12,
+                          ),
+                        ),
+                      ),
+                      errorWidget: (context, url, error) => Center(
+                        child: const Icon(Icons.error, color: Colors.red),
+                      ),
+                    ),
                   ),
                 ),
-                Gap(4),
-                Text.rich(
-                  TextSpan(
-                    text: 'Size:\t\t',
-                    style: Theme.of(context).textTheme.labelMedium!.copyWith(
-                      color: Colors.grey.shade600,
-                      fontWeight: FontWeight.w500,
-                    ),
+                Gap(7),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextSpan(
-                        text: cartItem.size.name,
-                        style: Theme.of(context).textTheme.labelMedium!
+                      Text(
+                        cartItem.product.name,
+                        style: Theme.of(context).textTheme.headlineSmall!
                             .copyWith(
-                              color: AppColors.blackColor,
-                              fontWeight: FontWeight.w800,
-                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 18,
                             ),
+                      ),
+                      Gap(4),
+                      Text.rich(
+                        TextSpan(
+                          text: 'Size:\t\t',
+                          style: Theme.of(context).textTheme.labelMedium!
+                              .copyWith(
+                                color: Colors.grey.shade600,
+                                fontWeight: FontWeight.w500,
+                              ),
+                          children: [
+                            TextSpan(
+                              text: cartItem.size.name,
+                              style: Theme.of(context).textTheme.labelMedium!
+                                  .copyWith(
+                                    color: AppColors.blackColor,
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 14,
+                                  ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Gap(4),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: 32,
+                            // width: 128,
+                            child: BlocBuilder<CartCubit, CartState>(
+                              bloc: cubit,
+                              buildWhen: (previous, current) =>
+                                  current is QuantityCounterLoaded &&
+                                  current.productId == cartItem.product.id,
+                              builder: (context, state) {
+                                if (state is QuantityCounterLoaded) {
+                                  return CustomProductCounter(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 2,
+                                      vertical: 2,
+                                    ),
+                                    quantity: state.value,
+                                    productId: cartItem.product.id,
+                                    cubit: cubit,
+                                  );
+                                }
+                                return CustomProductCounter(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 2,
+                                    vertical: 2,
+                                  ),
+                                  quantity: cartItem.quantity,
+                                  productId: cartItem.product.id,
+                                  cubit: cubit,
+                                  initialValue: cartItem.quantity,
+                                );
+                              },
+                            ),
+                          ),
+
+                          Text.rich(
+                            TextSpan(
+                              children: [
+                                WidgetSpan(
+                                  alignment: PlaceholderAlignment.bottom,
+                                  child: Transform.translate(
+                                    offset: const Offset(-2, -12),
+                                    child: Text(
+                                      '\$',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge!
+                                          .copyWith(
+                                            color: Theme.of(
+                                              context,
+                                            ).primaryColor,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 18,
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                                TextSpan(
+                                  // text: '${cartItem.product.price}',
+                                  text:
+                                      '${state.value * cartItem.product.price}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium!
+                                      .copyWith(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 26,
+                                      ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
-                Gap(4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      height: 32,
-                      // width: 128,
-                      child: BlocBuilder<CartCubit, CartState>(
-                        bloc: cubit,
-                        buildWhen: (previous, current) =>
-                            current is QuantityCounterLoaded &&
-                            current.productId == cartItem.product.id,
-                        builder: (context, state) {
-                          if (state is QuantityCounterLoaded) {
-                            return CustomProductCounter(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 2,
-                                vertical: 2,
-                              ),
-                              quantity: state.value,
-                              productId: cartItem.product.id,
-                              cubit: cubit,
-                            );
-                          }
-                          return CustomProductCounter(
-                            padding: EdgeInsets.symmetric(
-                              horizontal: 2,
-                              vertical: 2,
-                            ),
-                            quantity: cartItem.quantity,
-                            productId: cartItem.product.id,
-                            cubit: cubit,
-                            initialValue: cartItem.quantity,
-                          );
-                        },
+              ],
+            );
+          }
+          return Row(
+            children: [
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  color: AppColors.greyWithShade,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: CachedNetworkImage(
+                    imageUrl: cartItem.product.imgUrl,
+                    width: 65,
+                    height: 82,
+                    placeholder: (context, url) => Center(
+                      child: Center(
+                        child: CupertinoActivityIndicator(
+                          color: Colors.black12,
+                        ),
                       ),
                     ),
-
+                    errorWidget: (context, url, error) => Center(
+                      child: const Icon(Icons.error, color: Colors.red),
+                    ),
+                  ),
+                ),
+              ),
+              Gap(7),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      cartItem.product.name,
+                      style: Theme.of(context).textTheme.headlineSmall!
+                          .copyWith(fontWeight: FontWeight.w700, fontSize: 18),
+                    ),
+                    Gap(4),
                     Text.rich(
                       TextSpan(
-                        children: [
-                          WidgetSpan(
-                            alignment: PlaceholderAlignment.bottom,
-                            child: Transform.translate(
-                              offset: const Offset(-2, -12),
-                              child: Text(
-                                '\$',
-                                style: Theme.of(context).textTheme.labelLarge!
-                                    .copyWith(
-                                      color: Theme.of(context).primaryColor,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 18,
-                                    ),
-                              ),
+                        text: 'Size:\t\t',
+                        style: Theme.of(context).textTheme.labelMedium!
+                            .copyWith(
+                              color: Colors.grey.shade600,
+                              fontWeight: FontWeight.w500,
                             ),
-                          ),
+                        children: [
                           TextSpan(
-                            text: '${cartItem.product.price}',
-                            style: Theme.of(context).textTheme.headlineMedium!
+                            text: cartItem.size.name,
+                            style: Theme.of(context).textTheme.labelMedium!
                                 .copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 26,
+                                  color: AppColors.blackColor,
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 14,
                                 ),
                           ),
                         ],
                       ),
                     ),
+                    Gap(4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          height: 32,
+                          // width: 128,
+                          child: BlocBuilder<CartCubit, CartState>(
+                            bloc: cubit,
+                            buildWhen: (previous, current) =>
+                                current is QuantityCounterLoaded &&
+                                current.productId == cartItem.product.id,
+                            builder: (context, state) {
+                              if (state is QuantityCounterLoaded) {
+                                return CustomProductCounter(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 2,
+                                    vertical: 2,
+                                  ),
+                                  quantity: state.value,
+                                  productId: cartItem.product.id,
+                                  cubit: cubit,
+                                );
+                              }
+                              return CustomProductCounter(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 2,
+                                  vertical: 2,
+                                ),
+                                quantity: cartItem.quantity,
+                                productId: cartItem.product.id,
+                                cubit: cubit,
+                                initialValue: cartItem.quantity,
+                              );
+                            },
+                          ),
+                        ),
+
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              WidgetSpan(
+                                alignment: PlaceholderAlignment.bottom,
+                                child: Transform.translate(
+                                  offset: const Offset(-2, -12),
+                                  child: Text(
+                                    '\$',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelLarge!
+                                        .copyWith(
+                                          color: Theme.of(context).primaryColor,
+                                          fontWeight: FontWeight.w800,
+                                          fontSize: 18,
+                                        ),
+                                  ),
+                                ),
+                              ),
+                              TextSpan(
+                                // text: '${cartItem.product.price}',
+                                text: '${cartItem.totalPrice}',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headlineMedium!
+                                    .copyWith(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 26,
+                                    ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

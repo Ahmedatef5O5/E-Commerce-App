@@ -1,12 +1,12 @@
 import 'package:ecommerce_app/utilities/app_colors.dart';
-// import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:gap/gap.dart';
 
 class CheckOutSection extends StatelessWidget {
-  const CheckOutSection({super.key});
-
+  const CheckOutSection({super.key, required this.subtotal});
+  final double shipping = 6.00;
+  final double subtotal;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -80,9 +80,9 @@ class CheckOutSection extends StatelessWidget {
             //   ),
             // ),
             // const Gap(20),
-            const PriceRow(label: 'Subtotal', value: 93.00),
+            PriceRow(label: 'Subtotal', value: subtotal),
             const Gap(14),
-            const PriceRow(label: 'Shipping', value: 6.00),
+            PriceRow(label: 'Shipping', value: shipping),
             const Gap(18),
             Dash(
               length: constraints.maxWidth,
@@ -92,8 +92,7 @@ class CheckOutSection extends StatelessWidget {
               dashColor: AppColors.blueGreyWithShade,
             ),
             const Gap(18),
-
-            const PriceRow(label: 'Total amount', value: 99.00),
+            PriceRow(label: 'Total amount', value: subtotal + shipping),
             const Gap(18),
             ElevatedButton(
               onPressed: () {},
@@ -152,7 +151,7 @@ class PriceRow extends StatelessWidget {
                 ),
               ),
               TextSpan(
-                text: value.toString(),
+                text: value.toStringAsFixed(1),
                 style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                   fontWeight: FontWeight.w700,
                   fontSize: 21,

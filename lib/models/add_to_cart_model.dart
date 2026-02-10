@@ -26,6 +26,8 @@ class AddToCartModel {
       quantity: quantity ?? this.quantity,
     );
   }
+
+  double get totalPrice => product.price * quantity;
 }
 
 List<AddToCartModel> dummyCart = [];
