@@ -8,18 +8,24 @@ class CartCubit extends Cubit<CartState> {
 
   int quantity = 1;
 
+  double get _subtotal => dummyCart.fold<double>(
+    0,
+    (previousValue, item) => previousValue + item.product.price * item.quantity,
+  );
+
   void getCartItem() {
     emit(CartLoading());
+
     Future.delayed(Duration(seconds: 1), () {
       if (!isClosed) {
-        emit(CartLoaded(cartItems: dummyCart));
+        emit(CartLoaded(cartItems: dummyCart, subtotal: _subtotal));
       }
     });
   }
 
   void addProductToCart(AddToCartModel newItem) {
     dummyCart.add(newItem);
-    emit(CartLoaded(cartItems: List.from(dummyCart)));
+    emit(CartLoaded(cartItems: List.from(dummyCart), subtotal: _subtotal));
   }
 
   void incrementQuantity(String cartItemId, [int? initialValue]) {
@@ -27,7 +33,10 @@ class CartCubit extends Cubit<CartState> {
       quantity = initialValue;
     }
     quantity++;
+    final index = dummyCart.indexWhere((item) => item.product.id == cartItemId);
+    dummyCart[index] = dummyCart[index].copyWith(quantity: quantity);
     emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
+    emit(SubtotalUpdated(subtotal: _subtotal));
   }
 
   void decrementQuantity(String cartItemId, [int? initialValue]) {
@@ -36,6 +45,12 @@ class CartCubit extends Cubit<CartState> {
     }
     if (quantity > 1) {
       quantity--;
+      final index = dummyCart.indexWhere(
+        (item) => item.product.id == cartItemId,
+      );
+      dummyCart[index] = dummyCart[index].copyWith(quantity: quantity);
+      emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
+      emit(SubtotalUpdated(subtotal: _subtotal));
     }
     emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
   }
