@@ -70,7 +70,18 @@ class OrderView extends StatelessWidget {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      child: CheckOutSection(),
+                      child: BlocBuilder<CartCubit, CartState>(
+                        buildWhen: (previous, current) =>
+                            current is SubtotalUpdated,
+                        builder: (context, subtotalstate) {
+                          if (subtotalstate is SubtotalUpdated) {
+                            return CheckOutSection(
+                              subtotal: subtotalstate.subtotal,
+                            );
+                          }
+                          return CheckOutSection(subtotal: state.subtotal);
+                        },
+                      ),
                     ),
                   ],
                 );
