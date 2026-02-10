@@ -25,7 +25,7 @@ class EmptyCartState extends StatelessWidget {
             style: Theme.of(context).textTheme.titleMedium!.copyWith(
               color: Colors.grey.shade600,
               fontSize: 22,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),

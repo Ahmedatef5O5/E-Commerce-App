@@ -1,16 +1,19 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/models/add_to_cart_model.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
 import 'package:ecommerce_app/widgets/custome_product_counter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class CartItem extends StatelessWidget {
-  const CartItem({super.key, required this.cartProduct});
-  final AddToCartModel cartProduct;
+  const CartItem({super.key, required this.cartItem});
+  final AddToCartModel cartItem;
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<CartCubit>(context);
     return Padding(
       padding: const EdgeInsets.only(top: 8, right: 12, left: 14),
       child: Row(
@@ -23,7 +26,7 @@ class CartItem extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(2.0),
               child: CachedNetworkImage(
-                imageUrl: cartProduct.product.imgUrl,
+                imageUrl: cartItem.product.imgUrl,
                 width: 90,
                 height: 100,
                 placeholder: (context, url) => Center(
@@ -42,7 +45,7 @@ class CartItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  cartProduct.product.name,
+                  cartItem.product.name,
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(
                     fontWeight: FontWeight.w700,
                     fontSize: 18,
@@ -58,7 +61,7 @@ class CartItem extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: cartProduct.size.name,
+                        text: cartItem.size.name,
                         style: Theme.of(context).textTheme.labelMedium!
                             .copyWith(
                               color: AppColors.blackColor,
@@ -74,11 +77,37 @@ class CartItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     SizedBox(
-                      height: 35,
-                      width: 110,
-                      child: CustomProductCounter(
-                        quantity: cartProduct.quantity,
-                        productId: cartProduct.id,
+                      height: 34,
+                      // width: 128,
+                      child: BlocBuilder<CartCubit, CartState>(
+                        bloc: cubit,
+                        buildWhen: (previous, current) =>
+                            current is QuantityCounterLoaded &&
+                            current.productId == cartItem.product.id,
+                        builder: (context, state) {
+                          if (state is QuantityCounterLoaded) {
+                            return CustomProductCounter(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 2,
+                                vertical: 2,
+                              ),
+                              quantity: state.value,
+                              productId: cartItem.product.id,
+                              cubit: cubit,
+                            );
+                          }
+
+                          return CustomProductCounter(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 2,
+                              vertical: 2,
+                            ),
+                            quantity: cartItem.quantity,
+                            productId: cartItem.product.id,
+                            cubit: cubit,
+                            initialValue: cartItem.quantity,
+                          );
+                        },
                       ),
                     ),
 
@@ -101,7 +130,7 @@ class CartItem extends StatelessWidget {
                             ),
                           ),
                           TextSpan(
-                            text: '${cartProduct.product.price}',
+                            text: '${cartItem.product.price}',
                             style: Theme.of(context).textTheme.headlineMedium!
                                 .copyWith(
                                   fontWeight: FontWeight.w700,

@@ -15,7 +15,8 @@ final class CartLoaded extends CartState {
 
 final class QuantityCounterLoaded extends CartState {
   final int value;
-  QuantityCounterLoaded({required this.value});
+  final String productId;
+  QuantityCounterLoaded({required this.value, required this.productId});
 }
 
 final class CartFailure extends CartState {

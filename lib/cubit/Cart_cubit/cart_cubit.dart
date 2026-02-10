@@ -16,15 +16,21 @@ class CartCubit extends Cubit<CartState> {
     );
   }
 
-  void incrementQuantity(String productId) {
+  void incrementQuantity(String cartItemId, [int? initialValue]) {
+    if (initialValue != null) {
+      quantity = initialValue;
+    }
     quantity++;
-    emit(QuantityCounterLoaded(value: quantity));
+    emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
   }
 
-  void decrementQuantity(String productId) {
+  void decrementQuantity(String cartItemId, [int? initialValue]) {
+    if (initialValue != null) {
+      quantity = initialValue;
+    }
     if (quantity > 1) {
       quantity--;
     }
-    emit(QuantityCounterLoaded(value: quantity));
+    emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
   }
 }

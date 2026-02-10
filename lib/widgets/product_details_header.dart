@@ -15,6 +15,7 @@ class ProductDetailsHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<ProductDetailsCubit>(context);
     return Column(
       children: [
         Row(
@@ -36,11 +37,13 @@ class ProductDetailsHeader extends StatelessWidget {
               builder: (context, state) {
                 if (state is QuantityCounterLoaded) {
                   return CustomProductCounter(
+                    cubit: cubit,
                     quantity: state.value,
                     productId: productId,
                   );
                 } else if (state is ProductDetailsSuccessLoaded) {
                   return CustomProductCounter(
+                    cubit: cubit,
                     quantity: 1, // initail value for Quantity
                     productId: productId,
                   );

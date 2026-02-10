@@ -29,6 +29,10 @@ class OrderView extends StatelessWidget {
       ),
       body: BlocBuilder<CartCubit, CartState>(
         bloc: BlocProvider.of<CartCubit>(context),
+        buildWhen: (previous, current) =>
+            current is CartLoaded ||
+            current is CartLoading ||
+            current is CartFailure,
         builder: (context, state) {
           if (state is CartLoading) {
             return Center(
@@ -57,9 +61,7 @@ class OrderView extends StatelessWidget {
                             ),
                           ),
                           itemBuilder: (context, index) {
-                            return CartItem(
-                              cartProduct: state.cartItems[index],
-                            );
+                            return CartItem(cartItem: state.cartItems[index]);
                           },
                         ),
                         Padding(
