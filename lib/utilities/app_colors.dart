@@ -7,5 +7,6 @@ class AppColors {
   static final Color bgProductDetailsColor = Color(0xffe8e1e9);
   static const Color whiteColor = Colors.white;
   static const Color blackColor = Colors.black;
+  static Color blueGreyWithShade = Colors.blueGrey.shade500;
   static Color greyWithShade = Colors.grey.shade300;
 }
