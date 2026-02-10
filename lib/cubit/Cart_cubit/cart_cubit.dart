@@ -10,10 +10,11 @@ class CartCubit extends Cubit<CartState> {
 
   void getCartItem() async {
     emit(CartLoading());
-    Future.delayed(
-      Duration(seconds: 1),
-      () => emit(CartLoaded(cartItems: dummyCart)),
-    );
+    Future.delayed(Duration(seconds: 1), () {
+      if (!isClosed) {
+        emit(CartLoaded(cartItems: dummyCart));
+      }
+    });
   }
 
   void incrementQuantity(String cartItemId, [int? initialValue]) {
