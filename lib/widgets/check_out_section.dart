@@ -1,4 +1,6 @@
+import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
+import 'package:ecommerce_app/widgets/price_row_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:gap/gap.dart';
@@ -95,7 +97,10 @@ class CheckOutSection extends StatelessWidget {
             PriceRow(label: 'Total amount', value: subtotal + shipping),
             const Gap(18),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () => Navigator.of(
+                context,
+                rootNavigator: true,
+              ).pushNamed(AppRoutes.checkoutViewRoute),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xff514eb7),
                 minimumSize: const Size(double.infinity, 55),
@@ -111,56 +116,6 @@ class CheckOutSection extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class PriceRow extends StatelessWidget {
-  const PriceRow({super.key, required this.label, required this.value});
-  final String label;
-  final double value;
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          label,
-          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-            color: Colors.grey.shade500,
-            fontWeight: FontWeight.w700,
-            fontSize: 16,
-          ),
-        ),
-
-        Text.rich(
-          TextSpan(
-            children: [
-              WidgetSpan(
-                alignment: PlaceholderAlignment.bottom,
-                child: Transform.translate(
-                  offset: const Offset(-1, -7),
-                  child: Text(
-                    '\$',
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 15,
-                    ),
-                  ),
-                ),
-              ),
-              TextSpan(
-                text: value.toStringAsFixed(1),
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 21,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }
