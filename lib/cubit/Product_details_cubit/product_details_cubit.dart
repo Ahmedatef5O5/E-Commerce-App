@@ -39,22 +39,23 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
     emit(SelectedSizeState(size: size));
   }
 
-  void addToCart(String productId) {
+  AddToCartModel? addToCart(String productId) {
     if (selectedSize == null) {
       emit(ProductDetailsFailureLoaded(message: 'Please select size'));
-      return;
+      return null;
     }
     emit(ProductAddingToCart());
+
     final AddToCartModel cartItem = AddToCartModel(
       id: DateTime.now().toIso8601String(),
       product: dummyProducts.firstWhere((product) => product.id == productId),
       size: selectedSize!,
       quantity: quantity,
     );
-    dummyCart.add(cartItem);
     Future.delayed(
       Duration(seconds: 2),
       () => emit(ProductAddedToCart(productId: productId)),
     );
+    return cartItem;
   }
 }
