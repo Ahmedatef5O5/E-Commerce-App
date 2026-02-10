@@ -1,8 +1,11 @@
+import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/cubit/Product_details_cubit/product_details_cubit.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../models/add_to_cart_model.dart';
 
 class AddToCartSection extends StatelessWidget {
   const AddToCartSection({
@@ -94,7 +97,10 @@ class AddToCartSection extends StatelessWidget {
                     ),
                     onPressed: () {
                       if (cubit.selectedSize != null) {
-                        cubit.addToCart(productId);
+                        final newItem = cubit.addToCart(productId);
+                        if (newItem != null) {
+                          context.read<CartCubit>().addProductToCart(newItem);
+                        }
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text('Please select size')),
