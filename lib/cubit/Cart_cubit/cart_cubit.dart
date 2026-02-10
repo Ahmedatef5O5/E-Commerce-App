@@ -17,6 +17,11 @@ class CartCubit extends Cubit<CartState> {
     });
   }
 
+  void addProductToCart(AddToCartModel newItem) {
+    dummyCart.add(newItem);
+    emit(CartLoaded(cartItems: List.from(dummyCart)));
+  }
+
   void incrementQuantity(String cartItemId, [int? initialValue]) {
     if (initialValue != null) {
       quantity = initialValue;
