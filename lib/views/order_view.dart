@@ -5,6 +5,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../widgets/check_out_section.dart';
+
 class OrderView extends StatelessWidget {
   const OrderView({super.key});
 
@@ -55,6 +57,7 @@ class OrderView extends StatelessWidget {
                           endIndent: 15,
                         ),
                       ),
+                      CheckOutSection(),
                     ],
                   ),
                 );

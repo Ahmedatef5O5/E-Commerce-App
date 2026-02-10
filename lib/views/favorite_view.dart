@@ -7,7 +7,7 @@ class FavoriteView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
-      children: [Center(child: Text("Favorite View"))],
+      children: [Center(child: Text('Favorite View'))],
     );
   }
 }

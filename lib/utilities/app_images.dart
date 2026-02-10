@@ -27,6 +27,9 @@ class AppImages {
   // empty cart icon
   static final String emptyCart = 'assets/images/icons/empty_cart.png';
 
+  //cart view
+  static final String promoCode = 'assets/images/icons/promo.png';
+
   // bottom nav Bar icons
   static const home = 'assets/images/icons/home.png';
   static const order = 'assets/images/icons/myOrder.png';

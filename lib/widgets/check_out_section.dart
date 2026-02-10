@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/utilities/app_colors.dart';
+import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:gap/gap.dart';
@@ -28,15 +29,58 @@ class CheckOutSection extends StatelessWidget {
         builder: (context, constraints) => Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              height: 38,
-              width: constraints.maxWidth,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: Colors.grey.shade300,
+            Divider(
+              thickness: 5,
+              color: Colors.black12,
+              indent: 140,
+              endIndent: 140,
+              // radius: BorderRadius.vertical(top: Radius.circular(50)),
+              radius: BorderRadius.horizontal(
+                left: Radius.circular(50),
+                right: Radius.circular(50),
               ),
             ),
             const Gap(20),
+            Container(
+              height: 46,
+              width: constraints.maxWidth,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.blueGrey.shade100, width: 1.2),
+                color: Colors.grey[200],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Gap(10),
+                    Image.asset(
+                      AppImages.promoCode,
+                      width: 22,
+                      height: 20,
+                      color: Colors.blueGrey.shade200,
+                    ),
+                    Gap(14),
+                    Text(
+                      'Enter your promo code',
+                      style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                        color: Colors.black26,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Spacer(),
+                    Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      color: Colors.black26,
+                    ),
+                    Gap(6),
+                  ],
+                ),
+              ),
+            ),
+            const Gap(20),
+
             const PriceRow(label: 'Subtotal', value: 93.00),
             const Gap(20),
             const PriceRow(label: 'Shipping', value: 6.00),
@@ -90,7 +134,34 @@ class PriceRow extends StatelessWidget {
             fontSize: 17,
           ),
         ),
-        Text(value.toString()),
+
+        Text.rich(
+          TextSpan(
+            children: [
+              WidgetSpan(
+                alignment: PlaceholderAlignment.bottom,
+                child: Transform.translate(
+                  offset: const Offset(-1, -7),
+                  child: Text(
+                    '\$',
+                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+              TextSpan(
+                text: value.toString(),
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  fontWeight: FontWeight.w700,
+                  fontSize: 22,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

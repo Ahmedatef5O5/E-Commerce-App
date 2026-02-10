@@ -26,9 +26,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       shadowColor: Colors.transparent,
       leading: _leadingWidget(context),
       title: _titleWidget(),
-      titleSpacing: 24,
+      titleSpacing: 14,
       actions: _actionsWidget(),
-      actionsPadding: EdgeInsets.only(right: 22),
+      actionsPadding: EdgeInsets.only(right: 14),
     );
   }
 
