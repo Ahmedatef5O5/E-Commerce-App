@@ -96,7 +96,6 @@ class CartItem extends StatelessWidget {
                               cubit: cubit,
                             );
                           }
-
                           return CustomProductCounter(
                             padding: EdgeInsets.symmetric(
                               horizontal: 2,

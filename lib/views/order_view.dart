@@ -13,18 +13,18 @@ class OrderView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: InkWell(
-          onTap: () => Navigator.pop(context),
-          child: Icon(CupertinoIcons.back, size: 28),
-        ),
-        actionsPadding: EdgeInsets.symmetric(horizontal: 16),
+        // leading: InkWell(
+        //   onTap: () => Navigator.pop(context),
+        //   child: Icon(CupertinoIcons.back, size: 28),
+        // ),
+        actionsPadding: EdgeInsets.symmetric(horizontal: 24),
         backgroundColor: AppColors.whiteColor,
         elevation: 0,
         scrolledUnderElevation: 0,
         shadowColor: Colors.transparent,
-        title: Text('My Cart', style: TextStyle(fontSize: 20)),
-        centerTitle: true,
-
+        title: Text('My Cart', style: TextStyle(fontSize: 18)),
+        titleSpacing: 24,
+        // centerTitle: true,
         actions: [Icon(Icons.shopping_bag_outlined, size: 26)],
       ),
       body: BlocBuilder<CartCubit, CartState>(
