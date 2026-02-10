@@ -1,5 +1,5 @@
 import 'package:ecommerce_app/widgets/home_carousel_slider.dart';
-import 'package:ecommerce_app/widgets/product_grid_view.dart';
+import 'package:ecommerce_app/widgets/product_grid_view_sliver.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -8,10 +8,13 @@ class HomeTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [Gap(16), HomeCarouselSlider(), Gap(16), ProductGridView()],
-      ),
+    return CustomScrollView(
+      slivers: [
+        SliverToBoxAdapter(child: Gap(16)),
+        SliverToBoxAdapter(child: HomeCarouselSlider()),
+        SliverToBoxAdapter(child: Gap(16)),
+        ProductGridViewSliver(),
+      ],
     );
   }
 }
