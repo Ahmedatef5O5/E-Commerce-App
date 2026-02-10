@@ -4,10 +4,13 @@ import 'package:ecommerce_app/views/favorite_view.dart';
 import 'package:ecommerce_app/views/home_view.dart';
 import 'package:ecommerce_app/views/order_view.dart';
 import 'package:ecommerce_app/views/profile_view.dart';
+import 'package:ecommerce_app/widgets/custom_app_bar.dart';
 import 'package:ecommerce_app/widgets/custom_nav_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
+
+import '../widgets/header_home_section.dart';
 
 class CustomButtomNavbar extends StatefulWidget {
   const CustomButtomNavbar({super.key});
@@ -18,6 +21,7 @@ class CustomButtomNavbar extends StatefulWidget {
 
 class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
   late final PersistentTabController _controller;
+  int currentIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -67,55 +71,63 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      controller: _controller,
-
-      tabs: [
-        PersistentTabConfig(
-          screen: _screens(context)[0],
-          item: _navBarsItems()[0],
-        ),
-        PersistentTabConfig(
-          screen: _screens(context)[1],
-          item: _navBarsItems()[1],
-        ),
-        PersistentTabConfig(
-          screen: _screens(context)[2],
-          item: _navBarsItems()[2],
-        ),
-        PersistentTabConfig(
-          screen: _screens(context)[3],
-          item: _navBarsItems()[3],
-        ),
-      ],
-      navBarBuilder: ((navBarConfig) => Style6BottomNavBar(
-        navBarConfig: navBarConfig,
-        navBarDecoration: NavBarDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.shade300,
-              blurRadius: 4,
-              offset: Offset(0, -3),
+    return Scaffold(
+      appBar: CustomAppBar(currentTabIndex: currentIndex),
+      body: PersistentTabView(
+        controller: _controller,
+        onTabChanged: (index) {
+          setState(() {
+            currentIndex = index;
+          });
+          // debugPrint("current index tab :$currentIndex");
+        },
+        tabs: [
+          PersistentTabConfig(
+            screen: _screens(context)[0],
+            item: _navBarsItems()[0],
+          ),
+          PersistentTabConfig(
+            screen: _screens(context)[1],
+            item: _navBarsItems()[1],
+          ),
+          PersistentTabConfig(
+            screen: _screens(context)[2],
+            item: _navBarsItems()[2],
+          ),
+          PersistentTabConfig(
+            screen: _screens(context)[3],
+            item: _navBarsItems()[3],
+          ),
+        ],
+        navBarBuilder: ((navBarConfig) => Style6BottomNavBar(
+          navBarConfig: navBarConfig,
+          navBarDecoration: NavBarDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade300,
+                blurRadius: 4,
+                offset: Offset(0, -3),
+              ),
+            ],
+            border: Border(
+              top: BorderSide(color: Colors.grey.shade300, width: 0.8),
             ),
-          ],
-          border: Border(
-            top: BorderSide(color: Colors.grey.shade300, width: 0.8),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(22),
+              topRight: Radius.circular(22),
+            ),
           ),
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(22),
-            topRight: Radius.circular(22),
-          ),
-        ),
-      )),
-      screenTransitionAnimation: ScreenTransitionAnimation(),
-      // backgroundColor: Colors.white,
-      // handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset:
-          true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-      stateManagement:
-          false, // to re-build widgets by using cubit , default is true
-      // hideNavigationBar: true,
+        )),
+        screenTransitionAnimation: ScreenTransitionAnimation(),
+        // backgroundColor: Colors.white,
+        // handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset:
+            true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+        stateManagement:
+            false, // to re-build widgets by using cubit , default is true
+        // hideNavigationBar: true,
+      ),
     );
   }
 }

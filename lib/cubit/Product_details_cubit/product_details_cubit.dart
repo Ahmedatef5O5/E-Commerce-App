@@ -16,7 +16,9 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
       final selectedProduct = dummyProducts.firstWhere(
         (product) => product.id == id,
       );
-      emit(ProductDetailsSuccessLoaded(product: selectedProduct));
+      if (!isClosed) {
+        emit(ProductDetailsSuccessLoaded(product: selectedProduct));
+      }
     });
   }
 

@@ -8,7 +8,7 @@ class CartCubit extends Cubit<CartState> {
 
   int quantity = 1;
 
-  void getCartItem() async {
+  void getCartItem() {
     emit(CartLoading());
     Future.delayed(Duration(seconds: 1), () {
       if (!isClosed) {

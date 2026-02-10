@@ -17,14 +17,15 @@ class HomeCubit extends Cubit<HomeState> {
 
   void getHomeData() {
     emit(HomeLoading());
-    Future.delayed(
-      const Duration(seconds: 1),
-      () => emit(
-        HomeSuccessLoaded(
-          productItems: dummyProducts,
-          homeCarouselSlideItem: homeCarouselSlideItem,
-        ),
-      ),
-    );
+    Future.delayed(const Duration(seconds: 1), () {
+      if (!isClosed) {
+        emit(
+          HomeSuccessLoaded(
+            productItems: dummyProducts,
+            homeCarouselSlideItem: homeCarouselSlideItem,
+          ),
+        );
+      }
+    });
   }
 }
