@@ -36,6 +36,9 @@ class AppImages {
   static const expirtyDate = 'assets/images/icons/Expirty_date.png';
   static const holderCardName = 'assets/images/icons/holder_card_name.png';
 
+  //
+  static const masterCard = 'assets/images/icons/master_card.png';
+
   // bottom nav Bar icons
   static const home = 'assets/images/icons/home.png';
   static const order = 'assets/images/icons/myOrder.png';
