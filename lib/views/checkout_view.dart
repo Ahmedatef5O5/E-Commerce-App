@@ -58,52 +58,76 @@ class CheckoutView extends StatelessWidget {
                     ),
                   );
                 } else if (state is CheckoutLoaded) {
-                  return SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: SafeArea(
                       child: Column(
                         children: [
-                          CheckoutHeadline(title: 'Address', onTap: () {}),
-                          Gap(10),
-                          CustomAddContainer(title: 'Add Shiping address'),
-                          Gap(10),
-                          CheckoutHeadline(
-                            title: 'Products',
-                            onTap: null,
-                            numOfProducts: state.numOfProducts,
-                          ),
-                          Gap(10),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            // to avoid doble scrolling
-                            itemCount: state.cartItems.length,
-                            separatorBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 12),
-                              child: Divider(
-                                color: Colors.grey.shade200,
-                                indent: 15,
-                                endIndent: 15,
+                          Expanded(
+                            child: SingleChildScrollView(
+                              child: Column(
+                                children: [
+                                  CheckoutHeadline(
+                                    title: 'Address',
+                                    onTap: () {},
+                                  ),
+                                  Gap(10),
+                                  CustomAddContainer(
+                                    title: 'Add Shiping address',
+                                  ),
+                                  Gap(10),
+                                  CheckoutHeadline(
+                                    title: 'Products',
+                                    onTap: null,
+                                    numOfProducts: state.numOfProducts,
+                                  ),
+                                  Gap(10),
+                                  ListView.separated(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    // to avoid doble scrolling
+                                    itemCount: state.cartItems.length,
+                                    separatorBuilder: (context, index) =>
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                            vertical: 12,
+                                          ),
+                                          child: Divider(
+                                            color: Colors.grey.shade200,
+                                            indent: 15,
+                                            endIndent: 15,
+                                          ),
+                                        ),
+                                    itemBuilder: (context, index) {
+                                      return CartItem(
+                                        cartItem: state.cartItems[index],
+                                      );
+                                    },
+                                  ),
+                                  Gap(10),
+
+                                  CheckoutHeadline(
+                                    title: 'Payment Methods',
+                                    onTap: null,
+                                  ),
+                                  Gap(10),
+                                  CustomAddContainer(
+                                    title: 'Add Payment method',
+                                  ),
+                                  Gap(25),
+                                  Divider(color: Colors.grey.shade300),
+                                  Gap(45),
+                                ],
                               ),
                             ),
-                            itemBuilder: (context, index) {
-                              return CartItem(cartItem: state.cartItems[index]);
-                            },
                           ),
-                          Gap(10),
-
-                          CheckoutHeadline(
-                            title: 'Payment Methods',
-                            onTap: null,
-                          ),
-                          Gap(10),
-                          CustomAddContainer(title: 'Add Payment method'),
-                          Gap(25),
+                          Gap(5),
                           PriceRow(
                             label: 'Total Amount',
                             value: state.totalAmount,
                           ),
-                          Gap(25),
+                          Gap(20),
                           ElevatedButton(
                             onPressed: () {},
                             // onPressed: () => Navigator.of(
@@ -125,7 +149,7 @@ class CheckoutView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Gap(50),
+                          Gap(20),
                         ],
                       ),
                     ),
