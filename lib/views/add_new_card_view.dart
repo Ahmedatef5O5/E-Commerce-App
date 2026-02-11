@@ -21,131 +21,144 @@ class _AddNewCardViewState extends State<AddNewCardView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, size: 24),
-          onPressed: () {
-            Navigator.of(context).maybePop();
-          },
-        ),
-        centerTitle: true,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        backgroundColor: Colors.white,
-        title: Text(
-          'Add New Card',
-          style: Theme.of(context).textTheme.labelLarge!.copyWith(
-            fontWeight: FontWeight.w500,
-            fontSize: 20,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new, size: 24),
+            onPressed: () {
+              Navigator.of(context).maybePop();
+            },
+          ),
+          centerTitle: true,
+          elevation: 0,
+          scrolledUnderElevation: 0,
+          backgroundColor: Colors.white,
+          title: Text(
+            'Add New Card',
+            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
+            ),
           ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
-        child: SafeArea(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                LabelWithTextFieldNewCard(
-                  labelTxt: 'Card Number',
-                  controller: _cardNumberController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(16),
-                  ],
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(11.0),
-                    child: Image.asset(
-                      AppImages.cardNumber,
-                      width: 14,
-                      color: Colors.grey.shade700,
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: SafeArea(
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          LabelWithTextFieldNewCard(
+                            labelTxt: 'Card Number',
+                            controller: _cardNumberController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(16),
+                            ],
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(11.0),
+                              child: Image.asset(
+                                AppImages.cardNumber,
+                                width: 14,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                            hintTxt: 'Enter Card Number',
+                          ),
+                          Gap(15),
+                          LabelWithTextFieldNewCard(
+                            labelTxt: 'Card Holder Name',
+                            controller: _holderNameController,
+                            keyboardType: TextInputType.name,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                RegExp(r'[a-zA-Z\s]'),
+                              ),
+                            ],
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(7.0),
+                              child: Image.asset(
+                                AppImages.holderCardName,
+                                width: 14,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                            hintTxt: 'Enter Card holder name',
+                          ),
+                          Gap(15),
+                          LabelWithTextFieldNewCard(
+                            labelTxt: 'Expiry Date',
+                            controller: _expirtyDateController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(4), // MM YY
+                            ],
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(9.5),
+                              child: Image.asset(
+                                AppImages.expirtyDate,
+                                width: 12,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                            hintTxt: 'Enter expiry date\t\t\t\t\t\tMM/YY',
+                          ),
+                          Gap(15),
+                          LabelWithTextFieldNewCard(
+                            labelTxt: 'CVV',
+                            controller: _cvvCodeController,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                              LengthLimitingTextInputFormatter(3),
+                            ],
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.asset(
+                                AppImages.cvvCode,
+                                width: 14,
+                                color: Colors.grey.shade700,
+                              ),
+                            ),
+                            hintTxt: 'Enter cvv',
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  hintTxt: 'Enter Card Number',
-                ),
-                Gap(15),
-                LabelWithTextFieldNewCard(
-                  labelTxt: 'Card Holder Name',
-                  controller: _holderNameController,
-                  keyboardType: TextInputType.name,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z\s]')),
-                  ],
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(7.0),
-                    child: Image.asset(
-                      AppImages.holderCardName,
-                      width: 14,
-                      color: Colors.grey.shade700,
+                  Gap(20),
+                  ElevatedButton(
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Card added successfully')),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff514eb7),
+                      minimumSize: const Size(double.infinity, 55),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    child: const Text(
+                      'Add Card',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
                     ),
                   ),
-                  hintTxt: 'Enter Card holder name',
-                ),
-                Gap(15),
-                LabelWithTextFieldNewCard(
-                  labelTxt: 'Expiry Date',
-                  controller: _expirtyDateController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(4), // MM YY
-                  ],
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(9.5),
-                    child: Image.asset(
-                      AppImages.expirtyDate,
-                      width: 12,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                  hintTxt: 'Enter expiry date\t\t\t\t\t\tMM/YY',
-                ),
-                Gap(15),
-                LabelWithTextFieldNewCard(
-                  labelTxt: 'CVV',
-                  controller: _cvvCodeController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.digitsOnly,
-                    LengthLimitingTextInputFormatter(3),
-                  ],
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.asset(
-                      AppImages.cvvCode,
-                      width: 14,
-                      color: Colors.grey.shade700,
-                    ),
-                  ),
-                  hintTxt: 'Enter cvv',
-                ),
-                Spacer(),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Card added successfully')),
-                      );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff514eb7),
-                    minimumSize: const Size(double.infinity, 55),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                  ),
-                  child: const Text(
-                    'Add Card',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
-                Gap(10),
-              ],
+                  Gap(10),
+                ],
+              ),
             ),
           ),
         ),
