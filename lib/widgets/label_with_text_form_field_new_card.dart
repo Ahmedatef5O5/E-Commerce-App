@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/utilities/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
 class LabelWithTextFieldNewCard extends StatelessWidget {
@@ -9,10 +10,14 @@ class LabelWithTextFieldNewCard extends StatelessWidget {
     required this.hintTxt,
     this.prefixIcon,
     this.controller,
+    this.keyboardType,
+    this.inputFormatters,
   });
   final String labelTxt, hintTxt;
   final Widget? prefixIcon;
   final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -32,6 +37,8 @@ class LabelWithTextFieldNewCard extends StatelessWidget {
           controller: controller,
           validator: (value) =>
               value == null || value.isEmpty ? '$labelTxt Required' : null,
+          keyboardType: keyboardType,
+          inputFormatters: [],
           decoration: InputDecoration(
             fillColor: Colors.grey.shade200,
             filled: true,
