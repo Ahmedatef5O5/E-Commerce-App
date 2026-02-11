@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Checkout_cubit/checkout_cubit.dart';
 import 'package:ecommerce_app/widgets/cart_item.dart';
 import 'package:ecommerce_app/widgets/checkout_head_line.dart';
 import 'package:ecommerce_app/widgets/custom_add_container.dart';
+import 'package:ecommerce_app/widgets/payment_method_item.dart';
 import 'package:ecommerce_app/widgets/price_row_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -59,6 +62,7 @@ class CheckoutView extends StatelessWidget {
                     ),
                   );
                 } else if (state is CheckoutLoaded) {
+                  final chosenPaymentCard = state.chosenPaymentCard;
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: SafeArea(
@@ -113,12 +117,33 @@ class CheckoutView extends StatelessWidget {
                                     onTap: null,
                                   ),
                                   Gap(10),
-                                  CustomAddContainer(
-                                    onTap: () => Navigator.of(
-                                      context,
-                                    ).pushNamed(AppRoutes.addNewCardViewRoute),
-                                    title: 'Add Payment method',
-                                  ),
+
+                                  chosenPaymentCard == null
+                                      ? CustomAddContainer(
+                                          onTap: () => Navigator.of(context)
+                                              .pushNamed(
+                                                AppRoutes.addNewCardViewRoute,
+                                              )
+                                              .then(((_) {
+                                                // BlocProvider.of<CheckoutCubit>(context).getCartItems(); another sol (not safe)
+                                                if (context.mounted) {
+                                                  context
+                                                      .read<CheckoutCubit>()
+                                                      .getCartItems();
+                                                }
+                                              })),
+                                          title: 'Add Payment method',
+                                        )
+                                      : PaymentMethodItem(
+                                          paymentCardModel: chosenPaymentCard,
+                                        ),
+
+                                  // CustomAddContainer(
+                                  //   onTap: () => Navigator.of(
+                                  //     context,
+                                  //   ).pushNamed(AppRoutes.addNewCardViewRoute),
+                                  //   title: 'Add Payment method',
+                                  // ),
                                   Gap(25),
                                   Divider(color: Colors.grey.shade300),
                                   Gap(45),
