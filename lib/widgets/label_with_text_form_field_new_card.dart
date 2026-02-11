@@ -30,6 +30,8 @@ class LabelWithTextFieldNewCard extends StatelessWidget {
         Gap(12),
         TextFormField(
           controller: controller,
+          validator: (value) =>
+              value == null || value.isEmpty ? '$labelTxt Required' : null,
           decoration: InputDecoration(
             fillColor: Colors.grey.shade200,
             filled: true,
@@ -43,6 +45,10 @@ class LabelWithTextFieldNewCard extends StatelessWidget {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
               borderSide: BorderSide.none,
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.red),
             ),
           ),
         ),
