@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Product_details_cubit/product_details_cubit.dart';
 import 'package:ecommerce_app/models/product_details_args_model.dart';
+import 'package:ecommerce_app/views/add_new_card_view.dart';
 import 'package:ecommerce_app/views/checkout_view.dart';
 import 'package:ecommerce_app/views/custom_buttom_nav_bar.dart';
 import 'package:ecommerce_app/views/product_details_view.dart';
@@ -12,8 +13,8 @@ class AppRouter {
     switch (settings.name) {
       case AppRoutes.homeRoute:
         return MaterialPageRoute(
-          settings: settings, // helping for any passed parameters
           builder: (_) => const CustomButtomNavbar(),
+          settings: settings, // helping for any passed parameters
         );
 
       case AppRoutes.productDetailsRoute:
@@ -23,7 +24,6 @@ class AppRouter {
         // final ProductItemModel product = args['product'];
         // final id = ProductDetailsArgsModel(id: args.id);
         return MaterialPageRoute(
-          settings: settings, // helping for any passed parameters
           builder: (_) => BlocProvider(
             create: (context) {
               final cubit = ProductDetailsCubit();
@@ -32,6 +32,7 @@ class AppRouter {
             },
             child: ProductDetailsView(productId: args.id),
           ),
+          settings: settings, // helping for any passed parameters
         );
 
       case AppRoutes.checkoutViewRoute:
@@ -41,8 +42,14 @@ class AppRouter {
         // final id = ProductDetailsArgsModel(id: args.id);
 
         return MaterialPageRoute(
-          settings: settings, // helping for any passed parameters
           builder: (_) => CheckoutView(),
+          settings: settings, // helping for any passed parameters
+        );
+
+      case AppRoutes.addNewCardViewRoute:
+        return MaterialPageRoute(
+          builder: (_) => AddNewCardView(),
+          settings: settings,
         );
 
       default:

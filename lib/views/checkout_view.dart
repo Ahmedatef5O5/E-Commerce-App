@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Checkout_cubit/checkout_cubit.dart';
 import 'package:ecommerce_app/widgets/cart_item.dart';
 import 'package:ecommerce_app/widgets/checkout_head_line.dart';
@@ -113,6 +114,9 @@ class CheckoutView extends StatelessWidget {
                                   ),
                                   Gap(10),
                                   CustomAddContainer(
+                                    onTap: () => Navigator.of(
+                                      context,
+                                    ).pushNamed(AppRoutes.addNewCardViewRoute),
                                     title: 'Add Payment method',
                                   ),
                                   Gap(25),
