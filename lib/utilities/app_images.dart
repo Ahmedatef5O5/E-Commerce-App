@@ -27,8 +27,14 @@ class AppImages {
   // empty cart icon
   static final String emptyCart = 'assets/images/icons/empty_cart.png';
 
-  //cart view
+  // cart view
   static final String promoCode = 'assets/images/icons/promo.png';
+
+  // add new card icons
+  static const cardNumber = 'assets/images/icons/card_number.png';
+  static const cvvCode = 'assets/images/icons/cvv_code.png';
+  static const expirtyDate = 'assets/images/icons/Expirty_date.png';
+  static const holderCardName = 'assets/images/icons/holder_card_name.png';
 
   // bottom nav Bar icons
   static const home = 'assets/images/icons/home.png';
