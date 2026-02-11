@@ -19,8 +19,8 @@ class CheckoutHeadline extends StatelessWidget {
         Text(
           title,
           style: Theme.of(context).textTheme.labelLarge!.copyWith(
-            fontWeight: FontWeight.bold,
-            fontSize: 22,
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
           ),
         ),
 
@@ -28,8 +28,8 @@ class CheckoutHeadline extends StatelessWidget {
           Text(
             '($numOfProducts)',
             style: Theme.of(context).textTheme.labelLarge!.copyWith(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
+              fontWeight: FontWeight.w500,
+              fontSize: 20,
             ),
           ),
 
