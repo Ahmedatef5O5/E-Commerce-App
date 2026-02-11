@@ -1,8 +1,13 @@
+import 'package:ecommerce_app/cubit/Add_new_card_cubit/add_new_card_cubit.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/widgets/label_with_text_form_field_new_card.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+
+import '../utilities/app_colors.dart';
 
 class AddNewCardView extends StatefulWidget {
   const AddNewCardView({super.key});
@@ -21,6 +26,7 @@ class _AddNewCardViewState extends State<AddNewCardView> {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<AddNewCardCubit>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -136,25 +142,61 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                     ),
                   ),
                   Gap(20),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Card added successfully')),
-                        );
+                  BlocConsumer<AddNewCardCubit, AddNewCardState>(
+                    listener: (context, state) {
+                      if (state is AddNewCardSuccessLoaded) {
+                        Navigator.of(context).pop();
+                      } else if (state is AddNewCardFailure) {
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text(state.errMsg)));
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff514eb7),
-                      minimumSize: const Size(double.infinity, 55),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25),
-                      ),
-                    ),
-                    child: const Text(
-                      'Add Card',
-                      style: TextStyle(fontSize: 18, color: Colors.white),
-                    ),
+                    buildWhen: (previous, current) =>
+                        current is AddNewCardLoading ||
+                        current is AddNewCardSuccessLoaded ||
+                        current is AddNewCardFailure,
+                    bloc: cubit,
+                    builder: (context, state) {
+                      if (state is AddNewCardLoading) {
+                        return ElevatedButton(
+                          onPressed: null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.greyWithShade,
+                            minimumSize: const Size(double.infinity, 55),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                          child: CupertinoActivityIndicator(
+                            color: Colors.black12,
+                          ),
+                        );
+                      }
+                      return ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            cubit.addNewCard(
+                              _cardNumberController.text,
+                              _holderNameController.text,
+                              _expirtyDateController.text,
+                              _cvvCodeController.text,
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xff514eb7),
+                          minimumSize: const Size(double.infinity, 55),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                        ),
+                        child: const Text(
+                          'Add Card',
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                      );
+                    },
                   ),
                   Gap(10),
                 ],
