@@ -37,7 +37,12 @@ class AppImages {
   static const holderCardName = 'assets/images/icons/holder_card_name.png';
 
   //
+  // static const masterCard ='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MasterCard_Logo.svg/1200px-MasterCard_Logo.svg.png';
   static const masterCard = 'assets/images/icons/master_card.png';
+
+  static const visaCard = 'assets/images/icons/visa.png';
+  static const paypalCard = 'assets/images/icons/paypal.png';
+  static const additionalCards = 'assets/images/icons/additional-cards.png';
 
   // bottom nav Bar icons
   static const home = 'assets/images/icons/home.png';
