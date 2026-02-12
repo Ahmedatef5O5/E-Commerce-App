@@ -1,7 +1,9 @@
+import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/models/payment_card_model.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/widgets/payment_method_bottom_sheet.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PaymentMethodItem extends StatelessWidget {
   const PaymentMethodItem({super.key, this.paymentCardModel});
@@ -18,7 +20,14 @@ class PaymentMethodItem extends StatelessWidget {
         onTap: () {
           showModalBottomSheet(
             context: context,
-            builder: (_) => PaymentMethodBottomSheet(),
+            builder: (_) => BlocProvider(
+              create: (context) {
+                final cubit = PaymentMethodsCubit();
+                cubit.fetchPaymentMethods();
+                return cubit;
+              },
+              child: PaymentMethodBottomSheet(),
+            ),
           );
         },
         leading: CircleAvatar(
