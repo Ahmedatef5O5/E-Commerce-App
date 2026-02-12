@@ -1,10 +1,10 @@
 import 'package:ecommerce_app/models/payment_card_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'add_new_card_state.dart';
+part 'Payment_methods_state.dart';
 
-class AddNewCardCubit extends Cubit<AddNewCardState> {
-  AddNewCardCubit() : super(AddNewCardInitial());
+class PaymentMethodsCubit extends Cubit<PaymentMethodsState> {
+  PaymentMethodsCubit() : super(AddNewCardInitial());
 
   void addNewCard(
     String cardNumber,
@@ -23,6 +23,17 @@ class AddNewCardCubit extends Cubit<AddNewCardState> {
     Future.delayed(Duration(seconds: 1), () {
       dummyPaymentCards.add(newCard);
       emit(AddNewCardSuccessLoaded());
+    });
+  }
+
+  void fetchPaymentMethods() {
+    emit(PaymentMethodsFetching());
+    Future.delayed(Duration(seconds: 1), () {
+      if (dummyPaymentCards.isNotEmpty) {
+        emit(PaymentMethodsFetched(paymentCards: dummyPaymentCards));
+      } else {
+        emit(PaymentMethodsFetchError(errMsg: 'No payment methods found'));
+      }
     });
   }
 }

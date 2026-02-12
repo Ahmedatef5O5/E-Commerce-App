@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Checkout_cubit/checkout_cubit.dart';
 import 'package:ecommerce_app/widgets/cart_item.dart';

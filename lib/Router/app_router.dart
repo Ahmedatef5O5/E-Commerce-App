@@ -1,5 +1,5 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
-import 'package:ecommerce_app/cubit/Add_new_card_cubit/add_new_card_cubit.dart';
+import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/cubit/Product_details_cubit/product_details_cubit.dart';
 import 'package:ecommerce_app/models/product_details_args_model.dart';
 import 'package:ecommerce_app/views/add_new_card_view.dart';
@@ -51,7 +51,7 @@ class AppRouter {
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) {
-              final cubit = AddNewCardCubit();
+              final cubit = PaymentMethodsCubit();
               return cubit;
             },
             child: AddNewCardView(),

@@ -1,4 +1,4 @@
-import 'package:ecommerce_app/cubit/Add_new_card_cubit/add_new_card_cubit.dart';
+import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/widgets/label_with_text_form_field_new_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -26,7 +26,7 @@ class _AddNewCardViewState extends State<AddNewCardView> {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<AddNewCardCubit>(context);
+    final cubit = BlocProvider.of<PaymentMethodsCubit>(context);
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -142,7 +142,7 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                     ),
                   ),
                   Gap(20),
-                  BlocConsumer<AddNewCardCubit, AddNewCardState>(
+                  BlocConsumer<PaymentMethodsCubit, PaymentMethodsState>(
                     listener: (context, state) {
                       if (state is AddNewCardSuccessLoaded) {
                         Navigator.of(context).pop();
