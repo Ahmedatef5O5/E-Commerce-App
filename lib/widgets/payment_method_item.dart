@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/models/payment_card_model.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
+import 'package:ecommerce_app/widgets/payment_method_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 
 class PaymentMethodItem extends StatelessWidget {
@@ -14,6 +15,12 @@ class PaymentMethodItem extends StatelessWidget {
         color: Colors.white,
       ),
       child: ListTile(
+        onTap: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (_) => PaymentMethodBottomSheet(),
+          );
+        },
         leading: CircleAvatar(
           radius: 26,
           backgroundColor: Colors.grey.shade300,
