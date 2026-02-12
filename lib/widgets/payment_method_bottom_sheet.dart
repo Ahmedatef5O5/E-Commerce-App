@@ -1,10 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
+import 'package:ecommerce_app/models/payment_card_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+
+import '../utilities/app_images.dart';
 
 class PaymentMethodBottomSheet extends StatelessWidget {
   const PaymentMethodBottomSheet({super.key});
@@ -54,8 +57,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                         builder: (context, state) {
                           if (state is PaymentMethodsFetching) {
                             return SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 0.095,
+                              height: MediaQuery.of(context).size.height * 0.3,
                               child: Center(
                                 child: CupertinoActivityIndicator(
                                   color: Colors.black12,
@@ -67,47 +69,58 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                               shrinkWrap: true,
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: state.paymentCards.length,
-                              itemBuilder: (context, index) => Card(
-                                // color: Colors.amber,
-                                child: ListTile(
-                                  minVerticalPadding: 20,
-                                  leading: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.shade300,
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 8,
+                              itemBuilder: (context, index) {
+                                final card = state.paymentCards[index];
+                                return Card(
+                                  // color: Colors.amber,
+                                  child: ListTile(
+                                    minVerticalPadding: 20,
+                                    leading: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade300,
+                                        borderRadius: BorderRadius.circular(20),
                                       ),
-                                      child: CachedNetworkImage(
-                                        imageUrl:
-                                            'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MasterCard_Logo.svg/1200px-MasterCard_Logo.svg.png',
-                                        placeholder: (context, url) =>
-                                            CupertinoActivityIndicator(
-                                              color: Colors.black12,
-                                            ),
-                                        errorWidget: (context, url, error) =>
-                                            Icon(
-                                              Icons.error,
-                                              color: Colors.red,
-                                            ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 6,
+                                          vertical: 8,
+                                        ),
+                                        child: Image.asset(
+                                          card.cardType == CardType.visaCard
+                                              ? AppImages.visaCard
+                                              : card.cardType ==
+                                                    CardType.paypalCard
+                                              ? AppImages.paypalCard
+                                              : AppImages.masterCard,
+                                        ),
+                                        // CachedNetworkImage(
+                                        //   imageUrl:
+                                        //       'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/MasterCard_Logo.svg/1200px-MasterCard_Logo.svg.png',
+                                        //   placeholder: (context, url) =>
+                                        //       CupertinoActivityIndicator(
+                                        //         color: Colors.black12,
+                                        //       ),
+                                        //   errorWidget: (context, url, error) =>
+                                        //       Icon(
+                                        //         Icons.error,
+                                        //         color: Colors.red,
+                                        //       ),
 
-                                        width: 45,
-                                        height: 45,
-                                        fit: BoxFit.contain,
+                                        //   width: 45,
+                                        //   height: 45,
+                                        //   fit: BoxFit.contain,
+                                        // ),
                                       ),
                                     ),
+                                    title: Text(
+                                      state.paymentCards[index].cardNumber,
+                                    ),
+                                    subtitle: Text(
+                                      state.paymentCards[index].cardHolderName,
+                                    ),
                                   ),
-                                  title: Text(
-                                    state.paymentCards[index].cardNumber,
-                                  ),
-                                  subtitle: Text(
-                                    state.paymentCards[index].cardHolderName,
-                                  ),
-                                ),
-                              ),
+                                );
+                              },
                             );
                           } else if (state is PaymentMethodsFetchError) {
                             return SizedBox(
@@ -140,6 +153,11 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                                   fontWeight: FontWeight.w600,
                                   fontSize: 16,
                                 ),
+                          ),
+                          trailing: Image.asset(
+                            AppImages.additionalCards,
+                            width: 30,
+                            height: 30,
                           ),
                         ),
                       ),

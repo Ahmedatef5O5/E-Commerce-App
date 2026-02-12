@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
+import 'package:ecommerce_app/models/payment_card_model.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/widgets/label_with_text_form_field_new_card.dart';
 import 'package:flutter/cupertino.dart';
@@ -176,11 +177,15 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                       return ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
+                            final typeOfCard = cubit.getCardTypeFromNumber(
+                              _cardNumberController.text,
+                            );
                             cubit.addNewCard(
                               _cardNumberController.text,
                               _holderNameController.text,
                               _expirtyDateController.text,
                               _cvvCodeController.text,
+                              typeOfCard,
                             );
                           }
                         },

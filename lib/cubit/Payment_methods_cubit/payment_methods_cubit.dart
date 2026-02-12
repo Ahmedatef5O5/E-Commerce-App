@@ -11,6 +11,7 @@ class PaymentMethodsCubit extends Cubit<PaymentMethodsState> {
     String cardHolderName,
     String expirtyDate,
     String cvvCode,
+    CardType cardType,
   ) {
     emit(AddNewCardLoading());
     final newCard = PaymentCardModel(
@@ -19,11 +20,24 @@ class PaymentMethodsCubit extends Cubit<PaymentMethodsState> {
       cardHolderName: cardHolderName,
       expirtyDate: expirtyDate,
       cvv: cvvCode,
+      cardType: cardType,
     );
     Future.delayed(Duration(seconds: 1), () {
       dummyPaymentCards.add(newCard);
       emit(AddNewCardSuccessLoaded());
     });
+  }
+
+  CardType getCardTypeFromNumber(String cardNumber) {
+    if (cardNumber.startsWith('4')) {
+      return CardType.visaCard;
+    } else if (cardNumber.startsWith('5')) {
+      return CardType.masterCard;
+    } else if (cardNumber.startsWith('6')) {
+      return CardType.paypalCard;
+    } else {
+      throw Exception('Invalid card number');
+    }
   }
 
   void fetchPaymentMethods() {
