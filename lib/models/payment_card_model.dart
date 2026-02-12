@@ -2,7 +2,7 @@ enum CardType { masterCard, visaCard, paypalCard }
 
 class PaymentCardModel {
   final String id;
-  final String cardNumber;
+  final String _cardNumber;
   final String cardHolderName;
   final String expirtyDate;
   final String cvv;
@@ -10,12 +10,21 @@ class PaymentCardModel {
 
   PaymentCardModel({
     required this.id,
-    required this.cardNumber,
+    required String cardNumber,
     required this.cardHolderName,
     required this.expirtyDate,
     required this.cvv,
     required this.cardType,
-  });
+  }) : _cardNumber = cardNumber;
+
+  String get maskedNumber {
+    if (_cardNumber.length >= 4) {
+      String lastFourDigits = _cardNumber.substring(_cardNumber.length - 4);
+      return "**** **** **** $lastFourDigits";
+    } else {
+      return _cardNumber;
+    }
+  }
 }
 
 List<PaymentCardModel> dummyPaymentCards = [
@@ -30,7 +39,7 @@ List<PaymentCardModel> dummyPaymentCards = [
   PaymentCardModel(
     id: '2',
     cardNumber: '6578 5146 9806 5478',
-    cardHolderName: 'amgad safy',
+    cardHolderName: 'Mohamed atef',
     expirtyDate: '627',
     cvv: '836',
     cardType: CardType.paypalCard,
@@ -38,7 +47,7 @@ List<PaymentCardModel> dummyPaymentCards = [
   PaymentCardModel(
     id: '3',
     cardNumber: '4658 1214 3896 9403',
-    cardHolderName: 'Mohamed atef',
+    cardHolderName: 'Atef fathi',
     expirtyDate: '129',
     cvv: '319',
 

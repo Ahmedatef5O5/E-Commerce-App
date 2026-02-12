@@ -36,7 +36,8 @@ class PaymentMethodsCubit extends Cubit<PaymentMethodsState> {
     } else if (cardNumber.startsWith('6')) {
       return CardType.paypalCard;
     } else {
-      throw Exception('Invalid card number');
+      // throw Exception('Invalid card number'); make app stop (will handle it )
+      return CardType.masterCard; // default card
     }
   }
 

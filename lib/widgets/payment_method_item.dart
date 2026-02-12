@@ -48,7 +48,7 @@ class PaymentMethodItem extends StatelessWidget {
           ),
         ),
         subtitle: Text(
-          paymentCardModel?.cardNumber ?? '**** **** **** ****',
+          paymentCardModel?.maskedNumber ?? '**** **** **** ****',
           style: Theme.of(
             context,
           ).textTheme.labelMedium!.copyWith(color: Colors.black38),

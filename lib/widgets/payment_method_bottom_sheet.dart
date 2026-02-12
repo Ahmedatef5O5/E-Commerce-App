@@ -113,7 +113,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                                       ),
                                     ),
                                     title: Text(
-                                      state.paymentCards[index].cardNumber,
+                                      state.paymentCards[index].maskedNumber,
                                     ),
                                     subtitle: Text(
                                       state.paymentCards[index].cardHolderName,
