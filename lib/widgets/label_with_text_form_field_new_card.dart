@@ -38,7 +38,7 @@ class LabelWithTextFieldNewCard extends StatelessWidget {
           validator: (value) =>
               value == null || value.isEmpty ? '$labelTxt Required' : null,
           keyboardType: keyboardType,
-          inputFormatters: [],
+          inputFormatters: inputFormatters,
           decoration: InputDecoration(
             fillColor: Colors.grey.shade200,
             filled: true,

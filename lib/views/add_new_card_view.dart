@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
-import 'package:ecommerce_app/models/payment_card_model.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
+import 'package:ecommerce_app/utilities/custom_formatter.dart';
 import 'package:ecommerce_app/widgets/label_with_text_form_field_new_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -108,6 +108,7 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                               LengthLimitingTextInputFormatter(4), // MM YY
+                              CardMonthInputFormatter(), // add slash after first two digits ..
                             ],
                             prefixIcon: Padding(
                               padding: const EdgeInsets.all(9.5),
@@ -117,7 +118,8 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                                 color: Colors.grey.shade700,
                               ),
                             ),
-                            hintTxt: 'Enter expiry date\t\t\t\t\t\tMM/YY',
+
+                            hintTxt: 'MM/YY',
                           ),
                           Gap(15),
                           LabelWithTextFieldNewCard(
@@ -183,7 +185,10 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                             cubit.addNewCard(
                               _cardNumberController.text,
                               _holderNameController.text,
-                              _expirtyDateController.text,
+                              _expirtyDateController.text.replaceAll(
+                                '/',
+                                '',
+                              ), // remove splash before store Expirty date
                               _cvvCodeController.text,
                               typeOfCard,
                             );
