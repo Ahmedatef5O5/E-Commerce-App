@@ -18,14 +18,11 @@ class PaymentMethodItem extends StatelessWidget {
       ),
       child: ListTile(
         onTap: () {
+          final cubit = context.read<PaymentMethodsCubit>();
           showModalBottomSheet(
             context: context,
-            builder: (_) => BlocProvider(
-              create: (context) {
-                final cubit = PaymentMethodsCubit();
-                cubit.fetchPaymentMethods();
-                return cubit;
-              },
+            builder: (_) => BlocProvider.value(
+              value: cubit,
               child: PaymentMethodBottomSheet(),
             ),
           );

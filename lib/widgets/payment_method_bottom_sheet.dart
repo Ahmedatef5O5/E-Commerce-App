@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/models/payment_card_model.dart';
@@ -6,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-
 import '../utilities/app_images.dart';
 
 class PaymentMethodBottomSheet extends StatelessWidget {
@@ -14,7 +12,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    // final size = MediaQuery.of(context).size;
     final paymentMethodsCubit = BlocProvider.of<PaymentMethodsCubit>(context);
     return SizedBox(
       width: double.infinity,
@@ -135,9 +133,14 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                       Gap(4),
                       Card(
                         child: ListTile(
-                          onTap: () => Navigator.of(
-                            context,
-                          ).pushNamed(AppRoutes.addNewCardViewRoute),
+                          onTap: () async {
+                            final res = await Navigator.of(
+                              context,
+                            ).pushNamed(AppRoutes.addNewCardViewRoute);
+                            if (res == true) {
+                              paymentMethodsCubit.fetchPaymentMethods();
+                            }
+                          },
                           leading: CircleAvatar(
                             radius: 20,
                             backgroundColor: Colors.grey.shade300,

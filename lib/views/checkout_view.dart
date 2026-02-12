@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Checkout_cubit/checkout_cubit.dart';
+import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/widgets/cart_item.dart';
 import 'package:ecommerce_app/widgets/checkout_head_line.dart';
 import 'package:ecommerce_app/widgets/custom_add_container.dart';
@@ -15,13 +16,23 @@ class CheckoutView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) {
-        final cubit = CheckoutCubit();
-        cubit.getCartItems();
-        return cubit;
-      },
-
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) {
+            final cubit = CheckoutCubit();
+            cubit.getCartItems();
+            return cubit;
+          },
+        ),
+        BlocProvider(
+          create: (context) {
+            final cubit = PaymentMethodsCubit();
+            cubit.fetchPaymentMethods();
+            return cubit;
+          },
+        ),
+      ],
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(

@@ -148,7 +148,7 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                   BlocConsumer<PaymentMethodsCubit, PaymentMethodsState>(
                     listener: (context, state) {
                       if (state is AddNewCardSuccessLoaded) {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(true);
                       } else if (state is AddNewCardFailure) {
                         ScaffoldMessenger.of(
                           context,
