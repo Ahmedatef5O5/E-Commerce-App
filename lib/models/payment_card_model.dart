@@ -79,10 +79,19 @@ List<PaymentCardModel> dummyPaymentCards = [
   PaymentCardModel(
     id: '4',
     cardNumber: '5678 658 1214 3126 9466',
-    cardHolderName: 'Atef fathi',
+    cardHolderName: 'Youssef joo',
     expirtyDate: '0873',
     cvv: '891',
 
     cardType: CardType.masterCard,
+  ),
+  PaymentCardModel(
+    id: '5',
+    cardNumber: '6678 907 7432 3126 1254',
+    cardHolderName: 'Sam rami',
+    expirtyDate: '1030',
+    cvv: '671',
+
+    cardType: CardType.paypalCard,
   ),
 ];

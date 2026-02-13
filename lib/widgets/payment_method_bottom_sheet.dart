@@ -69,8 +69,8 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: state.paymentCards.length,
                               itemBuilder: (context, index) {
-                                final paymentCard = dummyPaymentCards[index];
-                                final card = state.paymentCards[index];
+                                // final paymentCard = dummyPaymentCards[index];
+                                final paymentCard = state.paymentCards[index];
                                 return Card(
                                   // color: Colors.amber,
                                   child: ListTile(
@@ -88,9 +88,10 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                                           vertical: 8,
                                         ),
                                         child: Image.asset(
-                                          card.cardType == CardType.visaCard
+                                          paymentCard.cardType ==
+                                                  CardType.visaCard
                                               ? AppImages.visaCard
-                                              : card.cardType ==
+                                              : paymentCard.cardType ==
                                                     CardType.paypalCard
                                               ? AppImages.paypalCard
                                               : AppImages.masterCard,
@@ -138,9 +139,11 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                                                 value: paymentCard.id,
                                                 groupValue:
                                                     chosenPaymentMethod.id,
-
                                                 onChanged: (id) =>
-                                                    paymentMethodsCubit,
+                                                    paymentMethodsCubit
+                                                        .changePaymentMethod(
+                                                          id!,
+                                                        ),
                                               );
                                             } else {
                                               return SizedBox.shrink();

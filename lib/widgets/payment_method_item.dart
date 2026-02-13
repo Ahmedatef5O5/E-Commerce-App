@@ -20,8 +20,10 @@ class PaymentMethodItem extends StatelessWidget {
       child: ListTile(
         onTap: () {
           final cubit = context.read<PaymentMethodsCubit>();
+          cubit.fetchPaymentMethods();
           showModalBottomSheet(
             context: context,
+            // isScrollControlled: true,
             builder: (_) => BlocProvider.value(
               value: cubit,
               child: PaymentMethodBottomSheet(),
@@ -34,14 +36,20 @@ class PaymentMethodItem extends StatelessWidget {
           radius: 26,
           backgroundColor: Colors.grey.shade300,
           child: Image.asset(
-            AppImages.masterCard,
-            width: 45,
-            height: 45,
+            paymentCardModel?.cardType.name == 'visaCard'
+                ? AppImages.visaCard
+                : paymentCardModel?.cardType.name == 'masterCard'
+                ? AppImages.masterCard
+                : AppImages.paypalCard,
+
+            // AppImages.masterCard,
+            width: 42,
+            height: 42,
             fit: BoxFit.contain,
           ),
         ),
         title: Text(
-          'Master Card',
+          paymentCardModel?.cardHolderName ?? 'Holder name',
           style: Theme.of(context).textTheme.labelLarge!.copyWith(
             fontWeight: FontWeight.w700,
             fontSize: 18,
