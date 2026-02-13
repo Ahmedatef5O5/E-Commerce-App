@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/models/payment_card_model.dart';
+import 'package:ecommerce_app/utilities/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -68,10 +69,13 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                               physics: NeverScrollableScrollPhysics(),
                               itemCount: state.paymentCards.length,
                               itemBuilder: (context, index) {
+                                final paymentCard = dummyPaymentCards[index];
                                 final card = state.paymentCards[index];
                                 return Card(
                                   // color: Colors.amber,
                                   child: ListTile(
+                                    onTap: () => paymentMethodsCubit
+                                        .changePaymentMethod(paymentCard.id),
                                     minVerticalPadding: 20,
                                     leading: DecoratedBox(
                                       decoration: BoxDecoration(
@@ -116,6 +120,33 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                                     subtitle: Text(
                                       state.paymentCards[index].cardHolderName,
                                     ),
+
+                                    trailing:
+                                        BlocBuilder<
+                                          PaymentMethodsCubit,
+                                          PaymentMethodsState
+                                        >(
+                                          bloc: paymentMethodsCubit,
+                                          buildWhen: (previous, current) =>
+                                              current is PaymentMethodChosen,
+
+                                          builder: (context, state) {
+                                            if (state is PaymentMethodChosen) {
+                                              final chosenPaymentMethod =
+                                                  state.chosenPayment;
+                                              return Radio<String>(
+                                                value: paymentCard.id,
+                                                groupValue:
+                                                    chosenPaymentMethod.id,
+
+                                                onChanged: (id) =>
+                                                    paymentMethodsCubit,
+                                              );
+                                            } else {
+                                              return SizedBox.shrink();
+                                            }
+                                          },
+                                        ),
                                   ),
                                 );
                               },
@@ -170,21 +201,49 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                 ),
               ),
               Gap(8),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
+              BlocConsumer<PaymentMethodsCubit, PaymentMethodsState>(
+                bloc: paymentMethodsCubit,
+                listener: (BuildContext context, PaymentMethodsState state) {
+                  if (state is ConfirmPaymentSuccessLoaded) {
+                    Navigator.of(context).pop();
+                  }
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xff514eb7),
-                  minimumSize: const Size(double.infinity, 55),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(25),
-                  ),
-                ),
-                child: const Text(
-                  'Confirm Payment',
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
+                buildWhen: (previous, current) =>
+                    current is ConfirmPaymentLoading ||
+                    current is ConfirmPaymentSuccessLoaded ||
+                    current is ConfirmPaymentFailure,
+                builder: (context, state) {
+                  if (state is ConfirmPaymentLoading) {
+                    return ElevatedButton(
+                      onPressed: null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.greyWithShade,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25),
+                        ),
+                      ),
+                      child: CupertinoActivityIndicator(color: Colors.black12),
+                    );
+                  }
+
+                  return ElevatedButton(
+                    onPressed: () {
+                      paymentMethodsCubit.confirmPaymentMethod();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xff514eb7),
+                      minimumSize: const Size(double.infinity, 55),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25),
+                      ),
+                    ),
+                    child: const Text(
+                      'Confirm Payment',
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  );
+                },
               ),
             ],
           ),

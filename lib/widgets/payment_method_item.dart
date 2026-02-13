@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/cubit/Checkout_cubit/checkout_cubit.dart';
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/models/payment_card_model.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
@@ -25,7 +26,9 @@ class PaymentMethodItem extends StatelessWidget {
               value: cubit,
               child: PaymentMethodBottomSheet(),
             ),
-          );
+          ).then((v) {
+            BlocProvider.of<CheckoutCubit>(context).getCartItems();
+          });
         },
         leading: CircleAvatar(
           radius: 26,

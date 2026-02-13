@@ -18,9 +18,9 @@ class CheckoutCubit extends Cubit<CheckoutState> {
       0,
       (prev, curr) => prev + curr.quantity,
     );
-    final PaymentCardModel? chosenPaymentCard = dummyPaymentCards.isNotEmpty
-        ? dummyPaymentCards.first
-        : null;
+    final  chosenPaymentCard = dummyPaymentCards.firstWhere((e)=> e.isChosen == true,
+     orElse: ()=> dummyPaymentCards.first);
+       
 
     emit(
       CheckoutLoaded(

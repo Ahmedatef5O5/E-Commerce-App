@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 enum CardType { masterCard, visaCard, paypalCard }
 
 class PaymentCardModel {
@@ -7,6 +8,7 @@ class PaymentCardModel {
   final String expirtyDate;
   final String cvv;
   final CardType cardType;
+  final bool isChosen;
 
   PaymentCardModel({
     required this.id,
@@ -15,6 +17,7 @@ class PaymentCardModel {
     required this.expirtyDate,
     required this.cvv,
     required this.cardType,
+    this.isChosen = false,
   }) : _cardNumber = cardNumber;
 
   String get maskedNumber {
@@ -24,6 +27,26 @@ class PaymentCardModel {
     } else {
       return _cardNumber;
     }
+  }
+
+  PaymentCardModel copyWith({
+    String? id,
+    String? cardNumber,
+    String? cardHolderName,
+    String? expirtyDate,
+    String? cvv,
+    CardType? cardType,
+    bool? isChosen,
+  }) {
+    return PaymentCardModel(
+      id: id ?? this.id,
+      cardNumber: cardNumber ?? _cardNumber,
+      cardHolderName: cardHolderName ?? this.cardHolderName,
+      expirtyDate: expirtyDate ?? this.expirtyDate,
+      cvv: cvv ?? this.cvv,
+      cardType: cardType ?? this.cardType,
+      isChosen: isChosen ?? this.isChosen,
+    );
   }
 }
 
@@ -52,5 +75,14 @@ List<PaymentCardModel> dummyPaymentCards = [
     cvv: '319',
 
     cardType: CardType.visaCard,
+  ),
+  PaymentCardModel(
+    id: '4',
+    cardNumber: '5678 658 1214 3126 9466',
+    cardHolderName: 'Atef fathi',
+    expirtyDate: '0873',
+    cvv: '891',
+
+    cardType: CardType.masterCard,
   ),
 ];
