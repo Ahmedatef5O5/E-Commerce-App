@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
+import '../utilities/app_colors.dart';
+
 class CheckoutView extends StatelessWidget {
   const CheckoutView({super.key});
 
@@ -48,9 +50,10 @@ class CheckoutView extends StatelessWidget {
           backgroundColor: Colors.white,
           title: Text(
             'Payment',
-            style: Theme.of(context).textTheme.labelLarge!.copyWith(
+            style: Theme.of(context).textTheme.labelMedium!.copyWith(
               fontWeight: FontWeight.w500,
-              fontSize: 20,
+              fontSize: 19,
+              color: AppColors.blackColor,
             ),
           ),
         ),
@@ -89,6 +92,9 @@ class CheckoutView extends StatelessWidget {
                                   Gap(10),
                                   CustomAddContainer(
                                     title: 'Add Shiping address',
+                                    onTap: () => Navigator.of(
+                                      context,
+                                    ).pushNamed(AppRoutes.locationViewRoute),
                                   ),
                                   Gap(10),
                                   CheckoutHeadline(

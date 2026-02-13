@@ -5,6 +5,7 @@ import 'package:ecommerce_app/models/product_details_args_model.dart';
 import 'package:ecommerce_app/views/add_new_card_view.dart';
 import 'package:ecommerce_app/views/checkout_view.dart';
 import 'package:ecommerce_app/views/custom_buttom_nav_bar.dart';
+import 'package:ecommerce_app/views/location_view.dart';
 import 'package:ecommerce_app/views/product_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,6 +47,8 @@ class AppRouter {
           builder: (_) => CheckoutView(),
           settings: settings, // helping for any passed parameters
         );
+      case AppRoutes.locationViewRoute:
+        return MaterialPageRoute(builder: (_) => const LocationView());
 
       case AppRoutes.addNewCardViewRoute:
         return MaterialPageRoute(
