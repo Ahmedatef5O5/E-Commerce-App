@@ -2,6 +2,7 @@ import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/models/payment_card_model.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
+import 'package:ecommerce_app/widgets/custom_elevated_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -116,10 +117,26 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                                       ),
                                     ),
                                     title: Text(
-                                      state.paymentCards[index].maskedNumber,
-                                    ),
-                                    subtitle: Text(
                                       state.paymentCards[index].cardHolderName,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge!
+                                          .copyWith(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 15,
+                                          ),
+                                    ),
+
+                                    subtitle: Text(
+                                      state.paymentCards[index].maskedNumber,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge!
+                                          .copyWith(
+                                            color: Colors.grey.shade400,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14,
+                                          ),
                                     ),
 
                                     trailing:
@@ -217,30 +234,28 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                     current is ConfirmPaymentFailure,
                 builder: (context, state) {
                   if (state is ConfirmPaymentLoading) {
-                    return ElevatedButton(
-                      onPressed: null,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.greyWithShade,
-                        minimumSize: const Size(double.infinity, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      child: CupertinoActivityIndicator(color: Colors.black12),
-                    );
-                  }
-
-                  return ElevatedButton(
-                    onPressed: () {
-                      paymentMethodsCubit.confirmPaymentMethod();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xff514eb7),
-                      minimumSize: const Size(double.infinity, 55),
+                    return CustomElevatedButton(
+                      height: 55,
+                      width: double.infinity,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(25),
                       ),
+                      onPressed: null,
+
+                      backgroundColor: AppColors.greyWithShade,
+                      child: CupertinoActivityIndicator(color: Colors.black12),
+                    );
+                  }
+                  return CustomElevatedButton(
+                    height: 55,
+                    width: double.infinity,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(25),
                     ),
+                    onPressed: () {
+                      paymentMethodsCubit.confirmPaymentMethod();
+                    },
+
                     child: const Text(
                       'Confirm Payment',
                       style: TextStyle(fontSize: 18, color: Colors.white),

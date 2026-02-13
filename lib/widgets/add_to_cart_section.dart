@@ -62,16 +62,15 @@ class AddToCartSection extends StatelessWidget {
                 return CustomElevatedButton(
                   width: 165,
                   height: 50,
-                  labelTxtbtn: 'Added to Cart',
                   backgroundColor: AppColors.greyWithShade,
                   foregroundColor: Colors.black26,
                   onPressed: null,
+                  child: Text('Added to Cart'),
                 );
               } else {
                 return CustomElevatedButton(
                   width: 172,
                   height: 50,
-                  labelTxtbtn: 'Add to Cart',
                   leadingIcon: Icon(
                     Icons.shopping_bag_outlined,
                     color: Colors.white,
@@ -89,6 +88,7 @@ class AddToCartSection extends StatelessWidget {
                       );
                     }
                   },
+                  child: Text('Add to Cart'),
                 );
               }
             },

@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton({
     super.key,
+
+    required this.child,
     this.labelTxtbtn,
-    this.child,
     this.onPressed,
     this.backgroundColor,
     this.foregroundColor,
@@ -13,15 +14,18 @@ class CustomElevatedButton extends StatelessWidget {
     this.width,
     this.height,
     this.style,
+    this.shape,
   });
 
-  final String? labelTxtbtn;
-  final Widget? child;
+  final Widget? labelTxtbtn;
+  final Widget child;
   final ButtonStyle? style;
+  final OutlinedBorder? shape;
   final Color? backgroundColor;
   final Color? foregroundColor;
   final Widget? leadingIcon;
   final double? width, height;
+
   final VoidCallback? onPressed;
 
   @override
@@ -33,28 +37,13 @@ class CustomElevatedButton extends StatelessWidget {
         style:
             style ??
             ElevatedButton.styleFrom(
+              shape: shape,
               backgroundColor:
                   backgroundColor ?? Theme.of(context).primaryColor,
               foregroundColor: foregroundColor ?? AppColors.whiteColor,
             ),
         onPressed: onPressed,
-        child:
-            child ??
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (leadingIcon != null) ...[
-                  leadingIcon!,
-                  const SizedBox(width: 8),
-                ],
-                Text(
-                  labelTxtbtn!,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: foregroundColor ?? AppColors.whiteColor,
-                  ),
-                ),
-              ],
-            ),
+        child: child,
       ),
     );
   }

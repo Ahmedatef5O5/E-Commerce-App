@@ -4,6 +4,7 @@ import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.
 import 'package:ecommerce_app/widgets/cart_item.dart';
 import 'package:ecommerce_app/widgets/checkout_head_line.dart';
 import 'package:ecommerce_app/widgets/custom_add_container.dart';
+import 'package:ecommerce_app/widgets/custom_elevated_button.dart';
 import 'package:ecommerce_app/widgets/payment_method_item.dart';
 import 'package:ecommerce_app/widgets/price_row_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -166,19 +167,13 @@ class CheckoutView extends StatelessWidget {
                             value: state.totalAmount,
                           ),
                           Gap(20),
-                          ElevatedButton(
-                            onPressed: () {},
-                            // onPressed: () => Navigator.of(
-                            //   context,
-                            //   rootNavigator: true,
-                            // ).pushNamed(),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff514eb7),
-                              minimumSize: const Size(double.infinity, 55),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25),
-                              ),
+                          CustomElevatedButton(
+                            width: double.infinity,
+                            height: 55,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
                             ),
+                            onPressed: () {},
                             child: const Text(
                               'Proceed to Buy',
                               style: TextStyle(

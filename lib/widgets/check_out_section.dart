@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
+import 'package:ecommerce_app/widgets/custom_elevated_button.dart';
 import 'package:ecommerce_app/widgets/price_row_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
@@ -56,7 +57,9 @@ class CheckOutSection extends StatelessWidget {
             const Gap(18),
             PriceRow(label: 'Total amount', value: subtotal + shipping),
             const Gap(18),
-            ElevatedButton(
+
+            CustomElevatedButton(
+              height: 55,
               onPressed: () => Navigator.of(
                 context,
                 rootNavigator: true,
@@ -68,7 +71,7 @@ class CheckOutSection extends StatelessWidget {
                   borderRadius: BorderRadius.circular(25),
                 ),
               ),
-              child: const Text(
+              child: Text(
                 'Checkout',
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
