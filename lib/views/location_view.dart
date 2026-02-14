@@ -116,7 +116,8 @@ class _LocationViewState extends State<LocationView> {
                           >(
                             bloc: cubit,
                             listenWhen: (previous, current) =>
-                                current is AddedLocations,
+                                current is AddedLocations ||
+                                current is AddingLocationsFailuer,
                             listener: (context, state) {
                               if (state is AddedLocations) {
                                 locationController.clear();
@@ -131,7 +132,8 @@ class _LocationViewState extends State<LocationView> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Text(
-                                      'Please Enter valid location! (city-country)',
+                                      // 'Please Enter valid location! (city-country)',
+                                      state.errMsg,
                                     ),
                                     backgroundColor: Colors.red,
                                   ),
@@ -225,10 +227,12 @@ class _LocationViewState extends State<LocationView> {
                             ),
                           );
                         } else if (state is FetchLocationsSuccessLoaded) {
+                          final locations =
+                              state.locations; // Locations from Cubit
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: dummyLocations.length,
+                            itemCount: locations.length,
                             itemBuilder: (context, index) => Padding(
                               padding: const EdgeInsets.only(bottom: 18.0),
                               child: DecoratedBox(
@@ -250,7 +254,7 @@ class _LocationViewState extends State<LocationView> {
                                         children: [
                                           Text(
                                             // dummyLocations[index].city,
-                                            state.locations[index].city,
+                                            locations[index].city,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleMedium!
@@ -261,7 +265,7 @@ class _LocationViewState extends State<LocationView> {
                                           ),
                                           Gap(4),
                                           Text(
-                                            '${state.locations[index].city}, ${state.locations[index].country}',
+                                            '${locations[index].city}, ${locations[index].country}',
 
                                             style: Theme.of(context)
                                                 .textTheme

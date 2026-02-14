@@ -57,51 +57,66 @@ class _CustomButtomNavbarState extends State<CustomButtomNavbar> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(currentTabIndex: currentIndex),
-      body: PersistentTabView(
-        controller: _controller,
-        onTabChanged: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-          // debugPrint("current index tab :$currentIndex");
-        },
-        tabs: [
-          PersistentTabConfig(screen: allScreens[0], item: _navBarsItems()[0]),
-          PersistentTabConfig(screen: allScreens[1], item: _navBarsItems()[1]),
-          PersistentTabConfig(screen: allScreens[2], item: _navBarsItems()[2]),
-          PersistentTabConfig(screen: allScreens[3], item: _navBarsItems()[3]),
-        ],
-        navBarBuilder: ((navBarConfig) => Style6BottomNavBar(
-          navBarConfig: navBarConfig,
-          navBarDecoration: NavBarDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.shade300,
-                blurRadius: 4,
-                offset: Offset(0, -3),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        appBar: CustomAppBar(currentTabIndex: currentIndex),
+        body: PersistentTabView(
+          controller: _controller,
+          onTabChanged: (index) {
+            setState(() {
+              currentIndex = index;
+            });
+            // debugPrint("current index tab :$currentIndex");
+          },
+          tabs: [
+            PersistentTabConfig(
+              screen: allScreens[0],
+              item: _navBarsItems()[0],
+            ),
+            PersistentTabConfig(
+              screen: allScreens[1],
+              item: _navBarsItems()[1],
+            ),
+            PersistentTabConfig(
+              screen: allScreens[2],
+              item: _navBarsItems()[2],
+            ),
+            PersistentTabConfig(
+              screen: allScreens[3],
+              item: _navBarsItems()[3],
+            ),
+          ],
+          navBarBuilder: ((navBarConfig) => Style6BottomNavBar(
+            navBarConfig: navBarConfig,
+            navBarDecoration: NavBarDecoration(
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade300,
+                  blurRadius: 4,
+                  offset: Offset(0, -3),
+                ),
+              ],
+              border: Border(
+                top: BorderSide(color: Colors.grey.shade300, width: 0.8),
               ),
-            ],
-            border: Border(
-              top: BorderSide(color: Colors.grey.shade300, width: 0.8),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(22),
+                topRight: Radius.circular(22),
+              ),
             ),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(22),
-              topRight: Radius.circular(22),
-            ),
-          ),
-        )),
-        screenTransitionAnimation: ScreenTransitionAnimation(),
-        // backgroundColor: Colors.white,
-        // handleAndroidBackButtonPress: true,
-        resizeToAvoidBottomInset:
-            true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-        stateManagement: true,
+          )),
+          screenTransitionAnimation: ScreenTransitionAnimation(),
+          // backgroundColor: Colors.white,
+          // handleAndroidBackButtonPress: true,
+          resizeToAvoidBottomInset:
+              true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+          stateManagement: true,
 
-        // stateManagement: false ,  // to re-build widgets by using cubit , default is true
-        // hideNavigationBar: true,
+          // stateManagement: false ,  // to re-build widgets by using cubit , default is true
+          // hideNavigationBar: true,
+        ),
       ),
     );
   }
