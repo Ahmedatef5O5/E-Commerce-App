@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
+import 'package:ecommerce_app/cubit/Choose_Location_cubit/choose_location_cubit.dart';
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/cubit/Product_details_cubit/product_details_cubit.dart';
 import 'package:ecommerce_app/models/product_details_args_model.dart';
@@ -48,7 +49,16 @@ class AppRouter {
           settings: settings, // helping for any passed parameters
         );
       case AppRoutes.locationViewRoute:
-        return MaterialPageRoute(builder: (_) => const LocationView());
+        return MaterialPageRoute(
+          builder: (_) => BlocProvider(
+            create: (context) {
+              final cubit = ChooseLocationCubit();
+              cubit.fetchLocations();
+              return cubit;
+            },
+            child: const LocationView(),
+          ),
+        );
 
       case AppRoutes.addNewCardViewRoute:
         return MaterialPageRoute(
