@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/Authentication/login_view.dart';
 import 'package:ecommerce_app/Router/app_router.dart';
 import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/views/custom_buttom_nav_bar.dart';
@@ -31,8 +32,8 @@ class EcommerceApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
-      // home: ProductDetailsView(productId: '3'),
-      home: CustomButtomNavbar(),
+      home: LoginView(),
+      // home: CustomButtomNavbar(),
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }

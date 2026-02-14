@@ -87,8 +87,8 @@ class _LocationViewState extends State<LocationView> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.location_on_outlined,
-                        // color: Colors.blueGrey.shade400,
-                        color: const Color.fromARGB(255, 248, 17, 0),
+                        color: Colors.blueGrey.shade400,
+                        // color: const Color.fromARGB(255, 248, 17, 0),
                         // color: Colors.black38,
                         size: 32,
                       ),

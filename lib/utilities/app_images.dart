@@ -7,6 +7,10 @@ class AppImages {
   // profile image
   static const tempProfile = 'assets/images/tempProfile.png';
 
+  // login acc icons
+  static const google = 'assets/images/icons/google.png';
+  static const facebook = 'assets/images/icons/facebook.png';
+
   // banners image
   static final String slider1 = 'assets/images/banners/Slider 1.png';
   static final String slider2 = 'assets/images/banners/Slider 2.png';

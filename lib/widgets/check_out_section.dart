@@ -54,7 +54,7 @@ class CheckOutSection extends StatelessWidget {
               dashGap: 6,
               direction: Axis.horizontal,
               dashLength: 15,
-              dashColor: AppColors.blueGreyWithShade,
+              dashColor: AppColors.blueGreyWithShade5,
             ),
             const Gap(18),
             PriceRow(label: 'Total amount', value: subtotal + shipping),
