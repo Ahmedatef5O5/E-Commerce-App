@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
+import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/cubit/Checkout_cubit/checkout_cubit.dart';
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/widgets/cart_item.dart';
@@ -153,13 +154,6 @@ class CheckoutView extends StatelessWidget {
                                       : PaymentMethodItem(
                                           paymentCardModel: chosenPaymentCard,
                                         ),
-
-                                  // CustomAddContainer(
-                                  //   onTap: () => Navigator.of(
-                                  //     context,
-                                  //   ).pushNamed(AppRoutes.addNewCardViewRoute),
-                                  //   title: 'Add Payment method',
-                                  // ),
                                   Gap(25),
                                   Divider(color: Colors.grey.shade300),
                                   Gap(45),
@@ -167,28 +161,59 @@ class CheckoutView extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Gap(5),
-                          PriceRow(
-                            label: 'Total Amount',
-                            value: state.totalAmount,
+                          BlocBuilder<CartCubit, CartState>(
+                            buildWhen: (previous, current) =>
+                                current is CartLoaded ||
+                                current is SubtotalUpdated ||
+                                current is CartLoading,
+                            builder: (context, state) {
+                              // if (state is CartLoading) {
+                              //   return Center(
+                              //     child: CupertinoActivityIndicator(
+                              //       color: Colors.black12,
+                              //     ),
+                              //   );
+                              // }
+
+                              //  else {
+                              final subtotal = state is CartLoaded
+                                  ? state.subtotal
+                                  : (state is SubtotalUpdated)
+                                  ? state.subtotal
+                                  : 0;
+                              final totalPrice = subtotal + 6.0;
+                              return Column(
+                                children: [
+                                  Gap(5),
+                                  PriceRow(
+                                    label: 'Total Amount',
+                                    value: totalPrice,
+                                    isLoading: state is CartLoading,
+                                  ),
+                                  Gap(20),
+                                  CustomElevatedButton(
+                                    width: double.infinity,
+                                    height: 55,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                    onPressed: state is CartLoading
+                                        ? null
+                                        : () {},
+                                    child: const Text(
+                                      'Proceed to Buy',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  Gap(20),
+                                ],
+                              );
+                              // }
+                            },
                           ),
-                          Gap(20),
-                          CustomElevatedButton(
-                            width: double.infinity,
-                            height: 55,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25),
-                            ),
-                            onPressed: () {},
-                            child: const Text(
-                              'Proceed to Buy',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          Gap(20),
                         ],
                       ),
                     ),

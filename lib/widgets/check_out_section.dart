@@ -1,8 +1,10 @@
 import 'package:ecommerce_app/Router/app_routes.dart';
+import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
 import 'package:ecommerce_app/widgets/custom_elevated_button.dart';
 import 'package:ecommerce_app/widgets/price_row_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dash/flutter_dash.dart';
 import 'package:gap/gap.dart';
 
@@ -60,10 +62,13 @@ class CheckOutSection extends StatelessWidget {
 
             CustomElevatedButton(
               height: 55,
-              onPressed: () => Navigator.of(
-                context,
-                rootNavigator: true,
-              ).pushNamed(AppRoutes.checkoutViewRoute),
+              onPressed: () {
+                context.read<CartCubit>().getCartItem();
+                Navigator.of(
+                  context,
+                  rootNavigator: true,
+                ).pushNamed(AppRoutes.checkoutViewRoute);
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xff514eb7),
                 minimumSize: const Size(double.infinity, 55),

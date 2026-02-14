@@ -1,9 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PriceRow extends StatelessWidget {
-  const PriceRow({super.key, required this.label, required this.value});
+  const PriceRow({
+    super.key,
+    required this.label,
+    this.value,
+    this.isLoading = false,
+  });
   final String label;
-  final double value;
+  final double? value;
+  final bool isLoading;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -17,34 +24,34 @@ class PriceRow extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-
-        Text.rich(
-          TextSpan(
-            children: [
-              WidgetSpan(
-                alignment: PlaceholderAlignment.bottom,
-                child: Transform.translate(
-                  offset: const Offset(-1, -7),
-                  child: Text(
-                    '\$',
-                    style: Theme.of(context).textTheme.labelLarge!.copyWith(
-                      color: Theme.of(context).primaryColor,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 15,
+        isLoading
+            ? Center(child: CupertinoActivityIndicator(color: Colors.black12))
+            : Text.rich(
+                TextSpan(
+                  children: [
+                    WidgetSpan(
+                      alignment: PlaceholderAlignment.bottom,
+                      child: Transform.translate(
+                        offset: const Offset(-1, -7),
+                        child: Text(
+                          '\$',
+                          style: Theme.of(context).textTheme.labelLarge!
+                              .copyWith(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.w800,
+                                fontSize: 15,
+                              ),
+                        ),
+                      ),
                     ),
-                  ),
+                    TextSpan(
+                      text: value?.toStringAsFixed(1),
+                      style: Theme.of(context).textTheme.headlineMedium!
+                          .copyWith(fontWeight: FontWeight.w700, fontSize: 21),
+                    ),
+                  ],
                 ),
               ),
-              TextSpan(
-                text: value.toStringAsFixed(1),
-                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 21,
-                ),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }
