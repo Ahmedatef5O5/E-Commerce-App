@@ -27,3 +27,9 @@ final class AddingLocationsFailuer extends ChooseLocationState {
 
   AddingLocationsFailuer({required this.errMsg});
 }
+
+final class LocationSelected extends ChooseLocationState {
+  final String locationId;
+
+  LocationSelected({required this.locationId});
+}

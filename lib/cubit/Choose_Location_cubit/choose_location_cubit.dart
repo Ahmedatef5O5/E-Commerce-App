@@ -5,7 +5,7 @@ part 'choose_location_state.dart';
 
 class ChooseLocationCubit extends Cubit<ChooseLocationState> {
   ChooseLocationCubit() : super(ChooseLocationInitial());
-
+  LocationItemModel? selectedLocation;
   void fetchLocations() {
     emit(FetchLocationsLoading());
     Future.delayed(Duration(seconds: 1), () {
@@ -47,5 +47,11 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
       // emit(AddingLocationsFailuer(errMsg: e.toString())); // errMsg: 'Please use "City-Country" format'
       emit(AddingLocationsFailuer(errMsg: 'Invalid format! Try:London-UK'));
     }
+  }
+
+  void selectLocation(LocationItemModel location) {
+    selectedLocation = location;
+    emit(LocationSelected(locationId: location.id));
+    emit(FetchLocationsSuccessLoaded(locations: List.from(dummyLocations)));
   }
 }

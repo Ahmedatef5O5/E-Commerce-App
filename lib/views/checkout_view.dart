@@ -2,6 +2,7 @@ import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/cubit/Checkout_cubit/checkout_cubit.dart';
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
+import 'package:ecommerce_app/models/location_item_model.dart';
 import 'package:ecommerce_app/widgets/cart_item.dart';
 import 'package:ecommerce_app/widgets/checkout_head_line.dart';
 import 'package:ecommerce_app/widgets/custom_add_container.dart';
@@ -12,8 +13,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
-
 import '../utilities/app_colors.dart';
+import '../widgets/selected_location_widget.dart';
 
 class CheckoutView extends StatelessWidget {
   const CheckoutView({super.key});
@@ -77,6 +78,9 @@ class CheckoutView extends StatelessWidget {
                   );
                 } else if (state is CheckoutLoaded) {
                   final chosenPaymentCard = state.chosenPaymentCard;
+                  final selectedLocation = context
+                      .watch<CheckoutCubit>()
+                      .selectedLocation;
                   return Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: SafeArea(
@@ -88,15 +92,49 @@ class CheckoutView extends StatelessWidget {
                                 children: [
                                   CheckoutHeadline(
                                     title: 'Address',
-                                    onTap: () {},
+                                    onTap: () async {
+                                      final newLocation = await Navigator.of(
+                                        context,
+                                      ).pushNamed(AppRoutes.locationViewRoute);
+                                      if (newLocation != null &&
+                                          newLocation is LocationItemModel) {
+                                        if (context.mounted) {
+                                          context
+                                              .read<CheckoutCubit>()
+                                              .setLocation(newLocation);
+                                        }
+                                      }
+                                    },
                                   ),
                                   Gap(10),
-                                  CustomAddContainer(
-                                    title: 'Add Shiping address',
-                                    onTap: () => Navigator.of(
-                                      context,
-                                    ).pushNamed(AppRoutes.locationViewRoute),
-                                  ),
+                                  selectedLocation != null
+                                      ? SelectedLocationWidget(
+                                          selectedLocation: selectedLocation,
+                                        )
+                                      : CustomAddContainer(
+                                          title: 'Add Shiping address',
+                                          onTap: () async {
+                                            // Navigator.of(context).pushNamed(
+                                            //     AppRoutes.locationViewRoute,
+
+                                            //   );
+                                            final newLocation =
+                                                await Navigator.of(
+                                                  context,
+                                                ).pushNamed(
+                                                  AppRoutes.locationViewRoute,
+                                                );
+                                            if (newLocation != null &&
+                                                newLocation
+                                                    is LocationItemModel) {
+                                              if (context.mounted) {
+                                                context
+                                                    .read<CheckoutCubit>()
+                                                    .setLocation(newLocation);
+                                              }
+                                            }
+                                          },
+                                        ),
                                   Gap(10),
                                   CheckoutHeadline(
                                     title: 'Products',

@@ -2,9 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/cubit/Choose_Location_cubit/choose_location_cubit.dart';
 import 'package:ecommerce_app/models/location_item_model.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
+import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/widgets/custom_elevated_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
@@ -85,11 +87,11 @@ class _LocationViewState extends State<LocationView> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.location_on_outlined,
-                        color: Colors.blueGrey.shade400,
+                        // color: Colors.blueGrey.shade400,
+                        color: const Color.fromARGB(255, 248, 17, 0),
                         // color: Colors.black38,
-                        size: 28,
+                        size: 32,
                       ),
-
                       hintText:
                           'Enter Your Location : City-Country', // as String
                       hintStyle: Theme.of(context).textTheme.labelMedium!
@@ -171,11 +173,12 @@ class _LocationViewState extends State<LocationView> {
                                     }
                                   },
                                   // Icons.share_location_outlined,
-                                  icon: Icon(
-                                    Icons.add_circle_outline,
-                                    size: 28,
+                                  icon: Image.asset(
+                                    AppImages.searchGps,
+                                    width: 24,
+                                    height: 24,
+                                    color: Colors.blueGrey.shade400,
                                   ),
-                                  color: Colors.blueGrey.shade400,
 
                                   // color: Colors.black38,
                                 );
@@ -211,7 +214,22 @@ class _LocationViewState extends State<LocationView> {
                   Gap(12),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 3),
-                    child: BlocBuilder<ChooseLocationCubit, ChooseLocationState>(
+                    child: BlocConsumer<ChooseLocationCubit, ChooseLocationState>(
+                      listenWhen: (previous, current) =>
+                          current is LocationSelected,
+                      listener:
+                          (BuildContext context, ChooseLocationState state) {
+                            if (state is LocationSelected) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Location Selected Successfully',
+                                  ),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
+                          },
                       buildWhen: (previous, current) =>
                           current is FetchLocationsLoading ||
                           current is FetchLocationsSuccessLoaded ||
@@ -233,105 +251,130 @@ class _LocationViewState extends State<LocationView> {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemCount: locations.length,
-                            itemBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.only(bottom: 18.0),
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: AppColors.greyWithShade,
-                                  ),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            // dummyLocations[index].city,
-                                            locations[index].city,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 17,
-                                                ),
-                                          ),
-                                          Gap(4),
-                                          Text(
-                                            '${locations[index].city}, ${locations[index].country}',
+                            itemBuilder: (context, index) {
+                              final location = locations[index];
+                              final isSelected =
+                                  cubit.selectedLocation?.id == location.id;
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 18.0),
+                                child: InkWell(
+                                  onTap: () => cubit.selectLocation(location),
 
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleSmall!
-                                                .copyWith(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 13,
-                                                  color: Colors.grey.shade500,
-                                                ),
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                        color: isSelected
+                                            ? AppColors
+                                                  .primaryColor //  activeColor
+                                            : AppColors
+                                                  .greyWithShade, // inactiveColor
+                                        width: isSelected ? 2.0 : 1.2,
+                                      ),
+                                      borderRadius: BorderRadius.circular(16),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                // dummyLocations[index].city,
+                                                locations[index].city,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium!
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 17,
+                                                    ),
+                                              ),
+                                              Gap(4),
+                                              Text(
+                                                '${locations[index].city}, ${locations[index].country}',
+
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleSmall!
+                                                    .copyWith(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 13,
+                                                      color:
+                                                          Colors.grey.shade500,
+                                                    ),
+                                              ),
+                                            ],
                                           ),
+                                          Container(
+                                            width: 68,
+                                            height: 68,
+                                            decoration: BoxDecoration(
+                                              color: isSelected
+                                                  ? AppColors
+                                                        .primaryColor //  activeColor
+                                                  : AppColors
+                                                        .greyWithShade, // inactiveColor
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                color: isSelected
+                                                    ? AppColors
+                                                          .primaryColor //  activeColor
+                                                    : AppColors
+                                                          .greyWithShade, // inactiveColor
+                                                width: isSelected ? 3.5 : 2.5,
+                                              ),
+                                            ),
+                                            child: ClipOval(
+                                              child: CachedNetworkImage(
+                                                imageUrl: dummyLocations[index]
+                                                    .imgUrl,
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) =>
+                                                    const Center(
+                                                      child:
+                                                          CupertinoActivityIndicator(
+                                                            color:
+                                                                Colors.black12,
+                                                          ),
+                                                    ),
+                                                errorWidget:
+                                                    (context, url, error) =>
+                                                        Center(
+                                                          child: const Icon(
+                                                            Icons.error,
+                                                            color: Colors.red,
+                                                          ),
+                                                        ),
+                                              ),
+                                            ),
+                                          ),
+                                          // another solution Nested CircleAvater instead of container(cirlce shape)
+                                          // CircleAvatar(
+                                          //   radius: 34,
+                                          //   backgroundColor: AppColors.primaryColor,
+                                          //   child: CircleAvatar(
+                                          //     radius: 30,
+                                          //     backgroundImage: CachedNetworkImageProvider(
+                                          //       dummyLocations[index].imgUrl,
+                                          //       maxWidth: 65,
+                                          //       maxHeight: 65,
+                                          //       // fit: BoxFit.contain,
+                                          //     ),
+                                          //   ),
+                                          // ),
                                         ],
                                       ),
-                                      Container(
-                                        width: 68,
-                                        height: 68,
-                                        decoration: BoxDecoration(
-                                          color: AppColors.greyWithShade,
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                            //  color: AppColors.greyWithShade, // inactiveColor
-                                            color: AppColors
-                                                .primaryColor, //  activeColor
-                                            width: 4,
-                                          ),
-                                        ),
-                                        child: ClipOval(
-                                          child: CachedNetworkImage(
-                                            imageUrl:
-                                                dummyLocations[index].imgUrl,
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) =>
-                                                const Center(
-                                                  child:
-                                                      CupertinoActivityIndicator(
-                                                        color: Colors.black12,
-                                                      ),
-                                                ),
-                                            errorWidget:
-                                                (context, url, error) => Center(
-                                                  child: const Icon(
-                                                    Icons.error,
-                                                    color: Colors.red,
-                                                  ),
-                                                ),
-                                          ),
-                                        ),
-                                      ),
-                                      // another solution Nested CircleAvater instead of container(cirlce shape)
-                                      // CircleAvatar(
-                                      //   radius: 34,
-                                      //   backgroundColor: AppColors.primaryColor,
-                                      //   child: CircleAvatar(
-                                      //     radius: 30,
-                                      //     backgroundImage: CachedNetworkImageProvider(
-                                      //       dummyLocations[index].imgUrl,
-                                      //       maxWidth: 65,
-                                      //       maxHeight: 65,
-                                      //       // fit: BoxFit.contain,
-                                      //     ),
-                                      //   ),
-                                      // ),
-                                    ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
+                              );
+                            },
                           );
                         } else if (state is FetchLocationsFailure) {
                           return Center(child: Text(state.errMsg));
@@ -345,7 +388,17 @@ class _LocationViewState extends State<LocationView> {
 
                   CustomElevatedButton(
                     child: Text('Confirm'),
-                    onPressed: () {},
+                    onPressed: () {
+                      if (cubit.selectedLocation != null) {
+                        Navigator.of(context).pop(cubit.selectedLocation);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please select a location first!'),
+                          ),
+                        );
+                      }
+                    },
                   ),
                   Gap(10),
                 ],
