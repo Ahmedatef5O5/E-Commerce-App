@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/Authentication/login_view.dart';
 import 'package:ecommerce_app/Router/app_router.dart';
+import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/views/custom_buttom_nav_bar.dart';
 import 'package:flutter/material.dart';
@@ -32,8 +33,8 @@ class EcommerceApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
-      home: LoginView(),
-      // home: CustomButtomNavbar(),
+      initialRoute: AppRoutes.loginViewRoute,
+      // initialRoute: AppRoutes.homeRoute,
       onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }

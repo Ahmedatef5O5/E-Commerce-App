@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/utilities/custom_formatter.dart';
-import 'package:ecommerce_app/widgets/label_with_text_form_field_new_card.dart';
+import 'package:ecommerce_app/widgets/label_with_text_form_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -62,7 +62,7 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          LabelWithTextFieldNewCard(
+                          LabelWithTextField(
                             labelTxt: 'Card Number',
                             controller: _cardNumberController,
                             keyboardType: TextInputType.number,
@@ -81,7 +81,7 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                             hintTxt: 'Enter Card Number',
                           ),
                           Gap(15),
-                          LabelWithTextFieldNewCard(
+                          LabelWithTextField(
                             labelTxt: 'Card Holder Name',
                             controller: _holderNameController,
                             keyboardType: TextInputType.name,
@@ -101,7 +101,7 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                             hintTxt: 'Enter Card holder name',
                           ),
                           Gap(15),
-                          LabelWithTextFieldNewCard(
+                          LabelWithTextField(
                             labelTxt: 'Expiry Date',
                             controller: _expirtyDateController,
                             keyboardType: TextInputType.number,
@@ -122,7 +122,7 @@ class _AddNewCardViewState extends State<AddNewCardView> {
                             hintTxt: 'MM/YY',
                           ),
                           Gap(15),
-                          LabelWithTextFieldNewCard(
+                          LabelWithTextField(
                             labelTxt: 'CVV',
                             controller: _cvvCodeController,
                             keyboardType: TextInputType.number,

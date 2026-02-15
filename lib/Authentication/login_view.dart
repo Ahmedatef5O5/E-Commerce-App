@@ -1,7 +1,7 @@
 import 'package:ecommerce_app/utilities/app_colors.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/widgets/custom_elevated_button.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ecommerce_app/widgets/label_with_text_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -40,110 +40,40 @@ class LoginView extends StatelessWidget {
                   color: AppColors.blueGreyWithShade4,
                 ),
               ),
-              Gap(32),
-              Text(
-                'Email or Phone Number',
-                style: Theme.of(
+              Gap(30),
+              LabelWithTextField(
+                labelTxt: 'Email or Phone Number',
+                labelStyle: Theme.of(
                   context,
                 ).textTheme.labelLarge!.copyWith(fontSize: 16),
-              ),
-              Gap(12),
-              TextFormField(
-                cursorColor: AppColors.blueGreyWithShade3,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.shade50,
-                  prefixIcon: Icon(
-                    Icons.email_outlined,
-                    // color: Colors.grey.shade300,
-                    color: AppColors.blueGreyWithShade3,
-                  ),
-                  hintText: 'Enter your email or Phone Number',
-                  hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.blueGreyWithShade3,
-                  ),
-
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(
-                      width: 0.1,
-                      color: Colors.grey.shade100,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                    borderSide: BorderSide(
-                      width: 0.1,
-                      // color: Colors.grey.shade300,
-                      color: Colors.blueGrey.shade100,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(
-                      width: 1.5,
-                      color: Colors.blueGrey.shade100,
-                    ),
-                  ),
+                hintTxt: 'Enter your email or Phone Number',
+                hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.blueGreyWithShade3,
+                ),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  // color: Colors.grey.shade300,
+                  color: AppColors.blueGreyWithShade3,
                 ),
               ),
-              Gap(22),
-              Text(
-                'Password',
-                style: Theme.of(
+              Gap(16),
+              LabelWithTextField(
+                labelTxt: 'Password',
+                labelStyle: Theme.of(
                   context,
                 ).textTheme.labelLarge!.copyWith(fontSize: 16),
-              ),
-              Gap(12),
-              TextFormField(
-                cursorColor: AppColors.blueGreyWithShade3,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.shade50,
-                  prefixIcon: Icon(
-                    Icons.password,
-                    // color: Colors.grey.shade300,
-                    color: AppColors.blueGreyWithShade3,
-                  ),
-                  suffixIcon: Icon(
-                    CupertinoIcons.eye,
-                    // color: Colors.grey.shade300,
-                    color: AppColors.blueGreyWithShade3,
-                  ),
-                  hintText: 'Create your password',
-                  hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.blueGreyWithShade3,
-                  ),
-
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(
-                      width: 0.1,
-                      color: Colors.blueGrey.shade100,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
-                    borderSide: BorderSide(
-                      width: 0.1,
-                      color: Colors.blueGrey.shade100,
-                      // color: AppColors.blueGreyWithShade3,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(14),
-                    borderSide: BorderSide(
-                      width: 1.5,
-                      color: Colors.blueGrey.shade100,
-                    ),
-                  ),
+                hintTxt: 'Create your password',
+                hintStyle: Theme.of(context).textTheme.labelSmall!.copyWith(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.blueGreyWithShade3,
                 ),
+                prefixIcon: Icon(Icons.password),
+                suffixIcon: Icon(Icons.visibility_outlined),
               ),
-              Gap(4),
+              Gap(2),
               Align(
                 alignment: AlignmentGeometry.centerRight,
                 child: TextButton(
@@ -165,21 +95,34 @@ class LoginView extends StatelessWidget {
                 child: Text('Sign In'),
                 onPressed: () {},
               ),
-              Gap(20),
+              Gap(16),
               Align(
                 alignment: AlignmentGeometry.center,
-                child: Text(
-                  textAlign: TextAlign.center,
-                  'Or using other method',
-                  style: Theme.of(context).textTheme.labelSmall!.copyWith(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.blueGreyWithShade3,
-                  ),
+                child: Column(
+                  children: [
+                    Text(
+                      textAlign: TextAlign.center,
+                      'Dont\'t have an account? Register',
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w800,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                    ),
+                    Gap(16),
+                    Text(
+                      textAlign: TextAlign.center,
+                      'Or using other method',
+                      style: Theme.of(context).textTheme.labelSmall!.copyWith(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.blueGreyWithShade3,
+                      ),
+                    ),
+                  ],
                 ),
               ),
-
-              Gap(20),
+              Gap(14),
               Card(
                 elevation: 0,
                 color: Colors.white,
@@ -207,7 +150,7 @@ class LoginView extends StatelessWidget {
                   ),
                 ),
               ),
-              Gap(20),
+              Gap(10),
               Card(
                 elevation: 0,
                 color: Colors.white,

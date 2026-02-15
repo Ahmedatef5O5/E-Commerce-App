@@ -11,9 +11,17 @@ import 'package:ecommerce_app/views/product_details_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../Authentication/login_view.dart';
+
 class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case AppRoutes.loginViewRoute:
+        return MaterialPageRoute(
+          builder: (_) => LoginView(),
+          settings: settings,
+        );
+
       case AppRoutes.homeRoute:
         return MaterialPageRoute(
           builder: (_) => const CustomButtomNavbar(),

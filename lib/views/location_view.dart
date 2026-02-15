@@ -101,6 +101,7 @@ class _LocationViewState extends State<LocationView> {
                             color: Colors.blueGrey.shade400,
                             // color: Colors.black38,
                           ),
+
                       // as widget hint: Text(
                       //   'Enter Your Location',
                       //   style: Theme.of(context).textTheme.labelMedium!
