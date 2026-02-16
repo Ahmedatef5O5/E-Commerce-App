@@ -1,3 +1,4 @@
+import 'package:ecommerce_app/Authentication/register_view.dart';
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Choose_Location_cubit/choose_location_cubit.dart';
 import 'package:ecommerce_app/cubit/Payment_methods_cubit/payment_methods_cubit.dart';
@@ -19,6 +20,12 @@ class AppRouter {
       case AppRoutes.loginViewRoute:
         return MaterialPageRoute(
           builder: (_) => LoginView(),
+          settings: settings,
+        );
+
+      case AppRoutes.registerViewRoute:
+        return MaterialPageRoute(
+          builder: (_) => RegisterView(),
           settings: settings,
         );
 
