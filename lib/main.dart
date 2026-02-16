@@ -31,7 +31,8 @@ class EcommerceApp extends StatelessWidget {
           bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
         ),
       ),
-      initialRoute: AppRoutes.loginViewRoute,
+      initialRoute: AppRoutes.splashRoute,
+      // initialRoute: AppRoutes.loginViewRoute,
       // initialRoute: AppRoutes.homeRoute,
       onGenerateRoute: AppRouter.onGenerateRoute,
     );

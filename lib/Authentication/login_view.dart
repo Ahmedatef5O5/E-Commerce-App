@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/Router/app_router.dart';
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Auth_cubit/auth_cubit.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';

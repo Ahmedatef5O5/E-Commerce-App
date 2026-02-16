@@ -1,4 +1,9 @@
 class AppImages {
+  // splash
+  static const splash = 'assets/images/splash2.svg';
+
+
+
   // appBar icons
   static const glassSearch = 'assets/images/icons/magnifying-glass.png';
   static const notification = 'assets/images/icons/notification.png';

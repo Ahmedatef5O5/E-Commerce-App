@@ -13,10 +13,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../Authentication/login_view.dart';
+import '../views/splash_view.dart';
 
 class AppRouter {
   static Route<dynamic> onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case AppRoutes.splashRoute:
+        return MaterialPageRoute(
+          builder: (_) => SplashView(),
+          settings: settings,
+        );
+
       case AppRoutes.loginViewRoute:
         return MaterialPageRoute(
           builder: (_) => LoginView(),
