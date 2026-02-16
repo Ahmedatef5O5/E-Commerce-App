@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/Router/app_router.dart';
 import 'package:ecommerce_app/Router/app_routes.dart';
+import 'package:ecommerce_app/cubit/Auth_cubit/auth_cubit.dart';
 import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +10,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(
-    BlocProvider(
-      create: (context) => CartCubit()..getCartItem(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => AuthCubit()..checkAuthStatus()),
+        BlocProvider(create: (context) => CartCubit()..getCartItem()),
+      ],
       child: const EcommerceApp(),
     ),
   );

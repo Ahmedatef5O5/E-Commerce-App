@@ -27,19 +27,13 @@ class AppRouter {
 
       case AppRoutes.loginViewRoute:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => AuthCubit(),
-            child: LoginView(),
-          ),
+          builder: (_) => LoginView(),
           settings: settings,
         );
 
       case AppRoutes.registerViewRoute:
         return MaterialPageRoute(
-          builder: (_) => BlocProvider(
-            create: (context) => AuthCubit(),
-            child: RegisterView(),
-          ),
+          builder: (_) => RegisterView(),
           settings: settings,
         );
 

@@ -14,6 +14,8 @@ final class AuthSuccess extends AuthState {
   AuthSuccess({required this.successMsg});
 }
 
+final class Authenticated extends AuthState {}
+
 final class AuthError extends AuthState {
   final String errMsg;
 

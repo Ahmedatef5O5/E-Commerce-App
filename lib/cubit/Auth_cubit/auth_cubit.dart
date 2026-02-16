@@ -44,4 +44,14 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthError(errMsg: e.toString()));
     }
   }
+
+  void checkAuthStatus() async {
+    await Future.delayed(Duration(seconds: 3));
+    final user = _authServices.getCurrentUser();
+    if (user != null) {
+      emit(Authenticated());
+    } else {
+      emit(AuthInitial());
+    }
+  }
 }
