@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 
-class LabelWithTextField extends StatelessWidget {
+class LabelWithTextField extends StatefulWidget {
   const LabelWithTextField({
     super.key,
     required this.labelTxt,
@@ -16,7 +16,7 @@ class LabelWithTextField extends StatelessWidget {
     this.hintStyle,
     this.inputStyle,
     this.suffixIcon,
-    this.obscureText = false,
+    this.isPassword = false,
   });
   final String labelTxt, hintTxt;
   final TextStyle? labelStyle, hintStyle, inputStyle;
@@ -25,7 +25,20 @@ class LabelWithTextField extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
-  final bool obscureText;
+  final bool isPassword;
+
+  @override
+  State<LabelWithTextField> createState() => _LabelWithTextFieldState();
+}
+
+class _LabelWithTextFieldState extends State<LabelWithTextField> {
+  late bool _obscureText;
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.isPassword;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -33,9 +46,9 @@ class LabelWithTextField extends StatelessWidget {
       children: [
         Gap(12),
         Text(
-          labelTxt,
+          widget.labelTxt,
           style:
-              labelStyle ??
+              widget.labelStyle ??
               Theme.of(context).textTheme.bodySmall!.copyWith(
                 fontWeight: FontWeight.w500,
                 fontSize: 17,
@@ -44,22 +57,38 @@ class LabelWithTextField extends StatelessWidget {
         ),
         Gap(12),
         TextFormField(
-          controller: controller,
-          validator: (value) =>
-              value == null || value.isEmpty ? '$labelTxt Required' : null,
+          obscureText: widget.isPassword ? _obscureText : false,
+          style: widget.inputStyle,
+          controller: widget.controller,
+          validator: (value) => value == null || value.isEmpty
+              ? '${widget.labelTxt} Required'
+              : null,
           cursorColor: AppColors.blueGreyWithShade3,
-          keyboardType: keyboardType,
-          inputFormatters: inputFormatters,
+          keyboardType: widget.keyboardType,
+          inputFormatters: widget.inputFormatters,
           decoration: InputDecoration(
             filled: true,
             fillColor: Colors.grey.shade50,
-            prefixIcon: prefixIcon,
+            prefixIcon: widget.prefixIcon,
             prefixIconColor: AppColors.blueGreyWithShade3,
-            suffixIcon: suffixIcon,
+            suffixIcon: widget.isPassword
+                ? IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _obscureText = !_obscureText;
+                      });
+                    },
+                    icon: Icon(
+                      _obscureText
+                          ? Icons.visibility_outlined
+                          : Icons.visibility_off_outlined,
+                    ),
+                  )
+                : null,
             suffixIconColor: AppColors.blueGreyWithShade3,
-            hintText: hintTxt,
+            hintText: widget.hintTxt,
             hintStyle:
-                hintStyle ??
+                widget.hintStyle ??
                 Theme.of(context).textTheme.bodyMedium!.copyWith(
                   fontWeight: FontWeight.w400,
                   fontSize: 17,
