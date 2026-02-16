@@ -1,21 +1,47 @@
+import 'package:ecommerce_app/services/auth_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
+  final AuthServices _authServices = AuthServicesImpl();
   AuthCubit() : super(AuthInitial());
 
-  void login(String email, String password) {
+  Future<void> loginWithEmailAndPassword(String email, String password) async {
     emit(AuthLoading());
-    Future.delayed(Duration(seconds: 1), () {
-      emit(AuthSuccess(message: 'Login Successfully!'));
-    });
+    try {
+      final result = await _authServices.loginWithEmailAndPassword(
+        email,
+        password,
+      );
+      if (result) {
+        emit(AuthSuccess(successMsg: 'Login Successfully!'));
+      } else {
+        emit(AuthError(errMsg: 'Login Failed!'));
+      }
+    } catch (e) {
+      AuthError(errMsg: e.toString());
+    }
   }
 
-  void register(String username, String email, String password) {
+  Future<void> registerWithEmailAndPassword(
+    String username,
+    String email,
+    String password,
+  ) async {
     emit(AuthLoading());
-    Future.delayed(Duration(seconds: 1), () {
-      emit(AuthSuccess(message: 'Account Created Successfully!'));
-    });
+    try {
+      final result = await _authServices.registerWithEmailAndPassword(
+        email,
+        password,
+      );
+      if (result) {
+        emit(AuthSuccess(successMsg: 'Register Successfully!'));
+      } else {
+        emit(AuthError(errMsg: 'Register Failed!'));
+      }
+    } catch (e) {
+      emit(AuthError(errMsg: e.toString()));
+    }
   }
 }
