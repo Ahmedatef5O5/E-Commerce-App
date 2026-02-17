@@ -20,7 +20,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthError(errMsg: 'Login Failed!'));
       }
     } catch (e) {
-      AuthError(errMsg: e.toString());
+      emit(AuthError(errMsg: e.toString()));
     }
   }
 
@@ -52,6 +52,17 @@ class AuthCubit extends Cubit<AuthState> {
       emit(Authenticated());
     } else {
       emit(AuthInitial());
+    }
+  }
+
+  Future<void> logout() async {
+    emit(const AuthLoggingout());
+    try {
+      await _authServices.logout();
+      await Future.delayed(Duration(seconds: 1)); // optional delaying
+      emit(const AuthLoggedout());
+    } on Exception catch (e) {
+      emit(AuthLoggoutError(errMsg: e.toString()));
     }
   }
 }

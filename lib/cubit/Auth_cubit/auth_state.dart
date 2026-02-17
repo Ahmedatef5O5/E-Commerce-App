@@ -21,3 +21,17 @@ final class AuthError extends AuthState {
 
   AuthError({required this.errMsg});
 }
+
+final class AuthLoggingout extends AuthState {
+  const AuthLoggingout();
+}
+
+final class AuthLoggedout extends AuthState {
+  const AuthLoggedout();
+}
+
+final class AuthLoggoutError extends AuthState {
+  final String errMsg;
+
+  AuthLoggoutError({required this.errMsg});
+}
