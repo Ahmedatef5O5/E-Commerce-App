@@ -17,6 +17,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    // bool isCentered = currentTabIndex == 3;
     return AppBar(
       automaticallyImplyLeading: false,
       centerTitle: centerTitle ?? false,
@@ -58,6 +59,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         return [Icon(CupertinoIcons.heart, size: 26)];
       case 3:
         return [Icon(CupertinoIcons.person, size: 26)];
+      // return [Icon(Icons.more_vert_outlined, size: 26)];
       default:
         return null;
     }
@@ -72,6 +74,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     //     },
     //   );
     // }
+    // return currentTabIndex == 3 ? Icon(CupertinoIcons.person, size: 26) : null;
     return null;
   }
 
