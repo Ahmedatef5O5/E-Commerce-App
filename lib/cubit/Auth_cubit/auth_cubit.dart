@@ -65,4 +65,18 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthLoggoutError(errMsg: e.toString()));
     }
   }
+
+  Future<void> authenticateWithGoogle() async {
+    emit(const GoogleAuthenticating());
+    try {
+      final res = await _authServices.authenticateWithGoogle();
+      if (res) {
+        emit(const GoogleAuthenticatedDone());
+      } else {
+        emit(GoogleAuthError(errMsg: 'Google authentication failed'));
+      }
+    } catch (e) {
+      emit(GoogleAuthError(errMsg: e.toString()));
+    }
+  }
 }
