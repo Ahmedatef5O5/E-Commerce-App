@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthServices {
@@ -54,27 +55,28 @@ class AuthServicesImpl implements AuthServices {
   }
 
   @override
-  Future<bool> authenticateWithGoogle() async {
-    final GoogleSignInAccount? gUser = await GoogleSignIn.instance
-        .authenticate();
+  authenticateWithGoogle() async {
+    try {
+      final gUser = await GoogleSignIn(
+        serverClientId:
+            '549009234368-uk402poa02u0vo35sfi4bflptepa6p2g.apps.googleusercontent.com',
+      ).signIn();
+      if (gUser == null) return false;
+      final gAuth = await gUser.authentication;
 
-    if (gUser == null) {
-      return false;
-    }
-    final GoogleSignInClientAuthorization clientAuth = await gUser
-        .authorizationClient
-        .authorizeScopes(['openid', 'email', 'profile']);
+      final credential = GoogleAuthProvider.credential(
+        accessToken: gAuth.accessToken,
 
-    final GoogleSignInAuthentication gAuth = await gUser.authentication;
+        idToken: gAuth.idToken,
+      );
 
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: clientAuth.accessToken,
-      idToken: gAuth.idToken,
-    );
-    final userCredential = await _firebaseAuth.signInWithCredential(credential);
-    if (userCredential.user != null) {
-      return true;
-    } else {
+      final userCredential = await _firebaseAuth.signInWithCredential(
+        credential,
+      );
+
+      return userCredential.user != null;
+    } catch (e) {
+      debugPrint('Google Auth Error:$e');
       return false;
     }
   }

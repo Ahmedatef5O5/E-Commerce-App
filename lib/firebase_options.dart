@@ -63,6 +63,9 @@ class DefaultFirebaseOptions {
     messagingSenderId: '549009234368',
     projectId: 'e-commerce-app-9fdfa',
     storageBucket: 'e-commerce-app-9fdfa.firebasestorage.app',
+    androidClientId: '549009234368-ub370i76qq3nbi6jd1luhg13sve6mbef.apps.googleusercontent.com',
+    iosClientId: '549009234368-iuqbrsuo9vmhki0rnudngva6lvnomugh.apps.googleusercontent.com',
     iosBundleId: 'com.example.ecommerceApp',
   );
+
 }

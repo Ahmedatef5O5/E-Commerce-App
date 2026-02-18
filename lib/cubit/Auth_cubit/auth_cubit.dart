@@ -1,6 +1,6 @@
 import 'package:ecommerce_app/services/auth_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
@@ -58,6 +58,7 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> logout() async {
     emit(const AuthLoggingout());
     try {
+      await GoogleSignIn().signOut();
       await _authServices.logout();
       await Future.delayed(Duration(seconds: 1)); // optional delaying
       emit(const AuthLoggedout());

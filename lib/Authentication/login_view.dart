@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import '../widgets/social_media_button.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -200,67 +201,59 @@ class _LoginViewState extends State<LoginView> {
                   ),
                 ),
                 Gap(14),
-                Card(
-                  elevation: 0,
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28),
-                    side: BorderSide(
-                      width: .8,
-                      color: Colors.blueGrey.shade100,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(AppImages.google, height: 30, width: 30),
-                        Gap(12),
-                        Text(
-                          'Sign In with Google',
-                          style: Theme.of(context).textTheme.labelMedium!
-                              .copyWith(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.blackColor,
-                              ),
+                BlocConsumer<AuthCubit, AuthState>(
+                  bloc: cubit,
+                  listenWhen: (previous, current) =>
+                      current is GoogleAuthenticatedDone ||
+                      current is GoogleAuthError,
+                  listener: (context, state) {
+                    if (state is GoogleAuthenticatedDone) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Successfully signed in with Google!'),
+                          backgroundColor: Colors.green,
+                          behavior: SnackBarBehavior.floating,
                         ),
-                      ],
-                    ),
-                  ),
+                      );
+                      Navigator.of(
+                        context,
+                      ).pushReplacementNamed(AppRoutes.homeRoute);
+                    } else if (state is GoogleAuthError) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(state.errMsg)));
+                    }
+                  },
+                  buildWhen: (previous, current) =>
+                      current is GoogleAuthenticating ||
+                      current is GoogleAuthenticatedDone ||
+                      current is GoogleAuthError,
+                  builder: (context, state) {
+                    if (state is GoogleAuthenticating) {
+                      return SocialMediaButton(
+                        icon: CupertinoActivityIndicator(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      );
+                    }
+                    return SocialMediaButton(
+                      icon: Image.asset(
+                        AppImages.google,
+                        height: 28,
+                        width: 28,
+                      ),
+                      label: 'Sign In with Google',
+                      onPressed: () async =>
+                          await cubit.authenticateWithGoogle(),
+                    );
+                  },
                 ),
                 Gap(10),
-                Card(
-                  elevation: 0,
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(28),
-                    side: BorderSide(
-                      width: .8,
-                      color: Colors.blueGrey.shade100,
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(AppImages.facebook, height: 30, width: 30),
-                        Gap(12),
-                        Text(
-                          'Sign In with Facebook',
-                          style: Theme.of(context).textTheme.labelMedium!
-                              .copyWith(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700,
-                                color: AppColors.blackColor,
-                              ),
-                        ),
-                      ],
-                    ),
-                  ),
+                SocialMediaButton(
+                  icon: Image.asset(AppImages.facebook, height: 30, width: 30),
+                  label: 'Sign In with Facebook',
                 ),
+
                 Gap(40),
               ],
             ),
