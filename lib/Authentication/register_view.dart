@@ -271,9 +271,54 @@ class _RegisterViewState extends State<RegisterView> {
                   },
                 ),
                 Gap(10),
-                SocialMediaButton(
-                  icon: Image.asset(AppImages.facebook, height: 30, width: 30),
-                  label: 'Register with Facebook',
+                BlocConsumer<AuthCubit, AuthState>(
+                  bloc: cubit,
+                  listenWhen: (previous, current) =>
+                      current is FacebookAuthenticatedDone ||
+                      current is FacebookAuthError,
+                  listener: (context, state) {
+                    if (state is FacebookAuthenticatedDone) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Successfully registered with Facebook!',
+                          ),
+                          backgroundColor: Colors.green,
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                      Navigator.of(
+                        context,
+                      ).pushReplacementNamed(AppRoutes.homeRoute);
+                    } else if (state is FacebookAuthError) {
+                      ScaffoldMessenger.of(
+                        context,
+                      ).showSnackBar(SnackBar(content: Text(state.errMsg)));
+                    }
+                  },
+                  buildWhen: (previous, current) =>
+                      current is FacebookAuthenticating ||
+                      current is FacebookAuthenticatedDone ||
+                      current is FacebookAuthError,
+                  builder: (context, state) {
+                    if (state is FacebookAuthenticating) {
+                      return SocialMediaButton(
+                        icon: CupertinoActivityIndicator(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      );
+                    }
+                    return SocialMediaButton(
+                      icon: Image.asset(
+                        AppImages.facebook,
+                        height: 30,
+                        width: 30,
+                      ),
+                      label: 'Register with Facebook',
+                      onPressed: () async =>
+                          await cubit.authenticateWithFacebook(),
+                    );
+                  },
                 ),
                 Gap(40),
               ],

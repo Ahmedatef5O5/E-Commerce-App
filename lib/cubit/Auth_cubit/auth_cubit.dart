@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/services/auth_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 part 'auth_state.dart';
 
@@ -59,6 +60,7 @@ class AuthCubit extends Cubit<AuthState> {
     emit(const AuthLoggingout());
     try {
       await GoogleSignIn().signOut();
+      await FacebookAuth.instance.logOut();
       await _authServices.logout();
       await Future.delayed(Duration(seconds: 1)); // optional delaying
       emit(const AuthLoggedout());
@@ -78,6 +80,20 @@ class AuthCubit extends Cubit<AuthState> {
       }
     } catch (e) {
       emit(GoogleAuthError(errMsg: e.toString()));
+    }
+  }
+
+  Future<void> authenticateWithFacebook() async {
+    emit(const FacebookAuthenticating());
+    try {
+      final res = await _authServices.authenticateWithFacebook();
+      if (res) {
+        emit(const FacebookAuthenticatedDone());
+      } else {
+        emit(FacebookAuthError(errMsg: 'Facebook authentication failed'));
+      }
+    } catch (e) {
+      emit(FacebookAuthError(errMsg: e.toString()));
     }
   }
 }

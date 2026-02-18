@@ -172,11 +172,10 @@ class _LoginViewState extends State<LoginView> {
                   child: Column(
                     children: [
                       TextButton(
-                        onPressed: () {
-                          Navigator.of(
-                            context,
-                          ).pushNamed(AppRoutes.registerViewRoute);
-                        },
+                        onPressed: () => Navigator.of(
+                          context,
+                        ).pushNamed(AppRoutes.registerViewRoute),
+
                         child: Text(
                           'Don\'t have an account? Register',
                           style: Theme.of(context).textTheme.labelSmall!
@@ -249,9 +248,59 @@ class _LoginViewState extends State<LoginView> {
                   },
                 ),
                 Gap(10),
-                SocialMediaButton(
-                  icon: Image.asset(AppImages.facebook, height: 30, width: 30),
-                  label: 'Sign In with Facebook',
+                BlocConsumer<AuthCubit, AuthState>(
+                  bloc: cubit,
+                  listenWhen: (previous, current) =>
+                      current is FacebookAuthenticatedDone ||
+                      current is FacebookAuthError,
+                  listener: (context, state) {
+                    if (state is FacebookAuthenticatedDone) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Successfully signed in with Facebook!',
+                          ),
+                          backgroundColor: Colors.green,
+                          behavior: SnackBarBehavior.floating,
+                        ),
+                      );
+                      Navigator.of(
+                        context,
+                      ).pushReplacementNamed(AppRoutes.homeRoute);
+                    } else if (state is FacebookAuthError) {
+                      {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(state.errMsg),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                    }
+                  },
+                  buildWhen: (previous, current) =>
+                      current is FacebookAuthenticating ||
+                      current is FacebookAuthenticatedDone ||
+                      current is FacebookAuthError,
+                  builder: (context, state) {
+                    if (state is FacebookAuthenticating) {
+                      return SocialMediaButton(
+                        icon: CupertinoActivityIndicator(
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      );
+                    }
+                    return SocialMediaButton(
+                      icon: Image.asset(
+                        AppImages.facebook,
+                        height: 30,
+                        width: 30,
+                      ),
+                      label: 'Sign In with Facebook',
+                      onPressed: () async =>
+                          await cubit.authenticateWithFacebook(),
+                    );
+                  },
                 ),
 
                 Gap(40),

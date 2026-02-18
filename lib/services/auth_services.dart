@@ -1,11 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 abstract class AuthServices {
   Future<bool> loginWithEmailAndPassword(String email, String password);
   Future<bool> registerWithEmailAndPassword(String email, String password);
   Future<bool> authenticateWithGoogle();
+  Future<bool> authenticateWithFacebook();
   User? getCurrentUser();
   Future<void> logout();
 }
@@ -79,5 +81,20 @@ class AuthServicesImpl implements AuthServices {
       debugPrint('Google Auth Error:$e');
       return false;
     }
+  }
+
+  @override
+  Future<bool> authenticateWithFacebook() async {
+    final loginResult = await FacebookAuth.instance.login(
+      permissions: ['public_profile', 'email'],
+    );
+    if (loginResult.status != LoginStatus.success) {
+      return false;
+    }
+    final credential = FacebookAuthProvider.credential(
+      loginResult.accessToken!.tokenString,
+    );
+    final userCredential = await _firebaseAuth.signInWithCredential(credential);
+    return userCredential.user != null;
   }
 }
