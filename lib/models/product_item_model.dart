@@ -45,6 +45,40 @@ class ProductItemModel {
       averageRate: averageRate ?? this.averageRate,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'imgUrl': imgUrl,
+      'description': description,
+      'price': price,
+      'isFavorite': isFavorite,
+      'category': category,
+      'averageRate': averageRate,
+    };
+  }
+
+  factory ProductItemModel.fromMap(
+    Map<String, dynamic> map,
+    String documnetId,
+  ) {
+    return ProductItemModel(
+      id: documnetId,
+      // id: map['id'] as String,
+      name: map['name'] as String,
+      imgUrl: map['imgUrl'] as String,
+      description: map['description'] as String,
+      price: (map['price'] as num?)?.toDouble() as double,
+      isFavorite: map['isFavorite'] as bool,
+      category: map['category'] as String,
+      averageRate: (map['averageRate'] as num?)?.toDouble() as double,
+    );
+  }
+
+  // String toJson() => json.encode(toMap());
+
+  // factory ProductItemModel.fromJson(String source) => ProductItemModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
 List<ProductItemModel> dummyProducts = [

@@ -24,5 +24,5 @@ final class HomeSuccessLoaded extends HomeState {
 
 final class HomeFailureLoaded extends HomeState {
   final String message;
-  HomeFailureLoaded({required this.message});
+  HomeFailureLoaded(this.message);
 }
