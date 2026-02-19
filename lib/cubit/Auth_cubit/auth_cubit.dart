@@ -1,4 +1,7 @@
+import 'package:ecommerce_app/models/user_data_model.dart';
 import 'package:ecommerce_app/services/auth_services.dart';
+import 'package:ecommerce_app/services/firestore_services.dart';
+import 'package:ecommerce_app/utilities/api_paths.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,6 +9,7 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   final AuthServices _authServices = AuthServicesImpl();
+  final firestoreServices = FirestoreServices.instance;
   AuthCubit() : super(AuthInitial());
 
   Future<void> loginWithEmailAndPassword(String email, String password) async {
@@ -25,6 +29,27 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
+  Future<void> _saveUserData(String email, String username) async {
+    final currentUser = _authServices.getCurrentUser();
+    final userData = UserDataModel(
+      id: currentUser!.uid,
+      username: username,
+      email: email,
+      createdAt: DateTime.now().toIso8601String(),
+    );
+    await firestoreServices.setData(
+      path: ApiPaths.users(userData.id),
+      data: userData.toMap(),
+      // send data to fireStore Database as Map
+      // data: {
+      //   'id': currentUser.uid,
+      //   'email': currentUser.email,
+      //   'username': username,
+      //   'createdAt': DateTime.now().toIso8601String(),
+      // },
+    );
+  }
+
   Future<void> registerWithEmailAndPassword(
     String username,
     String email,
@@ -37,6 +62,7 @@ class AuthCubit extends Cubit<AuthState> {
         password,
       );
       if (result) {
+        await _saveUserData(email, username);
         emit(AuthSuccess(successMsg: 'Register Successfully!'));
       } else {
         emit(AuthError(errMsg: 'Register Failed!'));
