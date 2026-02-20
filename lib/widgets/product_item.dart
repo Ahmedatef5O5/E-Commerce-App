@@ -44,59 +44,44 @@ class ProductItem extends StatelessWidget {
             ),
 
             Positioned(
-              top: 4,
+              top: 6,
               right: 6,
               child: Opacity(
-                opacity: 0.6,
+                opacity: 0.9,
                 child: CircleAvatar(
                   radius: 18,
-                  backgroundColor: Colors.grey[600],
+                  backgroundColor: Colors.blueGrey[200],
                   child: BlocBuilder<HomeCubit, HomeState>(
                     bloc: homeCubit,
-                    buildWhen: (previous, current) =>
-                        current is SetFavoriteLoading ||
-                        current is SetFavoriteSuccessLoaded ||
-                        current is SetFavoriteError,
                     builder: (context, state) {
-                      if (state is SetFavoriteLoading) {
+                      if (state is! HomeSuccessLoaded) {
+                        return SizedBox.shrink();
+                      }
+                      final isFavorite = state.favoriteProductIds.contains(
+                        productItem.id,
+                      );
+                      final isLoading =
+                          state.loadingFavoriteId == productItem.id;
+                      if (isLoading) {
                         return const CupertinoActivityIndicator(
                           color: Colors.white,
                         );
-                      } else if (state is SetFavoriteSuccessLoaded) {
-                        return state.isFavorite
-                            ? InkWell(
-                                onTap: () async =>
-                                    await homeCubit.setFavorite(productItem),
-                                child: Icon(
-                                  CupertinoIcons.heart_fill,
-                                  color: Colors.red,
-                                  size: 24,
-                                ),
-                              )
-                            : InkWell(
-                                onTap: () async =>
-                                    await homeCubit.setFavorite(productItem),
-                                child: Icon(
-                                  Icons.favorite_border_outlined,
-                                  color: Colors.white,
-                                  size: 24,
-                                ),
-                              );
-                      } else if (state is SetFavoriteError) {
-                        return Icon(
-                          Icons.error_outline,
-                          color: Colors.red,
-                          size: 24,
-                        );
                       }
-                      return InkWell(
+                      return GestureDetector(
                         onTap: () async =>
                             await homeCubit.setFavorite(productItem),
-                        child: Icon(
-                          Icons.favorite_border_outlined,
-                          color: Colors.white,
-                          size: 24,
-                        ),
+                        child: isFavorite
+                            ? Icon(
+                                CupertinoIcons.heart_fill,
+                                color: Colors.redAccent.shade700,
+                                // color: Color(0xff880808),
+                                size: 24,
+                              )
+                            : Icon(
+                                CupertinoIcons.heart,
+                                color: Colors.white,
+                                size: 24,
+                              ),
                       );
                     },
                   ),
@@ -121,6 +106,7 @@ class ProductItem extends StatelessWidget {
           // maxLines: 1,
           style: Theme.of(context).textTheme.bodySmall!.copyWith(
             color: Colors.black26,
+
             fontSize: 13,
             fontWeight: FontWeight.bold,
           ),

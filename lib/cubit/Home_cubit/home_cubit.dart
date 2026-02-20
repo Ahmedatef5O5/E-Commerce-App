@@ -2,6 +2,7 @@ import 'package:ecommerce_app/models/carousel_item_model.dart';
 import 'package:ecommerce_app/models/product_item_model.dart';
 import 'package:ecommerce_app/services/auth_services.dart';
 import 'package:ecommerce_app/services/home_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'home_state.dart';
@@ -24,11 +25,18 @@ class HomeCubit extends Cubit<HomeState> {
 
     try {
       final products = await homeServices.fetchProducts();
-      final homeCarouselSlideItems = await homeServices.fetchCarouselItems();
+      final carouselItems = await homeServices.fetchCarouselItems();
+
+      final currentUser = authServices.getCurrentUser();
+      final favorites = await homeServices.fetchFavoriteProducts(
+        currentUser!.uid,
+      );
+
       emit(
         HomeSuccessLoaded(
           productItems: products,
-          homeCarouselSlideItem: homeCarouselSlideItems,
+          homeCarouselSlideItem: carouselItems,
+          favoriteProductIds: favorites.map((e) => e.id).toSet(),
         ),
       );
     } catch (e) {
@@ -49,7 +57,11 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> setFavorite(ProductItemModel product) async {
-    emit(SetFavoriteLoading());
+    // emit(SetFavoriteLoading());
+    if (state is! HomeSuccessLoaded) return;
+    final currentState = state as HomeSuccessLoaded;
+    emit(currentState.copyWith(loadingFavoriteId: product.id));
+
     try {
       final currentUser = authServices.getCurrentUser();
       final favoriteProducts = await homeServices.fetchFavoriteProducts(
@@ -66,10 +78,22 @@ class HomeCubit extends Cubit<HomeState> {
               userId: currentUser.uid,
               product: product,
             );
-
-      emit(SetFavoriteSuccessLoaded(!isFavorite));
+      final updateFavorites = Set<String>.from(currentState.favoriteProductIds);
+      isFavorite
+          ? updateFavorites.remove(product.id)
+          : updateFavorites.add(product.id);
+      emit(
+        currentState.copyWith(
+          favoriteProductIds: updateFavorites,
+          loadingFavoriteId: null,
+        ),
+      );
+      // emit(SetFavoriteSuccessLoaded(!isFavorite));
     } catch (e) {
-      emit(SetFavoriteError(e.toString()));
+      emit(currentState.copyWith(loadingFavoriteId: null));
+      // emit(SetFavoriteError(e.toString()));
+
+      // emit(SetFavoriteError(e.toString()));
     }
   }
 }
