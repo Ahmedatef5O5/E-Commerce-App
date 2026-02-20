@@ -2,6 +2,7 @@ import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Home_cubit/home_cubit.dart';
 import 'package:ecommerce_app/models/product_details_args_model.dart';
 import 'package:ecommerce_app/widgets/product_item.dart';
+import 'package:ecommerce_app/widgets/product_skeleton_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,15 +16,30 @@ class ProductGridViewSliver extends StatelessWidget {
       bloc: BlocProvider.of<HomeCubit>(context),
       builder: (context, state) {
         if (state is HomeLoading) {
-          return SliverFillRemaining(
-            hasScrollBody: false,
-            child: SizedBox(
-              height: MediaQuery.of(context).size.height * 0.5,
-              child: Center(
-                child: CupertinoActivityIndicator(color: Colors.black12),
+          return SliverPadding(
+            padding: const EdgeInsets.symmetric(horizontal: 12),
+            sliver: SliverGrid(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 12,
+                childAspectRatio: 0.74,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (_, __) => const ProductSkeletonItem(),
+                childCount: 6,
               ),
             ),
           );
+
+          // return SliverFillRemaining(
+          //   hasScrollBody: false,
+          //   child: SizedBox(
+          //     height: MediaQuery.of(context).size.height * 0.5,
+          //     child: Center(
+          //       child: CupertinoActivityIndicator(color: Colors.black12),
+          //     ),
+          //   ),
+          // );
         } else if (state is HomeSuccessLoaded) {
           return SliverMainAxisGroup(
             slivers: [
