@@ -1,4 +1,3 @@
-import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/cubit/Product_details_cubit/product_details_cubit.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
 import 'package:ecommerce_app/widgets/custom_elevated_button.dart';

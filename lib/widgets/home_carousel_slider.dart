@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/cubit/Home_cubit/home_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,17 +35,20 @@ class HomeCarouselSlider extends StatelessWidget {
                   ),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(18),
-                    child: Image.asset(
-                      state.homeCarouselSlideItem[index].imgPath,
-                      fit: BoxFit.cover,
-                    ),
 
-                    // CachedNetworkImage(
-                    //   imageUrl: homeCarouselSlideItem[index].imgPath,
+                    // child: Image.asset(
+                    //   state.homeCarouselSlideItem[index].imgPath,
                     //   fit: BoxFit.cover,
-                    //   placeholder: (context, url) =>
-                    //       const Center(child: CircularProgressIndicator.adaptive()),
                     // ),
+                    child: CachedNetworkImage(
+                      imageUrl: state.homeCarouselSlideItem[index].imgPath,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => const Center(
+                        child: CupertinoActivityIndicator(
+                          color: Colors.black12,
+                        ),
+                      ),
+                    ),
                   ),
                 )),
                 options: FlutterCarouselOptions(

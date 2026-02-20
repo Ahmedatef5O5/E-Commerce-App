@@ -22,7 +22,7 @@ class HomeCubit extends Cubit<HomeState> {
 
     try {
       final products = await homeServices.fetchProducts();
-      final homeCarouselSlideItems = homeCarouselSlideItem;
+      final homeCarouselSlideItems = await homeServices.fetchCarouselItems();
       emit(
         HomeSuccessLoaded(
           productItems: products,
