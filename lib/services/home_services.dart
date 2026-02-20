@@ -13,7 +13,7 @@ class HomeServicesImpl implements HomeServices {
   Future<List<ProductItemModel>> fetchProducts() async {
     final res = await firestoreServices.getCollection<ProductItemModel>(
       path: ApiPaths.products(),
-      builder: (data, documentId) => ProductItemModel.fromMap(data, documentId),
+      builder: (data, documentId) => ProductItemModel.fromMap(data),
     );
     return res;
   }

@@ -6,7 +6,7 @@ class AddToCartModel {
   final ProductSize size;
   final int quantity;
 
-  AddToCartModel({
+  const AddToCartModel({
     required this.id,
     required this.product,
     required this.size,
@@ -28,6 +28,28 @@ class AddToCartModel {
   }
 
   double get totalPrice => product.price * quantity;
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'product': product.toMap(),
+      'size': size.name,
+      'quantity': quantity,
+    };
+  }
+
+  factory AddToCartModel.fromMap(Map<String, dynamic> map) {
+    return AddToCartModel(
+      id: map['id'] as String,
+      product: ProductItemModel.fromMap(map['product']),
+      size: ProductSize.fromString(map['size']),
+      quantity: map['quantity'] as int,
+    );
+  }
+
+  // String toJson() => json.encode(toMap());
+
+  // factory AddToCartModel.fromJson(String source) => AddToCartModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
 List<AddToCartModel> dummyCart = [];

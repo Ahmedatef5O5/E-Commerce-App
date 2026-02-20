@@ -76,12 +76,13 @@ class AddToCartSection extends StatelessWidget {
                     color: Colors.white,
                     size: 22,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     if (cubit.selectedSize != null) {
-                      final newItem = cubit.addToCart(productId);
-                      if (newItem != null) {
-                        context.read<CartCubit>().addProductToCart(newItem);
-                      }
+                      await cubit.addToCart(productId);
+                      // final newItem = cubit.addToCart(productId);
+                      // if (newItem != null) {
+                      //   context.read<CartCubit>().addProductToCart(newItem);
+                      // }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Please select size')),

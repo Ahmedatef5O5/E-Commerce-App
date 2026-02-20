@@ -1,4 +1,32 @@
-enum ProductSize { S, M, L, XL, XXL }
+enum ProductSize {
+  S,
+  M,
+  L,
+  XL,
+  XXL;
+
+  static ProductSize fromString(String size) {
+    switch (size.toUpperCase()) {
+      case 'S':
+        return ProductSize.S;
+
+      case 'M':
+        return ProductSize.M;
+
+      case 'L':
+        return ProductSize.L;
+
+      case 'XL':
+        return ProductSize.XL;
+
+      case 'XXL':
+        return ProductSize.XXL;
+
+      default:
+        return ProductSize.S;
+    }
+  }
+}
 
 class ProductItemModel {
   final String id;
@@ -59,13 +87,10 @@ class ProductItemModel {
     };
   }
 
-  factory ProductItemModel.fromMap(
-    Map<String, dynamic> map,
-    String documnetId,
-  ) {
+  factory ProductItemModel.fromMap(Map<String, dynamic> map) {
     return ProductItemModel(
-      id: documnetId,
-      // id: map['id'] as String,
+      // id: documnetId,
+      id: map['id'] as String,
       name: map['name'] as String,
       imgUrl: map['imgUrl'] as String,
       description: map['description'] as String,

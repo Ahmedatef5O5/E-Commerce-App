@@ -31,6 +31,12 @@ final class ProductAddedToCart extends ProductDetailsState {
   ProductAddedToCart({required this.productId});
 }
 
+final class ProductAddToCartFailure extends ProductDetailsState {
+  final String message;
+
+  ProductAddToCartFailure(this.message);
+}
+
 final class ProductDetailsFailureLoaded extends ProductDetailsState {
   final String message;
 
