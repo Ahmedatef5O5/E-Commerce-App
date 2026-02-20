@@ -3,7 +3,6 @@ import 'package:ecommerce_app/cubit/Home_cubit/home_cubit.dart';
 import 'package:ecommerce_app/models/product_details_args_model.dart';
 import 'package:ecommerce_app/widgets/product_item.dart';
 import 'package:ecommerce_app/widgets/product_skeleton_item.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

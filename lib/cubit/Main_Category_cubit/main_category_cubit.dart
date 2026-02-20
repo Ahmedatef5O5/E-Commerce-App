@@ -16,8 +16,14 @@ class MainCategoryCubit extends Cubit<MainCategoryState> {
         path: ApiPaths.categories(),
         builder: (data, documentId) => CategoryModel.fromMap(data),
       );
+      if (isClosed) return;
       emit(MainCategorySuccessLoaded(categories));
+
+      // if (!isClosed) {
+      // emit(MainCategorySuccessLoaded(categories));
+      // } // another style for isClosed
     } catch (e) {
+      if (isClosed) return;
       emit(MainCategoryFailure(e.toString()));
     }
   }
