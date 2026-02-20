@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce_app/cubit/Home_cubit/home_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import '../models/product_item_model.dart';
 
@@ -9,6 +11,7 @@ class ProductItem extends StatelessWidget {
   final ProductItemModel productItem;
   @override
   Widget build(BuildContext context) {
+    final homeCubit = BlocProvider.of<HomeCubit>(context);
     return Column(
       children: [
         Stack(
@@ -48,10 +51,54 @@ class ProductItem extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 18,
                   backgroundColor: Colors.grey[600],
-                  child: Icon(
-                    CupertinoIcons.heart,
-                    color: Colors.white,
-                    size: 24,
+                  child: BlocBuilder<HomeCubit, HomeState>(
+                    bloc: homeCubit,
+                    buildWhen: (previous, current) =>
+                        current is SetFavoriteLoading ||
+                        current is SetFavoriteSuccessLoaded ||
+                        current is SetFavoriteError,
+                    builder: (context, state) {
+                      if (state is SetFavoriteLoading) {
+                        return const CupertinoActivityIndicator(
+                          color: Colors.white,
+                        );
+                      } else if (state is SetFavoriteSuccessLoaded) {
+                        return state.isFavorite
+                            ? InkWell(
+                                onTap: () async =>
+                                    await homeCubit.setFavorite(productItem),
+                                child: Icon(
+                                  CupertinoIcons.heart_fill,
+                                  color: Colors.red,
+                                  size: 24,
+                                ),
+                              )
+                            : InkWell(
+                                onTap: () async =>
+                                    await homeCubit.setFavorite(productItem),
+                                child: Icon(
+                                  Icons.favorite_border_outlined,
+                                  color: Colors.white,
+                                  size: 24,
+                                ),
+                              );
+                      } else if (state is SetFavoriteError) {
+                        return Icon(
+                          Icons.error_outline,
+                          color: Colors.red,
+                          size: 24,
+                        );
+                      }
+                      return InkWell(
+                        onTap: () async =>
+                            await homeCubit.setFavorite(productItem),
+                        child: Icon(
+                          Icons.favorite_border_outlined,
+                          color: Colors.white,
+                          size: 24,
+                        ),
+                      );
+                    },
                   ),
                 ),
               ),

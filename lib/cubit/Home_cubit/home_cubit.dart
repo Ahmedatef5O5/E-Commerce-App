@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/models/carousel_item_model.dart';
 import 'package:ecommerce_app/models/product_item_model.dart';
+import 'package:ecommerce_app/services/auth_services.dart';
 import 'package:ecommerce_app/services/home_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +9,7 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   final homeServices = HomeServicesImpl();
+  final authServices = AuthServicesImpl();
 
   void changeCarouselIndex(int index) {
     if (state is HomeSuccessLoaded) {
@@ -44,5 +46,30 @@ class HomeCubit extends Cubit<HomeState> {
     //   }
     // }
     // );
+  }
+
+  Future<void> setFavorite(ProductItemModel product) async {
+    emit(SetFavoriteLoading());
+    try {
+      final currentUser = authServices.getCurrentUser();
+      final favoriteProducts = await homeServices.fetchFavoriteProducts(
+        currentUser!.uid,
+      );
+
+      final isFavorite = favoriteProducts.any((item) => item.id == product.id);
+      isFavorite
+          ? await homeServices.removeFavoriteProduct(
+              productId: product.id,
+              userId: currentUser.uid,
+            )
+          : homeServices.addFavoriteProduct(
+              userId: currentUser.uid,
+              product: product,
+            );
+
+      emit(SetFavoriteSuccessLoaded(!isFavorite));
+    } catch (e) {
+      emit(SetFavoriteError(e.toString()));
+    }
   }
 }

@@ -13,6 +13,10 @@ class HomeCarouselSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       bloc: BlocProvider.of<HomeCubit>(context),
+      buildWhen: (previous, current) =>
+          current is HomeSuccessLoaded ||
+          current is HomeFailureLoaded ||
+          current is HomeLoading,
       builder: (context, state) {
         if (state is HomeLoading) {
           return SizedBox(

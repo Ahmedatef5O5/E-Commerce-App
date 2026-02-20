@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/cubit/Main_Category_cubit/main_category_cubit.dart';
-import 'package:ecommerce_app/models/category_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,7 +68,9 @@ class CategoryTabView extends StatelessWidget {
                                 // dummyCategories[index].imgPath,
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) => const Center(
-                                  child: CircularProgressIndicator.adaptive(),
+                                  child: CupertinoActivityIndicator(
+                                    color: Colors.black12,
+                                  ),
                                 ),
                                 // child: Image.asset(
                                 //   dummyCategories[index].imgPath,

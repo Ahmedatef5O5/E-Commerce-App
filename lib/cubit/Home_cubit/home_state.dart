@@ -26,3 +26,16 @@ final class HomeFailureLoaded extends HomeState {
   final String message;
   HomeFailureLoaded(this.message);
 }
+
+final class SetFavoriteLoading extends HomeState {}
+
+final class SetFavoriteSuccessLoaded extends HomeState {
+  final bool isFavorite;
+
+  SetFavoriteSuccessLoaded(this.isFavorite);
+}
+
+final class SetFavoriteError extends HomeState {
+  final String message;
+  SetFavoriteError(this.message);
+}
