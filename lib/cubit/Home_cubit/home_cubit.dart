@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/models/carousel_item_model.dart';
 import 'package:ecommerce_app/models/product_item_model.dart';
 import 'package:ecommerce_app/services/auth_services.dart';
+import 'package:ecommerce_app/services/favorite_services.dart';
 import 'package:ecommerce_app/services/home_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -10,7 +11,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   final homeServices = HomeServicesImpl();
   final authServices = AuthServicesImpl();
-
+  final favoriteServices = FavoriteServicesImpl();
   void changeCarouselIndex(int index) {
     if (state is HomeSuccessLoaded) {
       // final currentState = state as HomeSuccessLoaded;
@@ -27,9 +28,7 @@ class HomeCubit extends Cubit<HomeState> {
       final carouselItems = await homeServices.fetchCarouselItems();
 
       final currentUser = authServices.getCurrentUser();
-      final favorites = await homeServices.fetchFavoriteProducts(
-        currentUser!.uid,
-      );
+      final favorites = await favoriteServices.getFavorites(currentUser!.uid);
 
       emit(
         HomeSuccessLoaded(
@@ -41,18 +40,6 @@ class HomeCubit extends Cubit<HomeState> {
     } catch (e) {
       emit(HomeFailureLoaded(e.toString()));
     }
-
-    // Future.delayed(const Duration(seconds: 1), () {
-    //   if (!isClosed) {
-    //     emit(
-    //       HomeSuccessLoaded(
-    //         productItems: dummyProducts,
-    //         homeCarouselSlideItem: homeCarouselSlideItem,
-    //       ),
-    //     );
-    //   }
-    // }
-    // );
   }
 
   Future<void> setFavorite(ProductItemModel product) async {
@@ -77,29 +64,8 @@ class HomeCubit extends Cubit<HomeState> {
     try {
       final currentUser = authServices.getCurrentUser();
       isFavorite
-          ? await homeServices.removeFavoriteProduct(
-              userId: currentUser!.uid,
-              productId: product.id,
-            )
-          : await homeServices.addFavoriteProduct(
-              userId: currentUser!.uid,
-              product: product,
-            );
-
-      // final isFavorite = favoriteProducts.any((item) => item.id == product.id);
-      // isFavorite
-      //     ? await homeServices.removeFavoriteProduct(
-      //         productId: product.id,
-      //         userId: currentUser.uid,
-      //       )
-      //     : homeServices.addFavoriteProduct(
-      //         userId: currentUser.uid,
-      //         product: product,
-      //       );
-      // final updateFavorites = Set<String>.from(currentState.favoriteProductIds);
-      // isFavorite
-      //     ? updateFavorites.remove(product.id)
-      //     : updateFavorites.add(product.id);
+          ? await favoriteServices.removeFavorite(currentUser!.uid, product.id)
+          : await favoriteServices.addFavorite(currentUser!.uid, product);
 
       emit(
         currentState.copyWith(
@@ -107,7 +73,6 @@ class HomeCubit extends Cubit<HomeState> {
           loadingFavoriteId: null,
         ),
       );
-      // emit(SetFavoriteSuccessLoaded(!isFavorite));
     } catch (e) {
       // rollback
       emit(
@@ -116,9 +81,6 @@ class HomeCubit extends Cubit<HomeState> {
           // loadingFavoriteId: null,
         ),
       );
-      // emit(SetFavoriteError(e.toString()));
-
-      // emit(SetFavoriteError(e.toString()));
     }
   }
 }

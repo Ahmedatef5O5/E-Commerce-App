@@ -6,15 +6,6 @@ import 'package:ecommerce_app/utilities/api_paths.dart';
 
 abstract class HomeServices {
   Future<List<ProductItemModel>> fetchProducts();
-  Future<List<ProductItemModel>> fetchFavoriteProducts(String userId);
-  Future<void> addFavoriteProduct({
-    required ProductItemModel product,
-    required String userId,
-  });
-  Future<void> removeFavoriteProduct({
-    required String productId,
-    required String userId,
-  });
   Future<List<CarouselSlideModel>> fetchCarouselItems();
   Future<List<CategoryModel>> fetchCategories();
 }
@@ -47,35 +38,5 @@ class HomeServicesImpl implements HomeServices {
       builder: (data, documentId) => CategoryModel.fromMap(data),
     );
     return res;
-  }
-
-  @override
-  Future<void> addFavoriteProduct({
-    required ProductItemModel product,
-    required String userId,
-  }) async {
-    await firestoreServices.setData(
-      path: ApiPaths.favoriteProduct(userId, product.id),
-      data: product.toMap(),
-    );
-  }
-
-  @override
-  Future<void> removeFavoriteProduct({
-    required String productId,
-    required String userId,
-  }) async {
-    await firestoreServices.deleteData(
-      path: ApiPaths.favoriteProduct(userId, productId),
-    );
-  }
-
-  @override
-  Future<List<ProductItemModel>> fetchFavoriteProducts(String userId) async {
-    final result = await firestoreServices.getCollection(
-      path: ApiPaths.favoriteProducts(userId),
-      builder: (data, documentId) => ProductItemModel.fromMap(data),
-    );
-    return result;
   }
 }
