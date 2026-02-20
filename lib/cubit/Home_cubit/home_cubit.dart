@@ -60,37 +60,63 @@ class HomeCubit extends Cubit<HomeState> {
     // emit(SetFavoriteLoading());
     if (state is! HomeSuccessLoaded) return;
     final currentState = state as HomeSuccessLoaded;
-    emit(currentState.copyWith(loadingFavoriteId: product.id));
+    final isFavorite = currentState.favoriteProductIds.contains(product.id);
+
+    // optimistic update
+    final updatedFavorites = Set<String>.from(currentState.favoriteProductIds);
+    isFavorite
+        ? updatedFavorites.remove(product.id)
+        : updatedFavorites.add(product.id);
+
+    emit(
+      currentState.copyWith(
+        favoriteProductIds: updatedFavorites,
+        loadingFavoriteId: product.id,
+      ),
+    );
 
     try {
       final currentUser = authServices.getCurrentUser();
-      final favoriteProducts = await homeServices.fetchFavoriteProducts(
-        currentUser!.uid,
-      );
-
-      final isFavorite = favoriteProducts.any((item) => item.id == product.id);
       isFavorite
           ? await homeServices.removeFavoriteProduct(
+              userId: currentUser!.uid,
               productId: product.id,
-              userId: currentUser.uid,
             )
-          : homeServices.addFavoriteProduct(
-              userId: currentUser.uid,
+          : await homeServices.addFavoriteProduct(
+              userId: currentUser!.uid,
               product: product,
             );
-      final updateFavorites = Set<String>.from(currentState.favoriteProductIds);
-      isFavorite
-          ? updateFavorites.remove(product.id)
-          : updateFavorites.add(product.id);
+
+      // final isFavorite = favoriteProducts.any((item) => item.id == product.id);
+      // isFavorite
+      //     ? await homeServices.removeFavoriteProduct(
+      //         productId: product.id,
+      //         userId: currentUser.uid,
+      //       )
+      //     : homeServices.addFavoriteProduct(
+      //         userId: currentUser.uid,
+      //         product: product,
+      //       );
+      // final updateFavorites = Set<String>.from(currentState.favoriteProductIds);
+      // isFavorite
+      //     ? updateFavorites.remove(product.id)
+      //     : updateFavorites.add(product.id);
+
       emit(
         currentState.copyWith(
-          favoriteProductIds: updateFavorites,
+          favoriteProductIds: updatedFavorites,
           loadingFavoriteId: null,
         ),
       );
       // emit(SetFavoriteSuccessLoaded(!isFavorite));
     } catch (e) {
-      emit(currentState.copyWith(loadingFavoriteId: null));
+      // rollback
+      emit(
+        currentState.copyWith(
+          favoriteProductIds: currentState.favoriteProductIds,
+          // loadingFavoriteId: null,
+        ),
+      );
       // emit(SetFavoriteError(e.toString()));
 
       // emit(SetFavoriteError(e.toString()));

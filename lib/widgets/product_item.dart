@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/cubit/Home_cubit/home_cubit.dart';
+import 'package:ecommerce_app/widgets/animated_favorite_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,28 +61,16 @@ class ProductItem extends StatelessWidget {
                       final isFavorite = state.favoriteProductIds.contains(
                         productItem.id,
                       );
-                      final isLoading =
-                          state.loadingFavoriteId == productItem.id;
-                      if (isLoading) {
-                        return const CupertinoActivityIndicator(
-                          color: Colors.white,
-                        );
-                      }
-                      return GestureDetector(
-                        onTap: () async =>
-                            await homeCubit.setFavorite(productItem),
-                        child: isFavorite
-                            ? Icon(
-                                CupertinoIcons.heart_fill,
-                                color: Colors.redAccent.shade700,
-                                // color: Color(0xff880808),
-                                size: 24,
-                              )
-                            : Icon(
-                                CupertinoIcons.heart,
-                                color: Colors.white,
-                                size: 24,
-                              ),
+                      // final isLoading =
+                      //     state.loadingFavoriteId == productItem.id;
+                      // if (isLoading) {
+                      //   return const CupertinoActivityIndicator(
+                      //     color: Colors.white,
+                      //   );
+                      // }
+                      return AnimatedFavoriteIcon(
+                        isFavorite: isFavorite,
+                        onTap: () => homeCubit.setFavorite(productItem),
                       );
                     },
                   ),
