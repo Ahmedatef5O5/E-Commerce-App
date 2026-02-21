@@ -52,11 +52,23 @@ class OrderView extends StatelessWidget {
                                   ),
                                 ),
                                 itemBuilder: (context, index) {
-                                  return CartItem(
-                                    cartItem: state.cartItems[index],
+                                  return Dismissible(
+                                    key: Key(state.cartItems[index].id),
+                                    direction: DismissDirection.endToStart,
+                                    background: _buildDeleteBackground(),
+                                    onDismissed: (direction) => context
+                                        .read<CartCubit>()
+                                        .removeFromCart(
+                                          state.cartItems[index].id,
+                                        ),
+
+                                    child: CartItem(
+                                      cartItem: state.cartItems[index],
+                                    ),
                                   );
                                 },
                               ),
+
                               Gap(35),
                             ],
                           ),
@@ -78,6 +90,36 @@ class OrderView extends StatelessWidget {
           return Center(child: Text('Something went wrong!'));
         }
       },
+    );
+  }
+
+  Widget _buildDeleteBackground() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        margin: const EdgeInsetsDirectional.symmetric(vertical: 2),
+        decoration: BoxDecoration(
+          color: Colors.redAccent.withValues(alpha: 0.1),
+          borderRadius: BorderRadius.circular(14),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(CupertinoIcons.delete, color: Colors.redAccent[700], size: 28),
+            const Gap(4),
+            Text(
+              "Remove",
+              style: TextStyle(
+                color: Colors.redAccent[700],
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
