@@ -63,7 +63,7 @@ class CheckOutSection extends StatelessWidget {
             CustomElevatedButton(
               height: 55,
               onPressed: () {
-                context.read<CartCubit>().getCartItem();
+                context.read<CartCubit>().listenToCartItems();
                 Navigator.of(
                   context,
                   rootNavigator: true,

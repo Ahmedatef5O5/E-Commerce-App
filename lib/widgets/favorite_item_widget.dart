@@ -99,8 +99,8 @@ class FavoriteItemWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          height: 140,
-          width: 130,
+          height: 110,
+          width: 100,
           decoration: BoxDecoration(
             color: CupertinoColors.systemGrey5,
             borderRadius: BorderRadius.circular(14),
@@ -121,10 +121,10 @@ class FavoriteItemWidget extends StatelessWidget {
           top: 6,
           right: 6,
           child: CircleAvatar(
-            radius: 12,
+            radius: 10,
             backgroundColor: Colors.black12,
             child: AnimatedFavoriteIcon(
-              size: 19,
+              size: 17,
               isFavorite: isFavorite,
               onTap: () {},
             ),
@@ -137,7 +137,7 @@ class FavoriteItemWidget extends StatelessWidget {
   Widget _buildProductInfo(BuildContext context) {
     return Expanded(
       child: SizedBox(
-        height: 120,
+        height: 100,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceAround,

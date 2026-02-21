@@ -20,7 +20,7 @@ void main() async {
         BlocProvider(
           create: (context) => FavoriteCubit()..getFavoriteProducts(),
         ),
-        BlocProvider(create: (context) => CartCubit()..getCartItem()),
+        BlocProvider(create: (context) => CartCubit()..listenToCartItems()),
       ],
       child: const EcommerceApp(),
     ),
