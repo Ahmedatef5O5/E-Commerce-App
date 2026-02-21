@@ -37,15 +37,17 @@ class ProductDetailsHeader extends StatelessWidget {
               builder: (context, state) {
                 if (state is QuantityCounterLoaded) {
                   return CustomProductCounter(
-                    cubit: cubit,
                     quantity: state.value,
-                    productId: productId,
+                    onIncrement: () => cubit.incrementQuantity(productId),
+                    onDecrement: () => cubit.decrementQuantity(productId),
                   );
                 } else if (state is ProductDetailsSuccessLoaded) {
                   return CustomProductCounter(
-                    cubit: cubit,
-                    quantity: 1, // initail value for Quantity
-                    productId: productId,
+                    quantity: state.quantity,
+                    onIncrement: () =>
+                        cubit.incrementQuantity(state.product.id),
+                    onDecrement: () =>
+                        cubit.decrementQuantity(state.product.id),
                   );
                 } else {
                   // return const CustomProductCounter(quantity: 0);

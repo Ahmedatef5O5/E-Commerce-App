@@ -90,14 +90,14 @@ class ProductItemModel {
   factory ProductItemModel.fromMap(Map<String, dynamic> map) {
     return ProductItemModel(
       // id: documnetId,
-      id: map['id'] as String,
-      name: map['name'] as String,
-      imgUrl: map['imgUrl'] as String,
-      description: map['description'] as String,
-      price: (map['price'] as num?)?.toDouble() as double,
-      isFavorite: map['isFavorite'] as bool,
-      category: map['category'] as String,
-      averageRate: (map['averageRate'] as num?)?.toDouble() as double,
+      id: map['id']?.toString() ?? '',
+      name: map['name']?.toString() ?? 'No Name',
+      imgUrl: map['imgUrl']?.toString() ?? '',
+      description: map['description']?.toString() ?? 'No Description available',
+      price: (map['price'] as num? ?? 00).toDouble(),
+      isFavorite: map['isFavorite'] as bool? ?? false,
+      category: map['category']?.toString() ?? 'General',
+      averageRate: (map['averageRate'] as num? ?? 4.5).toDouble(),
     );
   }
 

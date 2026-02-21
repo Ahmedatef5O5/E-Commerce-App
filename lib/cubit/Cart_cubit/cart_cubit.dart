@@ -26,7 +26,7 @@ class CartCubit extends Cubit<CartState> {
         .fetchCartItems(currentUser.uid)
         .listen(
           (cartItems) {
-            final subtotal = dummyCart.fold<double>(
+            final subtotal = cartItems.fold<double>(
               0,
               (previousValue, item) =>
                   previousValue + item.product.price * item.quantity,
@@ -39,10 +39,10 @@ class CartCubit extends Cubit<CartState> {
         );
   }
 
-  double get _subtotal => dummyCart.fold<double>(
-    0,
-    (previousValue, item) => previousValue + item.product.price * item.quantity,
-  );
+  // double get _subtotal => dummyCart.fold<double>(
+  //   0,
+  //   (previousValue, item) => previousValue + item.product.price * item.quantity,
+  // );
 
   // void getCartItem() async {
   //   emit(CartLoading());
@@ -72,32 +72,37 @@ class CartCubit extends Cubit<CartState> {
   //   emit(CartLoaded(cartItems: List.from(dummyCart), subtotal: _subtotal));
   // }
 
-  void incrementQuantity(String cartItemId, [int? initialValue]) {
-    if (initialValue != null) {
-      quantity = initialValue;
-    }
-    quantity++;
-    final index = dummyCart.indexWhere((item) => item.product.id == cartItemId);
-    dummyCart[index] = dummyCart[index].copyWith(quantity: quantity);
-    emit(SubtotalUpdated(subtotal: _subtotal));
+  void incrementQuantity(AddToCartModel product) {
+    final uid = authServices.getCurrentUser()!.uid;
+    cartServices.updateQuantity(uid, product.id, product.quantity + 1);
 
-    emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
+    // if (initialValue != null) {
+    //   quantity = initialValue;
+    // }
+    // quantity++;
+    // final index = dummyCart.indexWhere((item) => item.product.id == cartItemId);
+    // dummyCart[index] = dummyCart[index].copyWith(quantity: quantity);
+    // emit(SubtotalUpdated(subtotal: _subtotal));
+
+    // emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
   }
 
-  void decrementQuantity(String cartItemId, [int? initialValue]) {
-    if (initialValue != null) {
-      quantity = initialValue;
+  void decrementQuantity(AddToCartModel product) {
+    final uid = authServices.getCurrentUser()!.uid;
+
+    if (product.quantity > 1) {
+      cartServices.updateQuantity(uid, product.id, product.quantity - 1);
+    } else {
+      // cartServices.deleteCartItems(uid, product.id);
     }
-    if (quantity > 1) {
-      quantity--;
-      final index = dummyCart.indexWhere(
-        (item) => item.product.id == cartItemId,
-      );
-      dummyCart[index] = dummyCart[index].copyWith(quantity: quantity);
-      emit(SubtotalUpdated(subtotal: _subtotal));
-      emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
-    }
-    emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
+    //   final index = dummyCart.indexWhere(
+    //     (item) => item.product.id == cartItemId,
+    //   );
+    //   dummyCart[index] = dummyCart[index].copyWith(quantity: quantity);
+    //   emit(SubtotalUpdated(subtotal: _subtotal));
+    //   emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
+    // }
+    // emit(QuantityCounterLoaded(value: quantity, productId: cartItemId));
   }
 
   @override

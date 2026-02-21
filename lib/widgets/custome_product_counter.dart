@@ -6,15 +6,13 @@ class CustomProductCounter extends StatelessWidget {
   const CustomProductCounter({
     super.key,
     required this.quantity,
-    required this.productId,
-    this.initialValue,
-    required this.cubit,
+    required this.onIncrement,
+    required this.onDecrement,
     this.padding,
   });
   final int quantity;
-  final String productId;
-  final dynamic cubit;
-  final int? initialValue;
+  final VoidCallback onIncrement;
+  final VoidCallback onDecrement;
   final EdgeInsetsGeometry? padding;
   @override
   Widget build(BuildContext context) {
@@ -39,12 +37,10 @@ class CustomProductCounter extends StatelessWidget {
               radius: 18,
               backgroundColor: AppColors.whiteColor,
               child: InkWell(
-                onTap: () => initialValue != null
-                    ? cubit.decrementQuantity(productId, initialValue)
-                    : cubit.decrementQuantity(productId),
+                onTap: onDecrement,
                 child: Icon(
                   Icons.remove,
-                  color: quantity == 1 ? Colors.black38 : Colors.black,
+                  color: quantity <= 1 ? Colors.black38 : Colors.black,
                   size: 21,
                 ),
               ),
@@ -62,9 +58,7 @@ class CustomProductCounter extends StatelessWidget {
               radius: 18,
               backgroundColor: AppColors.whiteColor,
               child: InkWell(
-                onTap: () => initialValue != null
-                    ? cubit.incrementQuantity(productId, initialValue)
-                    : cubit.incrementQuantity(productId),
+                onTap: onIncrement,
                 child: Icon(Icons.add, color: Colors.black, size: 21),
               ),
             ),

@@ -7,19 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import '../widgets/check_out_section.dart';
 
-class OrderView extends StatefulWidget {
+class OrderView extends StatelessWidget {
   const OrderView({super.key});
-
-  @override
-  State<OrderView> createState() => _OrderViewState();
-}
-
-class _OrderViewState extends State<OrderView> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<CartCubit>().listenToCartItems();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,18 +68,7 @@ class _OrderViewState extends State<OrderView> {
                       left: 0,
                       right: 0,
                       bottom: 0,
-                      child: BlocBuilder<CartCubit, CartState>(
-                        buildWhen: (previous, current) =>
-                            current is SubtotalUpdated,
-                        builder: (context, subtotalstate) {
-                          if (subtotalstate is SubtotalUpdated) {
-                            return CheckOutSection(
-                              subtotal: subtotalstate.subtotal,
-                            );
-                          }
-                          return CheckOutSection(subtotal: state.subtotal);
-                        },
-                      ),
+                      child: CheckOutSection(subtotal: state.subtotal),
                     ),
                   ],
                 );

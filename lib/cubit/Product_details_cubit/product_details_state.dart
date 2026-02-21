@@ -8,8 +8,9 @@ final class ProductDetailsLoading extends ProductDetailsState {}
 
 final class ProductDetailsSuccessLoaded extends ProductDetailsState {
   final ProductItemModel product;
+  final int quantity;
 
-  ProductDetailsSuccessLoaded({required this.product});
+  ProductDetailsSuccessLoaded({this.quantity = 1, required this.product});
 }
 
 final class QuantityCounterLoaded extends ProductDetailsState {

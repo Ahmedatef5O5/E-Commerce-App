@@ -103,20 +103,23 @@ class CartItem extends StatelessWidget {
                                       horizontal: 2,
                                       vertical: 2,
                                     ),
-                                    quantity: state.value,
-                                    productId: cartItem.product.id,
-                                    cubit: cubit,
+                                    quantity: cartItem.quantity,
+                                    onIncrement: () =>
+                                        cubit.incrementQuantity(cartItem),
+                                    onDecrement: () =>
+                                        cubit.decrementQuantity(cartItem),
                                   );
                                 }
                                 return CustomProductCounter(
+                                  quantity: cartItem.quantity,
+                                  onIncrement: () =>
+                                      cubit.incrementQuantity(cartItem),
+                                  onDecrement: () =>
+                                      cubit.decrementQuantity(cartItem),
                                   padding: EdgeInsets.symmetric(
                                     horizontal: 2,
                                     vertical: 2,
                                   ),
-                                  quantity: cartItem.quantity,
-                                  productId: cartItem.product.id,
-                                  cubit: cubit,
-                                  initialValue: cartItem.quantity,
                                 );
                               },
                             ),
@@ -240,24 +243,27 @@ class CartItem extends StatelessWidget {
                             builder: (context, state) {
                               if (state is QuantityCounterLoaded) {
                                 return CustomProductCounter(
+                                  quantity: cartItem.quantity,
+                                  onIncrement: () =>
+                                      cubit.incrementQuantity(cartItem),
+                                  onDecrement: () =>
+                                      cubit.decrementQuantity(cartItem),
                                   padding: EdgeInsets.symmetric(
                                     horizontal: 2,
                                     vertical: 2,
                                   ),
-                                  quantity: state.value,
-                                  productId: cartItem.product.id,
-                                  cubit: cubit,
                                 );
                               }
                               return CustomProductCounter(
+                                quantity: cartItem.quantity,
+                                onIncrement: () =>
+                                    cubit.incrementQuantity(cartItem),
+                                onDecrement: () =>
+                                    cubit.decrementQuantity(cartItem),
                                 padding: EdgeInsets.symmetric(
                                   horizontal: 2,
                                   vertical: 2,
                                 ),
-                                quantity: cartItem.quantity,
-                                productId: cartItem.product.id,
-                                cubit: cubit,
-                                initialValue: cartItem.quantity,
                               );
                             },
                           ),

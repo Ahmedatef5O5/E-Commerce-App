@@ -4,6 +4,9 @@ import 'package:ecommerce_app/utilities/api_paths.dart';
 
 abstract class CartServices {
   Stream<List<AddToCartModel>> fetchCartItems(String userId);
+
+  Future<void> deleteCartItems(String userId, String cartItemId);
+  Future<void> updateQuantity(String userId, String cartItemId, int quantity);
 }
 
 class CartServicesImpl implements CartServices {
@@ -12,6 +15,25 @@ class CartServicesImpl implements CartServices {
   Stream<List<AddToCartModel>> fetchCartItems(String userId) =>
       firestoreServices.collectionStream(
         path: ApiPaths.cartItems(userId),
-        builder: (data, documentId) => AddToCartModel.fromMap(data),
+        builder: (data, documentId) {
+          data['id'] = documentId;
+          return AddToCartModel.fromMap(data);
+        },
+      );
+
+  @override
+  Future<void> updateQuantity(
+    String userId,
+    String cartItemId,
+    int quantity,
+  ) async => await firestoreServices.updateData(
+    path: ApiPaths.cartItem(userId, cartItemId),
+    data: {'quantity': quantity},
+  );
+
+  @override
+  Future<void> deleteCartItems(String userId, String cartItemId) async =>
+      await firestoreServices.deleteData(
+        path: ApiPaths.cartItem(userId, cartItemId),
       );
 }
