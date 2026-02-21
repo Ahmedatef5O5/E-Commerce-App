@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 class AnimatedFavoriteIcon extends StatefulWidget {
   final bool isFavorite;
   final VoidCallback onTap;
-
+  final double? size;
   const AnimatedFavoriteIcon({
     super.key,
     required this.isFavorite,
     required this.onTap,
+    this.size,
   });
 
   @override
@@ -59,7 +60,7 @@ class _AnimatedFavoriteIconState extends State<AnimatedFavoriteIcon>
         child: Icon(
           widget.isFavorite ? Icons.favorite : Icons.favorite_border,
           color: widget.isFavorite ? Colors.redAccent[700] : Colors.white,
-          size: 24,
+          size: widget.size ?? 24,
         ),
       ),
     );

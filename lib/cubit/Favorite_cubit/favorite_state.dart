@@ -7,9 +7,9 @@ final class FavoriteInitial extends FavoriteState {}
 final class FavoriteLoading extends FavoriteState {}
 
 final class FavoriteSuccessLoaded extends FavoriteState {
-  final List<ProductItemModel> productItems;
+  final List<ProductItemModel> favoriteProducts;
 
-  FavoriteSuccessLoaded(this.productItems);
+  FavoriteSuccessLoaded(this.favoriteProducts);
 }
 
 final class FavoriteFailure extends FavoriteState {
