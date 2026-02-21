@@ -1,10 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/cubit/Home_cubit/home_cubit.dart';
-import 'package:ecommerce_app/widgets/animated_favorite_icon.dart';
+import 'package:ecommerce_app/widgets/favorite_item_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gap/gap.dart';
 import '../utilities/app_colors.dart';
 
 class FavoriteView extends StatelessWidget {
@@ -23,127 +21,16 @@ class FavoriteView extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 12),
         child: ListView.separated(
-          physics: const BouncingScrollPhysics(),
+          key: ValueKey(favoriteProducts.length),
+          physics: const AlwaysScrollableScrollPhysics(
+            parent: BouncingScrollPhysics(),
+          ),
           itemCount: favoriteProducts.length,
           itemBuilder: (context, index) {
             final product = favoriteProducts[index];
-            return Padding(
-              padding: const EdgeInsetsDirectional.only(bottom: 10),
-              child: Card(
-                elevation: 0,
-                color: AppColors.whiteColor,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Stack(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.zero,
-                          height: 140,
-                          width: 130,
-                          decoration: BoxDecoration(
-                            color: CupertinoColors.systemGrey5,
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(12.0),
-                              child: CachedNetworkImage(
-                                imageUrl: product.imgUrl,
-                                height: 180,
-                                width: 150,
-                                fit: BoxFit.contain,
-                                placeholder: (context, url) => const Center(
-                                  // child: CircularProgressIndicator.adaptive(),
-                                  child: CupertinoActivityIndicator(
-                                    color: Colors.black12,
-                                  ),
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error, color: Colors.red),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          top: 6,
-                          right: 6,
-                          child: CircleAvatar(
-                            radius: 12,
-                            backgroundColor: Colors.black12,
-                            child: AnimatedFavoriteIcon(
-                              size: 19,
-                              isFavorite: true,
-                              onTap: () => context
-                                  .read<HomeCubit>()
-                                  .setFavorite(product),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Gap(12),
-                    SizedBox(
-                      height: 120,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-
-                        children: [
-                          Gap(2),
-                          Text(
-                            product.name,
-                            style: Theme.of(context).textTheme.bodyMedium!
-                                .copyWith(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 17,
-                                ),
-                          ),
-                          Text(
-                            product.category,
-                            // maxLines: 1,
-                            style: Theme.of(context).textTheme.bodySmall!
-                                .copyWith(
-                                  color: Colors.black26,
-
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                          ),
-                          Text(
-                            "\$${product.price}",
-                            style: Theme.of(context).textTheme.labelSmall!
-                                .copyWith(
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.w900,
-                                  fontSize: 15,
-                                ),
-                          ),
-                          Gap(2),
-                        ],
-                      ),
-                    ),
-                    Spacer(),
-                    CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Colors.red[100],
-                      child: IconButton(
-                        onPressed: () =>
-                            context.read<HomeCubit>().setFavorite(product),
-
-                        icon: Icon(
-                          CupertinoIcons.delete,
-                          color: Colors.redAccent[700],
-                          size: 20,
-                        ),
-                      ),
-                    ),
-                    Gap(12),
-                  ],
-                ),
-              ),
+            return FavoriteItemWidget(
+              product: product,
+              isFavorite: homeState.favoriteProductIds.contains(product.id),
             );
           },
           separatorBuilder: (context, index) => Divider(

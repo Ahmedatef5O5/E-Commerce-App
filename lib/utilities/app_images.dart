@@ -2,7 +2,8 @@ class AppImages {
   // splash
   static const splash = 'assets/images/splash2.svg';
 
-
+  // fav view
+  static const delete = 'assets/images/icons/delete.png';
 
   // appBar icons
   static const glassSearch = 'assets/images/icons/magnifying-glass.png';
