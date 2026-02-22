@@ -1,5 +1,21 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-enum CardType { masterCard, visaCard, paypalCard }
+enum CardType {
+  masterCard,
+  visaCard,
+  paypalCard;
+
+  static CardType fromString(String cardType) {
+    switch (cardType.toUpperCase()) {
+      case 'MASTER CARD':
+        return CardType.masterCard;
+      case 'VISA CARD':
+        return CardType.visaCard;
+      case 'PAYPAL CARD':
+        return CardType.paypalCard;
+      default:
+        return CardType.masterCard;
+    }
+  }
+}
 
 class PaymentCardModel {
   final String id;
@@ -10,7 +26,7 @@ class PaymentCardModel {
   final CardType cardType;
   final bool isChosen;
 
-  PaymentCardModel({
+  const PaymentCardModel({
     required this.id,
     required String cardNumber,
     required this.cardHolderName,
@@ -48,6 +64,34 @@ class PaymentCardModel {
       isChosen: isChosen ?? this.isChosen,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'cardNumber': _cardNumber,
+      'cardHolderName': cardHolderName,
+      'expirtyDate': expirtyDate,
+      'cvv': cvv,
+      'cardType': cardType.name.toUpperCase(),
+      'isChosen': isChosen,
+    };
+  }
+
+  factory PaymentCardModel.fromMap(Map<String, dynamic> map) {
+    return PaymentCardModel(
+      id: map['id'] as String? ?? '',
+      cardNumber: map['_cardNumber'] as String? ?? '',
+      cardHolderName: map['cardHolderName'] as String? ?? '',
+      expirtyDate: map['expirtyDate'] as String? ?? '',
+      cvv: map['cvv'] as String? ?? '',
+      cardType: CardType.fromString(map['cardType'] as String? ?? ''),
+      isChosen: map['isChosen'] as bool? ?? false,
+    );
+  }
+
+  // String toJson() => json.encode(toMap());
+
+  // factory PaymentCardModel.fromJson(String source) => PaymentCardModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
 List<PaymentCardModel> dummyPaymentCards = [
