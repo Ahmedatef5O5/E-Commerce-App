@@ -5,13 +5,37 @@ import 'package:ecommerce_app/cubit/Cart_cubit/cart_cubit.dart';
 import 'package:ecommerce_app/cubit/Favorite_cubit/favorite_cubit.dart';
 import 'package:ecommerce_app/cubit/Home_cubit/home_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
 
+Future<void> requestNotificationPermission() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+    debugPrint('User granted permission ✅');
+  } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    debugPrint('User granted provisional permission 🟡');
+  } else {
+    debugPrint('User declined or has not accepted permission ❌');
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await requestNotificationPermission();
   runApp(
     MultiBlocProvider(
       providers: [

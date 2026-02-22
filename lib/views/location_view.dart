@@ -1,12 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce_app/cubit/Choose_Location_cubit/choose_location_cubit.dart';
-import 'package:ecommerce_app/models/location_item_model.dart';
 import 'package:ecommerce_app/utilities/app_colors.dart';
 import 'package:ecommerce_app/utilities/app_images.dart';
 import 'package:ecommerce_app/widgets/custom_elevated_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
