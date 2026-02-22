@@ -12,11 +12,16 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
   final locationServices = LocationServicesImpl();
   final authServices = AuthServicesImpl();
 
-  void fetchLocations() {
+  Future<void> fetchLocations() async {
     emit(FetchLocationsLoading());
-    Future.delayed(Duration(seconds: 1), () {
-      emit(FetchLocationsSuccessLoaded(locations: dummyLocations));
-    });
+    try {
+      final currentUser = authServices.getCurrentUser();
+      if (currentUser == null) return;
+      final locations = await locationServices.fetchLocations(currentUser.uid);
+      emit(FetchLocationsSuccessLoaded(locations: locations));
+    } catch (e) {
+      emit(FetchLocationsFailure(errMsg: e.toString()));
+    }
   }
 
   Future<void> addLocation(String location) async {
@@ -50,11 +55,9 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
       if (currentUser == null) return;
       await locationServices.addLocation(currentUser.uid, locationItem);
       emit(AddedLocations());
-
-      Future.delayed(Duration(seconds: 1), () {
-        dummyLocations.add(locationItem);
-        emit(FetchLocationsSuccessLoaded(locations: dummyLocations));
-      });
+      final locations = await locationServices.fetchLocations(currentUser.uid);
+      // dummyLocations.add(locationItem);
+      emit(FetchLocationsSuccessLoaded(locations: locations));
     } catch (e) {
       // emit(AddingLocationsFailuer(errMsg: e.toString())); // errMsg: 'Please use "City-Country" format'
       emit(AddingLocationsFailuer(errMsg: 'Invalid format! Try:London-UK'));
