@@ -4,16 +4,21 @@ enum CardType {
   paypalCard;
 
   static CardType fromString(String cardType) {
-    switch (cardType.toUpperCase()) {
-      case 'MASTER CARD':
-        return CardType.masterCard;
-      case 'VISA CARD':
-        return CardType.visaCard;
-      case 'PAYPAL CARD':
-        return CardType.paypalCard;
-      default:
-        return CardType.masterCard;
-    }
+    return CardType.values.firstWhere(
+      (e) => e.name.toLowerCase() == cardType.toLowerCase(),
+      orElse: () => CardType.masterCard,
+    );
+
+    // switch (cardType.toLowerCase()) {
+    //   case 'masterCard':
+    //     return CardType.masterCard;
+    //   case 'visaCard':
+    //     return CardType.visaCard;
+    //   case 'paypalCard':
+    //     return CardType.paypalCard;
+    //   default:
+    //     return CardType.masterCard;
+    // }
   }
 }
 
@@ -72,7 +77,7 @@ class PaymentCardModel {
       'cardHolderName': cardHolderName,
       'expirtyDate': expirtyDate,
       'cvv': cvv,
-      'cardType': cardType.name.toUpperCase(),
+      'cardType': cardType.name,
       'isChosen': isChosen,
     };
   }

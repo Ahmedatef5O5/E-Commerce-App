@@ -12,6 +12,12 @@ class ApiPaths {
   static String cartItems(String userId) =>
       'users/$userId/cart/'; // users/$userId/cart/';
 
+  static String location(String userId, String locationId) =>
+      'users/$userId/locations/$locationId'; // users/$userId/locations/$locationId
+
+  static String locations(String userId) =>
+      'users/$userId/locations/'; // users/$userId/locations/
+
   static String paymentCard(String userId, String paymentId) =>
       'users/$userId/paymentCards/$paymentId';
 

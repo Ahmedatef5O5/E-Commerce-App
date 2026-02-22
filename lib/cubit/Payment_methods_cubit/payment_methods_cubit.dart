@@ -16,11 +16,12 @@ class PaymentMethodsCubit extends Cubit<PaymentMethodsState> {
   final authServices = AuthServicesImpl();
 
   CardType getCardTypeFromNumber(String cardNumber) {
-    if (cardNumber.startsWith('4')) {
+    String clearNumber = cardNumber.replaceAll(' ', '');
+    if (clearNumber.startsWith('4')) {
       return CardType.visaCard;
-    } else if (cardNumber.startsWith('5')) {
+    } else if (clearNumber.startsWith('5')) {
       return CardType.masterCard;
-    } else if (cardNumber.startsWith('6')) {
+    } else if (clearNumber.startsWith('6')) {
       return CardType.paypalCard;
     } else {
       // throw Exception('Invalid card number'); make app stop (will handle it )

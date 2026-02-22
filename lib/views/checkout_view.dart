@@ -173,7 +173,7 @@ class CheckoutView extends StatelessWidget {
                                   ),
                                   Gap(10),
 
-                                  state.chosenPaymentCard == null
+                                  chosenPaymentCard == null
                                       ? CustomAddContainer(
                                           onTap: () => Navigator.of(context)
                                               .pushNamed(
@@ -190,8 +190,7 @@ class CheckoutView extends StatelessWidget {
                                           title: 'Add Payment method',
                                         )
                                       : PaymentMethodItem(
-                                          paymentCardModel:
-                                              state.chosenPaymentCard,
+                                          paymentCardModel: chosenPaymentCard,
                                         ),
                                   Gap(25),
                                   Divider(color: Colors.grey.shade300),

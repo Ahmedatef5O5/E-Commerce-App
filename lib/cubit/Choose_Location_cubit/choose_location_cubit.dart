@@ -1,4 +1,6 @@
 import 'package:ecommerce_app/models/location_item_model.dart';
+import 'package:ecommerce_app/services/auth_services.dart';
+import 'package:ecommerce_app/services/location_services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'choose_location_state.dart';
@@ -6,6 +8,10 @@ part 'choose_location_state.dart';
 class ChooseLocationCubit extends Cubit<ChooseLocationState> {
   ChooseLocationCubit() : super(ChooseLocationInitial());
   LocationItemModel? selectedLocation;
+
+  final locationServices = LocationServicesImpl();
+  final authServices = AuthServicesImpl();
+
   void fetchLocations() {
     emit(FetchLocationsLoading());
     Future.delayed(Duration(seconds: 1), () {
@@ -13,7 +19,9 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
     });
   }
 
-  void addLocation(String location) {
+  Future<void> addLocation(String location) async {
+    emit(AddingLocations());
+
     try {
       if (!location.contains('-') || location.split('-').length < 2) {
         emit(
@@ -21,26 +29,30 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
         );
         return;
       }
-      emit(AddingLocations());
-      Future.delayed(Duration(seconds: 1), () {
-        final splittedLocation = location.split('-');
-        if (splittedLocation[0].trim().isEmpty ||
-            splittedLocation[1].trim().isEmpty) {
-          // throw Exception('Empty fields');  throw Exception
-          emit(
-            AddingLocationsFailuer(
-              errMsg: 'Invalid format Fields cannot be empty! Try:London-UK',
-            ),
-          );
-          return; // without Throw Exception
-        }
-        final locationItem = LocationItemModel(
-          id: DateTime.now().toIso8601String(),
-          city: splittedLocation[0],
-          country: splittedLocation[1],
+      final splittedLocation = location.split('-');
+      if (splittedLocation[0].trim().isEmpty ||
+          splittedLocation[1].trim().isEmpty) {
+        // throw Exception('Empty fields');  throw Exception
+        emit(
+          AddingLocationsFailuer(
+            errMsg: 'Invalid format Fields cannot be empty! Try:London-UK',
+          ),
         );
+        return; // without Throw Exception
+      }
+      final locationItem = LocationItemModel(
+        id: DateTime.now().toIso8601String(),
+        city: splittedLocation[0],
+        country: splittedLocation[1],
+      );
+
+      final currentUser = authServices.getCurrentUser();
+      if (currentUser == null) return;
+      await locationServices.addLocation(currentUser.uid, locationItem);
+      emit(AddedLocations());
+
+      Future.delayed(Duration(seconds: 1), () {
         dummyLocations.add(locationItem);
-        emit(AddedLocations());
         emit(FetchLocationsSuccessLoaded(locations: dummyLocations));
       });
     } catch (e) {
