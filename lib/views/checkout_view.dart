@@ -26,7 +26,7 @@ class CheckoutView extends StatelessWidget {
         BlocProvider(
           create: (context) {
             final cubit = CheckoutCubit();
-            cubit.getCartItems();
+            cubit.getCheckoutContent();
             return cubit;
           },
         ),
@@ -71,7 +71,7 @@ class CheckoutView extends StatelessWidget {
               builder: (context, state) {
                 if (state is CheckoutLoading) {
                   return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.18,
+                    height: MediaQuery.of(context).size.height * 0.2,
                     child: Center(
                       child: CupertinoActivityIndicator(color: Colors.black12),
                     ),
@@ -114,10 +114,6 @@ class CheckoutView extends StatelessWidget {
                                       : CustomAddContainer(
                                           title: 'Add Shiping address',
                                           onTap: () async {
-                                            // Navigator.of(context).pushNamed(
-                                            //     AppRoutes.locationViewRoute,
-
-                                            //   );
                                             final newLocation =
                                                 await Navigator.of(
                                                   context,
@@ -135,6 +131,12 @@ class CheckoutView extends StatelessWidget {
                                             }
                                           },
                                         ),
+                                  Gap(10),
+                                  Divider(
+                                    color: Colors.grey.shade200,
+                                    endIndent: 40,
+                                    indent: 40,
+                                  ),
                                   Gap(10),
                                   CheckoutHeadline(
                                     title: 'Products',
@@ -162,8 +164,15 @@ class CheckoutView extends StatelessWidget {
                                     itemBuilder: (context, index) {
                                       return CartItem(
                                         cartItem: state.cartItems[index],
+                                        showCounter: false,
                                       );
                                     },
+                                  ),
+                                  Gap(10),
+                                  Divider(
+                                    color: Colors.grey.shade200,
+                                    endIndent: 40,
+                                    indent: 40,
                                   ),
                                   Gap(10),
 
@@ -180,11 +189,10 @@ class CheckoutView extends StatelessWidget {
                                                 AppRoutes.addNewCardViewRoute,
                                               )
                                               .then(((_) {
-                                                // BlocProvider.of<CheckoutCubit>(context).getCartItems(); another sol (not safe)
                                                 if (context.mounted) {
                                                   context
                                                       .read<CheckoutCubit>()
-                                                      .getCartItems();
+                                                      .getCheckoutContent();
                                                 }
                                               })),
                                           title: 'Add Payment method',
@@ -192,66 +200,58 @@ class CheckoutView extends StatelessWidget {
                                       : PaymentMethodItem(
                                           paymentCardModel: chosenPaymentCard,
                                         ),
-                                  Gap(25),
-                                  Divider(color: Colors.grey.shade300),
-                                  Gap(45),
+                                  Gap(20),
+                                  Divider(
+                                    color: Colors.grey.shade200,
+                                    endIndent: 40,
+                                    indent: 40,
+                                  ),
+                                  Gap(15),
                                 ],
                               ),
                             ),
                           ),
-                          BlocBuilder<CartCubit, CartState>(
-                            buildWhen: (previous, current) =>
-                                current is CartLoaded ||
-                                current is SubtotalUpdated ||
-                                current is CartLoading,
-                            builder: (context, state) {
-                              // if (state is CartLoading) {
-                              //   return Center(
-                              //     child: CupertinoActivityIndicator(
-                              //       color: Colors.black12,
-                              //     ),
-                              //   );
-                              // }
-
-                              //  else {
-                              final subtotal = state is CartLoaded
-                                  ? state.subtotal
-                                  : (state is SubtotalUpdated)
-                                  ? state.subtotal
-                                  : 0;
-                              final totalPrice = subtotal + 6.0;
-                              return Column(
-                                children: [
-                                  Gap(5),
-                                  PriceRow(
-                                    label: 'Total Amount',
-                                    value: totalPrice,
-                                    isLoading: state is CartLoading,
+                          Column(
+                            children: [
+                              Gap(5),
+                              PriceRow(
+                                label: 'Subtotal',
+                                value: state.subtotal,
+                                isLoading: state is CartLoading,
+                              ),
+                              Gap(5),
+                              PriceRow(
+                                label: 'Shipping',
+                                value: state.shippingValue,
+                                isLoading: state is CartLoading,
+                              ),
+                              Gap(5),
+                              PriceRow(
+                                label: 'Total Amount',
+                                value: state.totalAmount,
+                                isLoading: state is CartLoading,
+                              ),
+                              Gap(15),
+                              CustomElevatedButton(
+                                width: double.infinity,
+                                height: 50,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(25),
+                                ),
+                                onPressed: state is CartLoading ? null : () {},
+                                child: const Text(
+                                  'Proceed to Buy',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.white,
                                   ),
-                                  Gap(20),
-                                  CustomElevatedButton(
-                                    width: double.infinity,
-                                    height: 55,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                    onPressed: state is CartLoading
-                                        ? null
-                                        : () {},
-                                    child: const Text(
-                                      'Proceed to Buy',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  Gap(20),
-                                ],
-                              );
-                              // }
-                            },
+                                ),
+                              ),
+                              Gap(20),
+                            ],
                           ),
+
+                          // }
                         ],
                       ),
                     ),

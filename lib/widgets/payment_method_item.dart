@@ -29,7 +29,7 @@ class PaymentMethodItem extends StatelessWidget {
               child: PaymentMethodBottomSheet(),
             ),
           ).then((v) {
-            BlocProvider.of<CheckoutCubit>(context).getCartItems();
+            BlocProvider.of<CheckoutCubit>(context).getCheckoutContent();
           });
         },
         leading: CircleAvatar(

@@ -9,8 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
 class CartItem extends StatelessWidget {
-  const CartItem({super.key, required this.cartItem});
+  const CartItem({super.key, required this.cartItem, this.showCounter = true});
   final AddToCartModel cartItem;
+  final bool showCounter;
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<CartCubit>(context);
@@ -62,7 +63,7 @@ class CartItem extends StatelessWidget {
                               fontSize: 18,
                             ),
                       ),
-                      Gap(4),
+                      Gap(6),
                       Text.rich(
                         TextSpan(
                           text: 'Size:\t\t',
@@ -84,46 +85,73 @@ class CartItem extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Gap(4),
+                      Gap(showCounter ? 4 : 1),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(
-                            height: 32,
-                            // width: 128,
-                            child: BlocBuilder<CartCubit, CartState>(
-                              bloc: cubit,
-                              buildWhen: (previous, current) =>
-                                  current is QuantityCounterLoaded &&
-                                  current.productId == cartItem.product.id,
-                              builder: (context, state) {
-                                if (state is QuantityCounterLoaded) {
-                                  return CustomProductCounter(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 2,
-                                      vertical: 2,
-                                    ),
-                                    quantity: cartItem.quantity,
-                                    onIncrement: () =>
-                                        cubit.incrementQuantity(cartItem),
-                                    onDecrement: () =>
-                                        cubit.decrementQuantity(cartItem),
-                                  );
-                                }
-                                return CustomProductCounter(
-                                  quantity: cartItem.quantity,
-                                  onIncrement: () =>
-                                      cubit.incrementQuantity(cartItem),
-                                  onDecrement: () =>
-                                      cubit.decrementQuantity(cartItem),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 2,
-                                    vertical: 2,
+                          showCounter
+                              ? SizedBox(
+                                  height: 32,
+                                  // width: 128,
+                                  child: BlocBuilder<CartCubit, CartState>(
+                                    bloc: cubit,
+                                    buildWhen: (previous, current) =>
+                                        current is QuantityCounterLoaded &&
+                                        current.productId ==
+                                            cartItem.product.id,
+                                    builder: (context, state) {
+                                      if (state is QuantityCounterLoaded) {
+                                        return CustomProductCounter(
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 2,
+                                            vertical: 2,
+                                          ),
+                                          quantity: cartItem.quantity,
+                                          onIncrement: () =>
+                                              cubit.incrementQuantity(cartItem),
+                                          onDecrement: () =>
+                                              cubit.decrementQuantity(cartItem),
+                                        );
+                                      }
+                                      return CustomProductCounter(
+                                        quantity: cartItem.quantity,
+                                        onIncrement: () =>
+                                            cubit.incrementQuantity(cartItem),
+                                        onDecrement: () =>
+                                            cubit.decrementQuantity(cartItem),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 2,
+                                          vertical: 2,
+                                        ),
+                                      );
+                                    },
                                   ),
-                                );
-                              },
-                            ),
-                          ),
+                                )
+                              : Text.rich(
+                                  TextSpan(
+                                    text: 'Qty:\t\t',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium!
+                                        .copyWith(
+                                          color: Colors.grey.shade600,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                    children: [
+                                      TextSpan(
+                                        text: cartItem.quantity.toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelMedium!
+                                            .copyWith(
+                                              color: AppColors.blackColor,
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 14,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
 
                           Text.rich(
                             TextSpan(
@@ -206,7 +234,7 @@ class CartItem extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall!
                           .copyWith(fontWeight: FontWeight.w700, fontSize: 18),
                     ),
-                    Gap(4),
+                    Gap(6),
                     Text.rich(
                       TextSpan(
                         text: 'Size:\t\t',
@@ -228,46 +256,72 @@ class CartItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Gap(4),
+                    Gap(showCounter ? 4 : 1),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SizedBox(
-                          height: 32,
-                          // width: 128,
-                          child: BlocBuilder<CartCubit, CartState>(
-                            bloc: cubit,
-                            buildWhen: (previous, current) =>
-                                current is QuantityCounterLoaded &&
-                                current.productId == cartItem.product.id,
-                            builder: (context, state) {
-                              if (state is QuantityCounterLoaded) {
-                                return CustomProductCounter(
-                                  quantity: cartItem.quantity,
-                                  onIncrement: () =>
-                                      cubit.incrementQuantity(cartItem),
-                                  onDecrement: () =>
-                                      cubit.decrementQuantity(cartItem),
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 2,
-                                    vertical: 2,
-                                  ),
-                                );
-                              }
-                              return CustomProductCounter(
-                                quantity: cartItem.quantity,
-                                onIncrement: () =>
-                                    cubit.incrementQuantity(cartItem),
-                                onDecrement: () =>
-                                    cubit.decrementQuantity(cartItem),
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 2,
-                                  vertical: 2,
+                        showCounter
+                            ? SizedBox(
+                                height: 32,
+                                // width: 128,
+                                child: BlocBuilder<CartCubit, CartState>(
+                                  bloc: cubit,
+                                  buildWhen: (previous, current) =>
+                                      current is QuantityCounterLoaded &&
+                                      current.productId == cartItem.product.id,
+                                  builder: (context, state) {
+                                    if (state is QuantityCounterLoaded) {
+                                      return CustomProductCounter(
+                                        quantity: cartItem.quantity,
+                                        onIncrement: () =>
+                                            cubit.incrementQuantity(cartItem),
+                                        onDecrement: () =>
+                                            cubit.decrementQuantity(cartItem),
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 2,
+                                          vertical: 2,
+                                        ),
+                                      );
+                                    }
+                                    return CustomProductCounter(
+                                      quantity: cartItem.quantity,
+                                      onIncrement: () =>
+                                          cubit.incrementQuantity(cartItem),
+                                      onDecrement: () =>
+                                          cubit.decrementQuantity(cartItem),
+                                      padding: EdgeInsets.symmetric(
+                                        horizontal: 2,
+                                        vertical: 2,
+                                      ),
+                                    );
+                                  },
                                 ),
-                              );
-                            },
-                          ),
-                        ),
+                              )
+                            : Text.rich(
+                                TextSpan(
+                                  text: 'Qty:\t\t',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelMedium!
+                                      .copyWith(
+                                        color: Colors.grey.shade600,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                  children: [
+                                    TextSpan(
+                                      text: cartItem.quantity.toString(),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium!
+                                          .copyWith(
+                                            color: AppColors.blackColor,
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 14,
+                                          ),
+                                    ),
+                                  ],
+                                ),
+                              ),
 
                         Text.rich(
                           TextSpan(
@@ -290,7 +344,6 @@ class CartItem extends StatelessWidget {
                                 ),
                               ),
                               TextSpan(
-                                // text: '${cartItem.product.price}',
                                 text: '${cartItem.totalPrice}',
                                 style: Theme.of(context)
                                     .textTheme

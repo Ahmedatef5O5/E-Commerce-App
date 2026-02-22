@@ -3,7 +3,6 @@ import 'package:ecommerce_app/services/auth_services.dart';
 import 'package:ecommerce_app/services/location_services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 part 'choose_location_state.dart';
 
 class ChooseLocationCubit extends Cubit<ChooseLocationState> {

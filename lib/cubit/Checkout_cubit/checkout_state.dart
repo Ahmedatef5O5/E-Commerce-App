@@ -8,6 +8,8 @@ final class CheckoutLoading extends CheckoutState {}
 
 final class CheckoutLoaded extends CheckoutState {
   final List<AddToCartModel> cartItems;
+  final double shippingValue;
+  final double subtotal;
   final double totalAmount;
   final int numOfProducts;
   final PaymentCardModel? chosenPaymentCard;
@@ -15,12 +17,16 @@ final class CheckoutLoaded extends CheckoutState {
   CheckoutLoaded({
     required this.numOfProducts,
     required this.cartItems,
+    required this.shippingValue,
+    required this.subtotal,
     required this.totalAmount,
     this.chosenPaymentCard,
   });
 
   CheckoutLoaded copyWith({
     List<AddToCartModel>? cartItems,
+    double? shippingValue,
+    double? subtotal,
     double? totalAmount,
     int? numOfProducts,
     PaymentCardModel? chosenPaymentCard,
@@ -30,6 +36,8 @@ final class CheckoutLoaded extends CheckoutState {
       cartItems: cartItems ?? this.cartItems,
       totalAmount: totalAmount ?? this.totalAmount,
       chosenPaymentCard: chosenPaymentCard ?? this.chosenPaymentCard,
+      shippingValue: shippingValue ?? this.shippingValue,
+      subtotal: subtotal ?? this.subtotal,
     );
   }
 }

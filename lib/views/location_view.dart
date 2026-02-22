@@ -387,6 +387,7 @@ class _LocationViewState extends State<LocationView> {
                     onPressed: () async {
                       if (cubit.selectedLocation != null) {
                         await cubit.confirmLocation();
+                        if (!mounted) return;
                         Navigator.of(context).pop(cubit.selectedLocation);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(

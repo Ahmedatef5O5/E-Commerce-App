@@ -21,7 +21,7 @@ class PriceRow extends StatelessWidget {
           style: Theme.of(context).textTheme.labelLarge!.copyWith(
             color: Colors.grey.shade500,
             fontWeight: FontWeight.w700,
-            fontSize: 16,
+            fontSize: 14,
           ),
         ),
         isLoading
@@ -39,7 +39,7 @@ class PriceRow extends StatelessWidget {
                               .copyWith(
                                 color: Theme.of(context).primaryColor,
                                 fontWeight: FontWeight.w800,
-                                fontSize: 15,
+                                fontSize: 12,
                               ),
                         ),
                       ),
@@ -47,7 +47,7 @@ class PriceRow extends StatelessWidget {
                     TextSpan(
                       text: value?.toStringAsFixed(1),
                       style: Theme.of(context).textTheme.headlineMedium!
-                          .copyWith(fontWeight: FontWeight.w700, fontSize: 21),
+                          .copyWith(fontWeight: FontWeight.w700, fontSize: 17),
                     ),
                   ],
                 ),
