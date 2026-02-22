@@ -80,7 +80,7 @@ class PaymentCardModel {
   factory PaymentCardModel.fromMap(Map<String, dynamic> map) {
     return PaymentCardModel(
       id: map['id'] as String? ?? '',
-      cardNumber: map['_cardNumber'] as String? ?? '',
+      cardNumber: map['cardNumber'] as String? ?? '',
       cardHolderName: map['cardHolderName'] as String? ?? '',
       expirtyDate: map['expirtyDate'] as String? ?? '',
       cvv: map['cvv'] as String? ?? '',

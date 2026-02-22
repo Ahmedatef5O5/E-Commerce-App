@@ -253,7 +253,7 @@ class PaymentMethodBottomSheet extends StatelessWidget {
                       borderRadius: BorderRadius.circular(25),
                     ),
                     onPressed: () {
-                      paymentMethodsCubit.confirmPaymentMethod();
+                      paymentMethodsCubit.confirmPaymentMethod(context);
                     },
 
                     child: const Text(
