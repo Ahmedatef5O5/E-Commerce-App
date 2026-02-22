@@ -258,118 +258,113 @@ class _LocationViewState extends State<LocationView> {
                                   cubit.selectedLocation?.id == location.id;
                               return Padding(
                                 padding: const EdgeInsets.only(bottom: 18.0),
-                                child: InkWell(
-                                  onTap: () => cubit.selectLocation(location),
+                                child: Dismissible(
+                                  key: Key(location.id),
+                                  direction: DismissDirection.endToStart,
+                                  background: _buildDeleteBackground(),
+                                  onDismissed: (direction) {
+                                    cubit.deleteLocation(location.id);
+                                  },
+                                  child: InkWell(
+                                    onTap: () => cubit.selectLocation(location),
 
-                                  child: DecoratedBox(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: isSelected
-                                            ? AppColors
-                                                  .primaryColor //  activeColor
-                                            : AppColors
-                                                  .greyWithShade, // inactiveColor
-                                        width: isSelected ? 2.0 : 1.2,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: isSelected
+                                              ? AppColors
+                                                    .primaryColor //  activeColor
+                                              : AppColors
+                                                    .greyWithShade, // inactiveColor
+                                          width: isSelected ? 2.0 : 1.2,
+                                        ),
+                                        borderRadius: BorderRadius.circular(16),
                                       ),
-                                      borderRadius: BorderRadius.circular(16),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                // dummyLocations[index].city,
-                                                locations[index].city,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleMedium!
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 17,
-                                                    ),
-                                              ),
-                                              Gap(4),
-                                              Text(
-                                                '${locations[index].city}, ${locations[index].country}',
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  // dummyLocations[index].city,
+                                                  locations[index].city,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleMedium!
+                                                      .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 17,
+                                                      ),
+                                                ),
+                                                Gap(4),
+                                                Text(
+                                                  '${locations[index].city}, ${locations[index].country}',
 
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .titleSmall!
-                                                    .copyWith(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13,
-                                                      color:
-                                                          Colors.grey.shade500,
-                                                    ),
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                            width: 68,
-                                            height: 68,
-                                            decoration: BoxDecoration(
-                                              color: isSelected
-                                                  ? AppColors
-                                                        .primaryColor //  activeColor
-                                                  : AppColors
-                                                        .greyWithShade, // inactiveColor
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .titleSmall!
+                                                      .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontSize: 13,
+                                                        color: Colors
+                                                            .grey
+                                                            .shade500,
+                                                      ),
+                                                ),
+                                              ],
+                                            ),
+                                            Container(
+                                              width: 68,
+                                              height: 68,
+                                              decoration: BoxDecoration(
                                                 color: isSelected
                                                     ? AppColors
                                                           .primaryColor //  activeColor
                                                     : AppColors
                                                           .greyWithShade, // inactiveColor
-                                                width: isSelected ? 3.5 : 2.5,
+                                                shape: BoxShape.circle,
+                                                border: Border.all(
+                                                  color: isSelected
+                                                      ? AppColors
+                                                            .primaryColor //  activeColor
+                                                      : AppColors
+                                                            .greyWithShade, // inactiveColor
+                                                  width: isSelected ? 3.5 : 2.5,
+                                                ),
+                                              ),
+                                              child: ClipOval(
+                                                child: CachedNetworkImage(
+                                                  imageUrl:
+                                                      locations[index].imgUrl,
+                                                  fit: BoxFit.cover,
+                                                  placeholder: (context, url) =>
+                                                      const Center(
+                                                        child:
+                                                            CupertinoActivityIndicator(
+                                                              color: Colors
+                                                                  .black12,
+                                                            ),
+                                                      ),
+                                                  errorWidget:
+                                                      (context, url, error) =>
+                                                          Center(
+                                                            child: const Icon(
+                                                              Icons.error,
+                                                              color: Colors.red,
+                                                            ),
+                                                          ),
+                                                ),
                                               ),
                                             ),
-                                            child: ClipOval(
-                                              child: CachedNetworkImage(
-                                                imageUrl: dummyLocations[index]
-                                                    .imgUrl,
-                                                fit: BoxFit.cover,
-                                                placeholder: (context, url) =>
-                                                    const Center(
-                                                      child:
-                                                          CupertinoActivityIndicator(
-                                                            color:
-                                                                Colors.black12,
-                                                          ),
-                                                    ),
-                                                errorWidget:
-                                                    (context, url, error) =>
-                                                        Center(
-                                                          child: const Icon(
-                                                            Icons.error,
-                                                            color: Colors.red,
-                                                          ),
-                                                        ),
-                                              ),
-                                            ),
-                                          ),
-                                          // another solution Nested CircleAvater instead of container(cirlce shape)
-                                          // CircleAvatar(
-                                          //   radius: 34,
-                                          //   backgroundColor: AppColors.primaryColor,
-                                          //   child: CircleAvatar(
-                                          //     radius: 30,
-                                          //     backgroundImage: CachedNetworkImageProvider(
-                                          //       dummyLocations[index].imgUrl,
-                                          //       maxWidth: 65,
-                                          //       maxHeight: 65,
-                                          //       // fit: BoxFit.contain,
-                                          //     ),
-                                          //   ),
-                                          // ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -389,8 +384,9 @@ class _LocationViewState extends State<LocationView> {
 
                   CustomElevatedButton(
                     child: Text('Confirm'),
-                    onPressed: () {
+                    onPressed: () async {
                       if (cubit.selectedLocation != null) {
+                        await cubit.confirmLocation();
                         Navigator.of(context).pop(cubit.selectedLocation);
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -407,6 +403,33 @@ class _LocationViewState extends State<LocationView> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildDeleteBackground() {
+    return Container(
+      alignment: Alignment.centerRight,
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      // margin: const EdgeInsetsDirectional.only(bottom: 18.0),
+      decoration: BoxDecoration(
+        color: Colors.redAccent.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(CupertinoIcons.delete, color: Colors.redAccent[700], size: 28),
+          const Gap(4),
+          Text(
+            "Remove",
+            style: TextStyle(
+              color: Colors.redAccent[700],
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
       ),
     );
   }

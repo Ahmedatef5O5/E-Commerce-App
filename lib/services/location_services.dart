@@ -5,6 +5,8 @@ import 'package:ecommerce_app/utilities/api_paths.dart';
 abstract class LocationServices {
   Future<List<LocationItemModel>> fetchLocations(String userId);
   Future<void> addLocation(String userId, LocationItemModel locationItem);
+  Future<void> selectLocation(String userId, String locationId);
+  Future<void> deleteLocation(String userId, String locationId);
 }
 
 class LocationServicesImpl implements LocationServices {
@@ -24,5 +26,22 @@ class LocationServicesImpl implements LocationServices {
       await firestoreServices.getCollection(
         path: ApiPaths.locations(userId),
         builder: (data, documentId) => LocationItemModel.fromMap(data),
+      );
+
+  @override
+  Future<void> selectLocation(String userId, String locationId) async {
+    final allLocations = await fetchLocations(userId);
+    for (var loc in allLocations) {
+      await firestoreServices.updateData(
+        path: ApiPaths.location(userId, loc.id),
+        data: {'isChosen': loc.id == locationId},
+      );
+    }
+  }
+
+  @override
+  Future<void> deleteLocation(String userId, String locationId) async =>
+      await firestoreServices.deleteData(
+        path: ApiPaths.location(userId, locationId),
       );
 }

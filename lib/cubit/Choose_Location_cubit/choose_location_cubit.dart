@@ -1,6 +1,7 @@
 import 'package:ecommerce_app/models/location_item_model.dart';
 import 'package:ecommerce_app/services/auth_services.dart';
 import 'package:ecommerce_app/services/location_services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'choose_location_state.dart';
@@ -18,6 +19,12 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
       final currentUser = authServices.getCurrentUser();
       if (currentUser == null) return;
       final locations = await locationServices.fetchLocations(currentUser.uid);
+
+      try {
+        selectedLocation = locations.firstWhere((loc) => loc.isChosen == true);
+      } catch (_) {
+        selectedLocation = null;
+      }
       emit(FetchLocationsSuccessLoaded(locations: locations));
     } catch (e) {
       emit(FetchLocationsFailure(errMsg: e.toString()));
@@ -65,8 +72,34 @@ class ChooseLocationCubit extends Cubit<ChooseLocationState> {
   }
 
   void selectLocation(LocationItemModel location) {
+    final currentLocations = (state as FetchLocationsSuccessLoaded).locations;
     selectedLocation = location;
     emit(LocationSelected(locationId: location.id));
-    emit(FetchLocationsSuccessLoaded(locations: List.from(dummyLocations)));
+    emit(FetchLocationsSuccessLoaded(locations: currentLocations));
+  }
+
+  Future<void> deleteLocation(String locationId) async {
+    try {
+      final currentUser = authServices.getCurrentUser();
+      if (currentUser == null) return;
+      await locationServices.deleteLocation(currentUser.uid, locationId);
+      await fetchLocations();
+    } catch (e) {
+      FetchLocationsFailure(errMsg: e.toString());
+    }
+  }
+
+  Future<void> confirmLocation() async {
+    if (selectedLocation == null) return;
+    try {
+      final currentUser = authServices.getCurrentUser();
+      if (currentUser == null) return;
+      await locationServices.selectLocation(
+        currentUser.uid,
+        selectedLocation!.id,
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 }
