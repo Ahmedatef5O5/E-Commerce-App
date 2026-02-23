@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
 enum ProductSize {
   S,
   M,
@@ -104,6 +108,21 @@ class ProductItemModel {
   // String toJson() => json.encode(toMap());
 
   // factory ProductItemModel.fromJson(String source) => ProductItemModel.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  static Future<void> uploadAllDummmyProducts() async {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+    final collection = firestore.collection('products');
+    debugPrint('Starting upload process...');
+    for (var product in dummyProducts) {
+      try {
+        await collection.doc(product.id).set(product.toMap());
+        debugPrint('Uploaded "${product.name}"');
+      } catch (e) {
+        debugPrint('Error uploading "${product.name}": $e}');
+      }
+    }
+    debugPrint('All products processed! Done. 🎉');
+  }
 }
 
 List<ProductItemModel> dummyProducts = [

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 
+import '../models/product_item_model.dart';
+
 class CategoryTabView extends StatelessWidget {
   const CategoryTabView({super.key});
 
@@ -85,6 +87,17 @@ class CategoryTabView extends StatelessWidget {
                   ),
                 ),
                 // Gap(20),
+                ElevatedButton(
+                  onPressed: () async {
+                    await ProductItemModel.uploadAllDummmyProducts();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Upload to Firestore Successfully! 🎉🎉'),
+                      ),
+                    );
+                  },
+                  child: const Text('Upload to Firestore'),
+                ),
               ],
             );
           } else if (state is MainCategoryFailure) {
