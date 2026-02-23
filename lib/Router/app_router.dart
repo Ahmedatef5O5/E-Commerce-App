@@ -43,19 +43,27 @@ class AppRouter {
         );
 
       case AppRoutes.productDetailsRoute:
-        // final args = settings.arguments as Map;
-
-        final args = settings.arguments as ProductDetailsArgsModel;
+        String id;
+        if (settings.arguments is ProductDetailsArgsModel) {
+          id = (settings.arguments as ProductDetailsArgsModel).id;
+        } else if (settings.arguments is String) {
+          id = settings.arguments as String;
+        } else {
+          id = '';
+        }
+        // final args = settings.arguments as ProductDetailsArgsModel;
         // final ProductItemModel product = args['product'];
         // final id = ProductDetailsArgsModel(id: args.id);
         return MaterialPageRoute(
           builder: (_) => BlocProvider(
             create: (context) {
               final cubit = ProductDetailsCubit();
-              cubit.getProductDetails(args.id);
+              if (id.isNotEmpty) {
+                cubit.getProductDetails(id);
+              }
               return cubit;
             },
-            child: ProductDetailsView(productId: args.id),
+            child: ProductDetailsView(productId: id),
           ),
           settings: settings, // helping for any passed parameters
         );

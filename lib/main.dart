@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:ecommerce_app/Router/app_router.dart';
 import 'package:ecommerce_app/Router/app_routes.dart';
 import 'package:ecommerce_app/cubit/Auth_cubit/auth_cubit.dart';
@@ -9,6 +11,8 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> requestNotificationPermission() async {
   FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -32,9 +36,69 @@ Future<void> requestNotificationPermission() async {
   }
 }
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  debugPrint("Handling a background message: ${message.messageId}");
+}
+
+Future<void> handleNotification() async {
+  // Handling background messages
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // taking permission
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+  NotificationSettings settings = await messaging.requestPermission();
+  debugPrint('User granted permission: ${settings.authorizationStatus}');
+
+  // Handling foreground messages
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    debugPrint('Got a message whilst in the foreground!');
+    debugPrint('Message data: ${message.data})');
+
+    if (message.notification != null) {
+      String title = message.notification!.title ?? '';
+      String body = message.notification!.body ?? '';
+      debugPrint(
+        'Message also contained a notification: ${message.notification}',
+      );
+      debugPrint('Message also contained a title: $title');
+      debugPrint('Message also contained a body: $body');
+      if (navigatorKey.currentContext != null) {
+        showDialog(
+          context: navigatorKey.currentContext!,
+          builder: (_) => AlertDialog(
+            title: Text(title),
+            content: Text(body),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(navigatorKey.currentContext!).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    }
+  });
+
+  FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+    debugPrint('A new onMessageOpenedApp event was published!');
+    debugPrint('Message data: ${message.data}');
+    final messageData = message.data;
+    if (messageData['product_id'] != null) {
+      navigatorKey.currentState!.pushNamed(
+        AppRoutes.productDetailsRoute,
+        arguments: messageData['product_id']!,
+      );
+    }
+  });
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await handleNotification();
   await requestNotificationPermission();
   runApp(
     MultiBlocProvider(
@@ -57,6 +121,7 @@ class EcommerceApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: const Color(0xff514eb7),
